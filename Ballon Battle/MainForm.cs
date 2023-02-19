@@ -16,5 +16,10 @@ namespace Ballon_Battle
         {
             InitializeComponent();
         }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
