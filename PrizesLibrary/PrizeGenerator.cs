@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameLibrary
+namespace PrizesLibrary
 {
-    internal class Wind
+    public abstract class PrizeGenerator
     {
+
+        public abstract Prize Create();
 
     }
 }
