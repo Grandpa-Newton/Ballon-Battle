@@ -14,9 +14,9 @@ namespace Ballon_Battle
         [STAThread]
         static void Main()
         {
-
-            MainForm mainForm = new MainForm();
-            mainForm.Run(60);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new GameForm());
         }
     }
 }
