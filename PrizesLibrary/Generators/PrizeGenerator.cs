@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace PrizesLibrary
 {
-    internal class FuelGenerator : PrizeGenerator
+    public abstract class PrizeGenerator
     {
-        public override Prize Create()
-        {
-            return new FuelPrize();
-        }
+
+        public abstract Prize Create(double speed);
+
+
     }
 }

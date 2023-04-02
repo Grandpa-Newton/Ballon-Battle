@@ -42,9 +42,14 @@ namespace Ballon_Battle
 
             // Draw objects here
 
+
             glControl.SwapBuffers();
         }
 
+        private void glTimer_Tick(object sender, EventArgs e)
+        {
+            glControl.Invalidate();
+        }
     }
 
         

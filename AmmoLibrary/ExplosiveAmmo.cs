@@ -8,8 +8,19 @@ namespace AmmoLibrary
 {
     internal class ExplosiveAmmo : Ammo // фугасный
     {
-        public override double Speed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override int Distancde { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override int Radius { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override int GetDistance()
+        {
+            return 100;
+        }
+
+        public override int GetRadius()
+        {
+            return 50;
+        }
+
+        public override double GetSpeed()
+        {
+            return 5.0;
+        }
     }
 }

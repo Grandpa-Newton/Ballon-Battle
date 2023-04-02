@@ -8,9 +8,9 @@ namespace PrizesLibrary
 {
     internal class ArmourGenerator : PrizeGenerator
     {
-        public override Prize Create()
+        public override Prize Create(double speed)
         {
-            return new ArmourPrize();
+            return new ArmourPrize(speed);
         }
     }
 }

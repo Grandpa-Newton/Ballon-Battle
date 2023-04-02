@@ -8,5 +8,13 @@ namespace PrizesLibrary
 {
     internal class HealthPrize : Prize
     {
+        public HealthPrize(double speed) : base(speed)
+        {
+        }
+
+        public override void Draw()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

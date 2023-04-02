@@ -8,8 +8,8 @@ namespace AmmoLibrary
 {
     public abstract class Ammo
     {
-        public abstract double Speed { get; set; }
-        public abstract int Distancde { get; set; }
-        public abstract int Radius { get; set; }
+        public abstract double GetSpeed();
+        public abstract int GetDistance();
+        public abstract int GetRadius();
     }
 }

@@ -4,23 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmmoLibrary
+namespace AmmoLibrary.characteristics_changing
 {
-    internal class SupersonicAmmo : Ammo // сверхзвуковой
+    public class RadiusDecorator : AmmoDecorator
     {
+        public RadiusDecorator(Ammo ammo) : base(ammo)
+        {
+        }
+
         public override int GetDistance()
         {
-            return 80;
+            return ammo.GetDistance();
         }
 
         public override int GetRadius()
         {
-            return 30;
+            return (int)(ammo.GetDistance() * 1.2);
         }
 
         public override double GetSpeed()
-        {
-            return 10.0;
+        {return ammo.GetSpeed();
         }
     }
 }

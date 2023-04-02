@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.startButton = new System.Windows.Forms.Button();
             this.glControl = new OpenTK.GLControl();
+            this.glTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // startButton
@@ -54,6 +56,11 @@
             this.glControl.Load += new System.EventHandler(this.glControl_Load);
             this.glControl.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl_Paint);
             // 
+            // glTimer
+            // 
+            this.glTimer.Interval = 60;
+            this.glTimer.Tick += new System.EventHandler(this.glTimer_Tick);
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -71,5 +78,6 @@
 
         private System.Windows.Forms.Button startButton;
         private OpenTK.GLControl glControl;
+        private System.Windows.Forms.Timer glTimer;
     }
 }

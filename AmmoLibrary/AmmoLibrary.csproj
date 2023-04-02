@@ -42,7 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ammo.cs" />
-    <Compile Include="AmmoDecorator.cs" />
+    <Compile Include="characteristics changing\AmmoDecorator.cs" />
+    <Compile Include="characteristics changing\DistanceDecorator.cs" />
+    <Compile Include="characteristics changing\RadiusDecorator.cs" />
+    <Compile Include="characteristics changing\SpeedDecorator.cs" />
     <Compile Include="ExplosiveAmmo.cs" />
     <Compile Include="PiercingAmmo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

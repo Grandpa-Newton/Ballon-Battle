@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace PrizesLibrary
 {
-
-    internal class HealthGenerator : PrizeGenerator
+    internal class FuelGenerator : PrizeGenerator
     {
-        public override Prize Create()
+        public override Prize Create(double speed)
         {
-            return new HealthPrize();
+            return new FuelPrize(speed);
         }
     }
 }

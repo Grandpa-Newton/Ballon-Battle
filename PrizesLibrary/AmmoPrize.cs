@@ -8,5 +8,13 @@ namespace PrizesLibrary
 {
     internal class AmmoPrize : Prize
     {
+        public AmmoPrize(double speed) : base(speed)
+        {
+        }
+
+        public override void Draw()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

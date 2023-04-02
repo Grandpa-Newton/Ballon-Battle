@@ -8,5 +8,13 @@ namespace PrizesLibrary
 {
     internal class FuelPrize : Prize
     {
+        public FuelPrize(double speed) : base(speed)
+        {
+        }
+
+        public override void Draw()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
