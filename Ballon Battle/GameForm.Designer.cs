@@ -50,7 +50,6 @@
             this.glControl.BackColor = System.Drawing.Color.Black;
             this.glControl.Location = new System.Drawing.Point(0, 0);
             this.glControl.Name = "glControl";
-            this.glControl.Size = new System.Drawing.Size(804, 451);
             this.glControl.TabIndex = 1;
             this.glControl.VSync = false;
             this.glControl.Load += new System.EventHandler(this.glControl_Load);
@@ -58,7 +57,7 @@
             // 
             // glTimer
             // 
-            this.glTimer.Interval = 60;
+            this.glTimer.Interval = 16;
             this.glTimer.Tick += new System.EventHandler(this.glTimer_Tick);
             // 
             // GameForm
@@ -70,8 +69,10 @@
             this.Controls.Add(this.glControl);
             this.Name = "GameForm";
             this.Text = "GameForm";
+            this.Resize += new System.EventHandler(this.GameForm_Resize);
             this.ResumeLayout(false);
 
+            this.glControl.Size = this.Size;
         }
 
         #endregion

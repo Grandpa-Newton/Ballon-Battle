@@ -40,15 +40,19 @@ namespace Ballon_Battle
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            // Draw objects here
-
-
             glControl.SwapBuffers();
         }
 
-        private void glTimer_Tick(object sender, EventArgs e)
+        private void glTimer_Tick(object sender, EventArgs e) // для обновления картинки каждые 16 миллисекунд (чуть больше 60 фреймов в секунде)
         {
             glControl.Invalidate();
+
+            
+        }
+
+        private void GameForm_Resize(object sender, EventArgs e)
+        {
+            glControl.Size = this.Size;
         }
     }
 
