@@ -16,13 +16,13 @@ namespace Ballon_Battle
         {
             Vector2[] vertices = new Vector2[4] // вершины спрайта
             {
-                new Vector2(0.0f,1.0f),
-                new Vector2(1.0f,1.0f),
-                new Vector2(1.0f,0.0f),
-                new Vector2(0.0f,0.0f),
+                new Vector2(0.0f,1.0f), // левый низ
+                new Vector2(1.0f,1.0f), // правый низ
+                new Vector2(1.0f,0.0f), // правый верх
+                new Vector2(0.0f,0.0f), // левый верх
             };
 
-
+           
 
             GL.Enable(EnableCap.Texture2D);
 

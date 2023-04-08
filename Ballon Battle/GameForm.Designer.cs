@@ -50,13 +50,16 @@
             this.glControl.BackColor = System.Drawing.Color.Black;
             this.glControl.Location = new System.Drawing.Point(0, 0);
             this.glControl.Name = "glControl";
+            this.glControl.Size = this.Size;
             this.glControl.TabIndex = 1;
             this.glControl.VSync = false;
             this.glControl.Load += new System.EventHandler(this.glControl_Load);
             this.glControl.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl_Paint);
+            this.glControl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.glControl_KeyDown);
             // 
             // glTimer
             // 
+            this.glTimer.Enabled = false;
             this.glTimer.Interval = 16;
             this.glTimer.Tick += new System.EventHandler(this.glTimer_Tick);
             // 
@@ -73,6 +76,7 @@
             this.ResumeLayout(false);
 
             this.glControl.Size = this.Size;
+
         }
 
         #endregion
