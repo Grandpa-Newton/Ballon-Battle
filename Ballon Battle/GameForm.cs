@@ -17,7 +17,7 @@ namespace Ballon_Battle
 {
     public partial class GameForm : Form
     {
-        int backgroundTexture;
+        Texture backgroundTexture;
         public GameForm()
         {
             InitializeComponent();
@@ -51,25 +51,42 @@ namespace Ballon_Battle
 
             // Добавление фона на картинку
 
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadIdentity();
-            GL.Ortho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadIdentity();
+            ObjectsDrawing.Start();
 
-            GL.Enable(EnableCap.Texture2D);
-            GL.BindTexture(TextureTarget.Texture2D, backgroundTexture);
+            //    ObjectsDrawing.Start(this.Width, this.Height);
 
-            GL.Begin(PrimitiveType.Quads);
+            //   ObjectsDrawing.Draw(backgroundTexture, new Vector2(-1.0f, 1.0f), new Vector2(0.1f, 0.1f), Vector2.Zero);
 
-            GL.TexCoord2(0.0f, 1.0f); GL.Vertex2(-1.0f, -1.0f);
-            GL.TexCoord2(1.0f, 1.0f); GL.Vertex2(1.0f, -1.0f);
-            GL.TexCoord2(1.0f, 0.0f); GL.Vertex2(1.0f, 1.0f);
-            GL.TexCoord2(0.0f, 0.0f); GL.Vertex2(-1.0f, 1.0f);
+            ObjectsDrawing.Draw(backgroundTexture, new Vector2[4]
+            {
+                new Vector2(-1.0f, -1.0f),
+                new Vector2(1.0f, -1.0f),
+                new Vector2(1.0f, 1.0f),
+                new Vector2(-1.0f, 1.0f),
+            });
 
-            GL.End();
+            //GL.Enable(EnableCap.Texture2D);
+            //GL.BindTexture(TextureTarget.Texture2D, backgroundTexture.Id);
+
+            //GL.Begin(PrimitiveType.Quads);
+
+            //GL.TexCoord2(0.0f, 1.0f);
+            //GL.Vertex2(-1.0f, -1.0f);
+            //GL.TexCoord2(1.0f, 1.0f);
+            //GL.Vertex2(1.0f, -1.0f);
+            //GL.TexCoord2(1.0f, 0.0f);
+            //GL.Vertex2(1.0f, 1.0f);
+            //GL.TexCoord2(0.0f, 0.0f);
+            //GL.Vertex2(-1.0f, 1.0f);
+
+            // -1 -1
+            // 1 -1
+            // 1 1
+            // -1 1
 
             //   GL.ClearTexImage(backgroundTexture, 1, PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.);
+
+            //GL.End();
 
             Draw();
 

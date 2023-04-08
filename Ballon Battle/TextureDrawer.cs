@@ -13,7 +13,7 @@ namespace Ballon_Battle
 {
     public class TextureDrawer
     {
-        public static int LoadTexure(string path)
+        public static Texture LoadTexure(string path)
         {
             int textureId = GL.GenTexture(); // генерация идентификатора текстуры
             GL.BindTexture(TextureTarget.Texture2D, textureId); // бинд текстуры 
@@ -35,7 +35,7 @@ namespace Ballon_Battle
 
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMinFilter.Linear);
 
-            return textureId;
+            return new Texture(textureId, bitmap.Width, bitmap.Height);
 
         }
     }
