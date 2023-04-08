@@ -20,6 +20,7 @@ namespace Ballon_Battle
         {
             InitializeComponent();
             glControl.Visible = false;
+            CenterToScreen();
         }
 
         private void startButton_Click(object sender, EventArgs e)
@@ -40,19 +41,33 @@ namespace Ballon_Battle
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
+            Draw();
+
             glControl.SwapBuffers();
+        }
+
+        private void Draw()
+        {
+
+        }
+
+        private void Update()
+        {
+
         }
 
         private void glTimer_Tick(object sender, EventArgs e) // для обновления картинки каждые 16 миллисекунд (чуть больше 60 фреймов в секунде)
         {
-            glControl.Invalidate();
 
-            
+            Update();
+
+            glControl.Invalidate();
         }
 
         private void GameForm_Resize(object sender, EventArgs e)
         {
             glControl.Size = this.Size;
+
         }
     }
 
