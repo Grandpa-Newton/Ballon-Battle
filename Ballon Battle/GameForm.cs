@@ -9,18 +9,21 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
 namespace Ballon_Battle
 {
     public partial class GameForm : Form
     {
+        int backgroundTexture;
         public GameForm()
         {
             InitializeComponent();
-            glControl.Visible = false;
             CenterToScreen();
+            glControl.Visible = false;
+            
         }
 
         private void startButton_Click(object sender, EventArgs e)
@@ -33,13 +36,40 @@ namespace Ballon_Battle
         {
             glControl.MakeCurrent();
 
+            GL.Enable(EnableCap.Texture2D);
+           
             GL.Viewport(0, 0, glControl.Width, glControl.Height);
-            GL.ClearColor(new Color4(0.631f, 0.6f, 0.227f, 1f));
+
+        //    GL.ClearColor(new Color4(0.631f, 0.6f, 0.227f, 1f));
+
+            backgroundTexture = TextureDrawer.LoadTexure("clouds.jpg");
         }
         
         private void glControl_Paint(object sender, PaintEventArgs e)
         {
-            GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
+
+            // Добавление фона на картинку
+
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
+            GL.Ortho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadIdentity();
+
+            GL.Enable(EnableCap.Texture2D);
+            GL.BindTexture(TextureTarget.Texture2D, backgroundTexture);
+
+            GL.Begin(PrimitiveType.Quads);
+
+            GL.TexCoord2(0.0f, 1.0f); GL.Vertex2(-1.0f, -1.0f);
+            GL.TexCoord2(1.0f, 1.0f); GL.Vertex2(1.0f, -1.0f);
+            GL.TexCoord2(1.0f, 0.0f); GL.Vertex2(1.0f, 1.0f);
+            GL.TexCoord2(0.0f, 0.0f); GL.Vertex2(-1.0f, 1.0f);
+
+            GL.End();
+
+            //   GL.ClearTexImage(backgroundTexture, 1, PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.);
 
             Draw();
 
@@ -51,7 +81,7 @@ namespace Ballon_Battle
 
         }
 
-        private void Update()
+        private void UpdateGame()
         {
 
         }
@@ -66,7 +96,9 @@ namespace Ballon_Battle
 
         private void GameForm_Resize(object sender, EventArgs e)
         {
+            GL.Viewport(0, 0, Width, Height);
             glControl.Size = this.Size;
+
 
         }
     }
