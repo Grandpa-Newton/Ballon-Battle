@@ -93,7 +93,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\testBalloon.png">
+    <None Include="Assets\testBalloon_2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -102,6 +102,11 @@
       <Project>{16d2cbd1-221e-4207-898c-e6701fd6d650}</Project>
       <Name>GameLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\testBalloon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

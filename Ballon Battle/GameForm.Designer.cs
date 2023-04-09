@@ -56,10 +56,10 @@
             this.glControl.Load += new System.EventHandler(this.glControl_Load);
             this.glControl.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl_Paint);
             this.glControl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.glControl_KeyDown);
+            this.glControl.KeyUp += new System.Windows.Forms.KeyEventHandler(this.glControl_KeyUp);
             // 
             // glTimer
             // 
-            this.glTimer.Enabled = false;
             this.glTimer.Interval = 16;
             this.glTimer.Tick += new System.EventHandler(this.glTimer_Tick);
             // 
@@ -74,8 +74,6 @@
             this.Text = "GameForm";
             this.Resize += new System.EventHandler(this.GameForm_Resize);
             this.ResumeLayout(false);
-
-            this.glControl.Size = this.Size;
 
         }
 

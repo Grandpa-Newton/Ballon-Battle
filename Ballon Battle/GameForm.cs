@@ -13,6 +13,7 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using GameLibrary;
+using System.Diagnostics;
 
 namespace Ballon_Battle
 {
@@ -20,14 +21,21 @@ namespace Ballon_Battle
     {
         Texture backgroundTexture;
         Balloon firstPlayer;
+        Balloon secondPlayer;
+
+        bool isWdown, isSdown, isIdown, isKdown;
         
         public GameForm()
         {
             
             InitializeComponent();
             CenterToScreen();
+            glControl.Size = this.Size;
             glControl.Visible = false;
-            
+            isWdown = false;
+            isSdown = false;
+            isKdown = false;
+            isKdown = false;
         }
 
         private void startButton_Click(object sender, EventArgs e)
@@ -54,38 +62,15 @@ namespace Ballon_Battle
             Texture firstPlayerTexture = TextureDrawer.LoadTexure("testBalloon.png");
 
             firstPlayer = new Balloon(new Vector2(-0.5f, 0.0f), firstPlayerTexture);
+
+            Texture secondPlayerTexture = TextureDrawer.LoadTexure("testBalloon_2.png");
+
+            secondPlayer = new Balloon(new Vector2(0.5f, 0.0f), secondPlayerTexture);
         }
         
         private void glControl_Paint(object sender, PaintEventArgs e)
         {
             GL.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
-
-            // Добавление фона на картинку
-
-            
-
-            //GL.Enable(EnableCap.Texture2D);
-            //GL.BindTexture(TextureTarget.Texture2D, backgroundTexture.Id);
-
-            //GL.Begin(PrimitiveType.Quads);
-
-            //GL.TexCoord2(0.0f, 1.0f);
-            //GL.Vertex2(-1.0f, -1.0f);
-            //GL.TexCoord2(1.0f, 1.0f);
-            //GL.Vertex2(1.0f, -1.0f);
-            //GL.TexCoord2(1.0f, 0.0f);
-            //GL.Vertex2(1.0f, 1.0f);
-            //GL.TexCoord2(0.0f, 0.0f);
-            //GL.Vertex2(-1.0f, 1.0f);
-
-            // -1 -1
-            // 1 -1
-            // 1 1
-            // -1 1
-
-            //   GL.ClearTexImage(backgroundTexture, 1, PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.);
-
-            //GL.End();
 
             Draw();
 
@@ -109,12 +94,28 @@ namespace Ballon_Battle
             });
 
             firstPlayer.Draw();
+
+            secondPlayer.Draw();
         }
 
         private void UpdateGame()
         {
+            if (isWdown)
+                firstPlayer.Update(new Vector2(0f, 0.01f));
+            if (isSdown)
+                firstPlayer.Update(new Vector2(0f, -0.01f));
+            if (isIdown)
+                secondPlayer.Update(new Vector2(0f, 0.01f));
+            if(isKdown)
+                secondPlayer.Update(new Vector2(0f, -0.01f));
+
+
+            firstPlayer.Update();
+            secondPlayer.Update();
             //firstPlayer.Update();
         }
+
+        
 
         private void glTimer_Tick(object sender, EventArgs e) // для обновления картинки каждые 16 миллисекунд (чуть больше 60 фреймов в секунде)
         {
@@ -131,10 +132,65 @@ namespace Ballon_Battle
             GL.Viewport(0, 0, Width, Height);
         }
 
+        private void glControl_KeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.W:
+                    {
+                        isWdown = false;
+                    //    firstPlayer.Update(new Vector2(0f, 0.01f));
+                    //    Debug.WriteLine("W");
+                        break;
+                    }
+                case Keys.S:
+                    {
+                        isSdown = false;
+                   //     firstPlayer.Update(new Vector2(0f, -0.01f));
+                        break;
+                    }
+                case Keys.I:
+                    {
+                        isIdown = false;
+                   //     secondPlayer.Update(new Vector2(0f, 0.01f));
+                   //     Debug.WriteLine("UP ARROW");
+                        break;
+                    }
+                case Keys.K:
+                    {
+                        isKdown = false;
+                     //   secondPlayer.Update(new Vector2(0f, -0.01f));
+                        break;
+                    }
+            }
+        }
         private void glControl_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.W)
-                firstPlayer.PositionCenter += new Vector2(0.01f, 0.01f);
+            switch (e.KeyCode)
+            {
+                case Keys.W:
+                    {
+                        isWdown = true;
+                        break;
+                    }
+                case Keys.S:
+                    {
+                        isSdown = true;
+                        break;
+                    }
+                case Keys.I:
+                    {
+                        isIdown = true;
+                        break;
+                    }
+                case Keys.K:
+                    {
+                        isKdown = true;
+                        break;
+                    }
+            }
+            //if (e.KeyCode == Keys.W)
+            //    firstPlayer.PositionCenter += new Vector2(0.01f, 0.01f);
         }
     }
 
