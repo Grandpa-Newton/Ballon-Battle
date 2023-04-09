@@ -51,7 +51,7 @@ namespace GameLibrary
 
         public void Update() // обновление падения вниз
         {
-            isMoving = true;
+            isMoving = true; // !!! возможно убрать!
             PositionCenter += Speed;
             isMoving = false;
         }
@@ -60,17 +60,36 @@ namespace GameLibrary
         {
         }
 
+        public RectangleF GetCollider()
+        {
+            Vector2[] colliderPosition = getPosition(); // добавить более точную коллизию!
+
+            float colliderWidth = (colliderPosition[2].X - colliderPosition[3].X)/2.0f;
+            float colliderHeight = (colliderPosition[3].Y - colliderPosition[0].Y)/2.0f;
+
+            float[] convertedLeftTop = CoordinatesConverter.Convert(colliderPosition[3].X, colliderPosition[3].Y);
+
+            RectangleF collider = new RectangleF(convertedLeftTop[0], convertedLeftTop[1], colliderWidth, colliderHeight);
+
+            return collider;
+        }
+
         public void Draw()
         {
             ObjectsDrawing.Start();
 
-            ObjectsDrawing.Draw(BalloonSprite, new Vector2[4]
+            ObjectsDrawing.Draw(BalloonSprite, getPosition());
+        }
+
+        private Vector2[] getPosition()
+        {
+            return new Vector2[4]
             {
                 PositionCenter + new Vector2(-0.1f, -0.2f),
                 PositionCenter + new Vector2(0.1f, -0.2f),
                 PositionCenter + new Vector2(0.1f, 0.2f),
                 PositionCenter + new Vector2(-0.1f, 0.2f),
-            });
+            };
         }
     }
 }

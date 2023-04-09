@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Graphics.OpenGL;
+//using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using GameLibrary;
 using System.Diagnostics;
@@ -20,8 +20,10 @@ namespace Ballon_Battle
     public partial class GameForm : Form
     {
         Texture backgroundTexture;
+        Texture landTexture;
         Balloon firstPlayer;
         Balloon secondPlayer;
+        RectangleF landCollider;
 
         bool isWdown, isSdown, isIdown, isKdown;
         
@@ -50,7 +52,7 @@ namespace Ballon_Battle
             glControl.MakeCurrent();
 
             GL.Enable(EnableCap.Texture2D);
-            GL.Enable(EnableCap.Blend);
+            GL.Enable(EnableCap.Blend); // для отключения фона у ассетов
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
            
             GL.Viewport(0, 0, glControl.Width, glControl.Height);
@@ -61,11 +63,14 @@ namespace Ballon_Battle
 
             Texture firstPlayerTexture = TextureDrawer.LoadTexure("testBalloon.png");
 
-            firstPlayer = new Balloon(new Vector2(-0.5f, 0.0f), firstPlayerTexture);
+            firstPlayer = new Balloon(new Vector2(-0.7f, 0.0f), firstPlayerTexture);
 
             Texture secondPlayerTexture = TextureDrawer.LoadTexure("testBalloon_2.png");
 
-            secondPlayer = new Balloon(new Vector2(0.5f, 0.0f), secondPlayerTexture);
+            secondPlayer = new Balloon(new Vector2(0.7f, 0.0f), secondPlayerTexture);
+
+            landTexture = TextureDrawer.LoadTexure("landtexture.jpg");
+
         }
         
         private void glControl_Paint(object sender, PaintEventArgs e)
@@ -93,6 +98,18 @@ namespace Ballon_Battle
                 new Vector2(-1.0f, 1.0f),
             });
 
+            ObjectsDrawing.Start();
+
+            ObjectsDrawing.Draw(landTexture, new Vector2[4]
+            {
+                new Vector2(-1.0f, -1.0f),
+                new Vector2(1.0f, -1.0f),
+                new Vector2(1.0f, -0.75f),
+                new Vector2(-1.0f, -0.75f),
+            });
+
+            landCollider = new RectangleF(0.0f, 0.875f, 1.0f, 0.125f);
+
             firstPlayer.Draw();
 
             secondPlayer.Draw();
@@ -108,6 +125,21 @@ namespace Ballon_Battle
                 secondPlayer.Update(new Vector2(0f, 0.01f));
             if(isKdown)
                 secondPlayer.Update(new Vector2(0f, -0.01f));
+
+            if (landCollider.IntersectsWith(firstPlayer.GetCollider()))
+            {
+                glTimer.Stop();
+                MessageBox.Show("GAME IS OVER! FIRST PLAYER IS LOSED.");
+                
+                this.Close();
+            }
+            if (landCollider.IntersectsWith(secondPlayer.GetCollider()))
+            {
+                glTimer.Stop();
+                MessageBox.Show("GAME IS OVER! SECOND PLAYER IS LOSED.");
+                
+                this.Close();
+            }
 
 
             firstPlayer.Update();
@@ -189,8 +221,6 @@ namespace Ballon_Battle
                         break;
                     }
             }
-            //if (e.KeyCode == Keys.W)
-            //    firstPlayer.PositionCenter += new Vector2(0.01f, 0.01f);
         }
     }
 
