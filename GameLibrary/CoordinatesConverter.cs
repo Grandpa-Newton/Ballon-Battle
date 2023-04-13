@@ -15,7 +15,7 @@ namespace GameLibrary
 
             float[] resultPoint = new float[2];
 
-            resultPoint[0] = centralPointX - pointX/2.0f;
+            resultPoint[0] = centralPointX + pointX/2.0f;
             resultPoint[1] = centralPointY - pointY/2.0f;
 
             return resultPoint;

@@ -62,12 +62,11 @@ namespace AmmoLibrary
         {
             Vector2[] colliderPosition = getPosition(); // добавить более точную коллизию!
 
-            float inaccuracy = 0.12f; // для более корректного отображения коллизии
 
             float colliderWidth = (colliderPosition[2].X - colliderPosition[3].X) / 2.0f;
             float colliderHeight = (colliderPosition[3].Y - colliderPosition[0].Y) / 2.0f;
 
-            float[] convertedLeftTop = CoordinatesConverter.Convert(colliderPosition[3].X - inaccuracy, colliderPosition[3].Y);
+            float[] convertedLeftTop = CoordinatesConverter.Convert(colliderPosition[3].X, colliderPosition[3].Y);
 
             RectangleF collider = new RectangleF(convertedLeftTop[0], convertedLeftTop[1], colliderWidth, colliderHeight);
 

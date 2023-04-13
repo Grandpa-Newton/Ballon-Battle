@@ -74,7 +74,7 @@ namespace Ballon_Battle
 
             secondPlayer = new Balloon(new Vector2(0.7f, 0.0f), secondPlayerTexture);
 
-            landTexture = TextureDrawer.LoadTexure("landtexture.jpg");
+            landTexture = TextureDrawer.LoadTexure("grasstexture_new.png");
 
             firstAmmos = new List<Ammo>();
 
