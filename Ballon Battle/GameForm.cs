@@ -26,6 +26,7 @@ namespace Ballon_Battle
         Balloon firstPlayer;
         Balloon secondPlayer;
         RectangleF landCollider;
+        RectangleF screenCollider; // границы экрана
         List<Ammo> firstAmmos; // текущий снаряд первого игрока
         List<Ammo> secondAmmos; // текущий снаряд второго игрока
 
@@ -78,6 +79,8 @@ namespace Ballon_Battle
             firstAmmos = new List<Ammo>();
 
             secondAmmos = new List<Ammo>();
+
+            screenCollider = new RectangleF(0.0f, 0.125f, 1.0f, 0.875f);
         }
         
         private void glControl_Paint(object sender, PaintEventArgs e)
@@ -130,11 +133,11 @@ namespace Ballon_Battle
 
         private void UpdateGame()
         {
-            if (isWdown)
+            if (isWdown && firstPlayer.GetCollider().IntersectsWith(screenCollider)) // ?
                 firstPlayer.Update(new Vector2(0f, 0.01f));
             if (isSdown)
                 firstPlayer.Update(new Vector2(0f, -0.01f));
-            if (isIdown)
+            if (isIdown && secondPlayer.GetCollider().IntersectsWith(screenCollider))
                 secondPlayer.Update(new Vector2(0f, 0.01f));
             if(isKdown)
                 secondPlayer.Update(new Vector2(0f, -0.01f));
@@ -165,7 +168,10 @@ namespace Ballon_Battle
                     firstAmmos.RemoveAt(i);
                     secondPlayer.GetDamage();
                 }
-                    
+                else if (!firstAmmos[i].GetCollider().IntersectsWith(screenCollider))
+                {
+                    firstAmmos.RemoveAt(i);
+                }
             }
 
             for (int i = 0; i < secondAmmos.Count; i++)
@@ -176,7 +182,10 @@ namespace Ballon_Battle
                     secondAmmos.RemoveAt(i);
                     firstPlayer.GetDamage();
                 }
-                    
+                else if(!secondAmmos[i].GetCollider().IntersectsWith(screenCollider))
+                {
+                    secondAmmos.RemoveAt(i);
+                }
             }
 
             firstPlayer.Update();
