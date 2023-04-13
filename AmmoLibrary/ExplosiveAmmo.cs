@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace AmmoLibrary
 {
-    internal class ExplosiveAmmo : Ammo // фугасный
+    public class ExplosiveAmmo : Ammo // фугасный
     {
+
+        public override void Draw()
+        {
+            throw new NotImplementedException();
+        }
+
         public override int GetDistance()
         {
             return 100;
@@ -18,9 +25,17 @@ namespace AmmoLibrary
             return 50;
         }
 
-        public override double GetSpeed()
+        public override Vector2 GetSpeed()
         {
-            return 5.0;
+            return new Vector2(0.005f, 0.0f);
+        }
+
+        public override void Update()
+        {
+            if (isLeft) // для проверки, в какую сторону летит снаряд
+                PositionCenter -= GetSpeed();
+            else
+                PositionCenter += GetSpeed();
         }
     }
 }

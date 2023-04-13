@@ -14,6 +14,8 @@ namespace Ballon_Battle
     {
         public static void Draw(Texture texture, Vector2[] position)
         {
+            Start();
+
             Vector2[] vertices = new Vector2[4] // вершины спрайта
             {
                 new Vector2(0.0f,1.0f), // левый низ
@@ -42,7 +44,7 @@ namespace Ballon_Battle
             GL.End();
         }
 
-        public static void Start()
+        private static void Start()
         {
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();

@@ -14,6 +14,7 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using GameLibrary;
 using System.Diagnostics;
+using AmmoLibrary;
 
 namespace Ballon_Battle
 {
@@ -21,11 +22,14 @@ namespace Ballon_Battle
     {
         Texture backgroundTexture;
         Texture landTexture;
+        Texture bulletTexture;
         Balloon firstPlayer;
         Balloon secondPlayer;
         RectangleF landCollider;
+        List<Ammo> firstAmmos; // текущий снаряд первого игрока
+        List<Ammo> secondAmmos; // текущий снаряд второго игрока
 
-        bool isWdown, isSdown, isIdown, isKdown;
+        bool isWdown, isSdown, isIdown, isKdown, isJdown, isDdown;
         
         public GameForm()
         {
@@ -71,6 +75,9 @@ namespace Ballon_Battle
 
             landTexture = TextureDrawer.LoadTexure("landtexture.jpg");
 
+            firstAmmos = new List<Ammo>();
+
+            secondAmmos = new List<Ammo>();
         }
         
         private void glControl_Paint(object sender, PaintEventArgs e)
@@ -84,7 +91,6 @@ namespace Ballon_Battle
 
         private void Draw()
         {
-            ObjectsDrawing.Start();
 
             //    ObjectsDrawing.Start(this.Width, this.Height);
 
@@ -97,8 +103,6 @@ namespace Ballon_Battle
                 new Vector2(1.0f, 1.0f),
                 new Vector2(-1.0f, 1.0f),
             });
-
-            ObjectsDrawing.Start();
 
             ObjectsDrawing.Draw(landTexture, new Vector2[4]
             {
@@ -113,6 +117,15 @@ namespace Ballon_Battle
             firstPlayer.Draw();
 
             secondPlayer.Draw();
+
+            foreach (var item in firstAmmos)
+            {
+                item.Draw();
+            }
+            foreach (var item in secondAmmos)
+            {
+                item.Draw();
+            }
         }
 
         private void UpdateGame()
@@ -125,6 +138,10 @@ namespace Ballon_Battle
                 secondPlayer.Update(new Vector2(0f, 0.01f));
             if(isKdown)
                 secondPlayer.Update(new Vector2(0f, -0.01f));
+            if(isJdown)
+            {
+                
+            }
 
             if (landCollider.IntersectsWith(firstPlayer.GetCollider()))
             {
@@ -137,11 +154,17 @@ namespace Ballon_Battle
             {
                 glTimer.Stop();
                 MessageBox.Show("GAME IS OVER! SECOND PLAYER IS LOSED.");
-                
                 this.Close();
             }
 
-
+            foreach (var item in firstAmmos)
+            {
+                item.Update();
+            }
+            foreach(var item in secondAmmos)
+            {
+                item.Update();
+            }
             firstPlayer.Update();
             secondPlayer.Update();
             //firstPlayer.Update();
@@ -194,6 +217,17 @@ namespace Ballon_Battle
                      //   secondPlayer.Update(new Vector2(0f, -0.01f));
                         break;
                     }
+                case Keys.J:
+                    {
+                        secondAmmos.Add(new SupersonicAmmo(secondPlayer.PositionCenter, true));
+                        isJdown = false;
+                        break;
+                    }
+                case Keys.D:
+                    {
+                        isDdown = false;
+                        break;
+                    }
             }
         }
         private void glControl_KeyDown(object sender, KeyEventArgs e)
@@ -218,6 +252,17 @@ namespace Ballon_Battle
                 case Keys.K:
                     {
                         isKdown = true;
+                        break;
+                    }
+                case Keys.J:
+                    {
+                        
+                        isJdown = true;
+                        break;
+                    }
+                case Keys.D:
+                    {
+                        isDdown = true;
                         break;
                     }
             }

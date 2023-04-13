@@ -76,8 +76,6 @@ namespace GameLibrary
 
         public void Draw()
         {
-            ObjectsDrawing.Start();
-
             ObjectsDrawing.Draw(BalloonSprite, getPosition());
         }
 

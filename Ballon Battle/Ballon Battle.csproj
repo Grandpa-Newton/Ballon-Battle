@@ -93,6 +93,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AmmoLibrary\AmmoLibrary.csproj">
+      <Project>{38ef77ca-88fd-41c6-bb18-83251b56ca7b}</Project>
+      <Name>AmmoLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GameLibrary\GameLibrary.csproj">
       <Project>{16d2cbd1-221e-4207-898c-e6701fd6d650}</Project>
       <Name>GameLibrary</Name>
@@ -110,6 +114,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\landtexture.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\supersonicAmmo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

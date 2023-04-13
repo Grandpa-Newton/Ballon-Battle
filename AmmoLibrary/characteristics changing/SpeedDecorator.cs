@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -13,6 +14,11 @@ namespace AmmoLibrary.characteristics_changing
         {
         }
 
+        public override void Draw()
+        {
+            ammo.Draw();
+        }
+
         public override int GetDistance()
         {
             return ammo.GetDistance();
@@ -23,9 +29,17 @@ namespace AmmoLibrary.characteristics_changing
             return ammo.GetRadius();
         }
 
-        public override double GetSpeed()
+        public override Vector2 GetSpeed()
         {
-            return ammo.GetSpeed() * 1.5;
+            Vector2 newSpeed = ammo.GetSpeed();
+            newSpeed.X *= 1.5f;
+
+            return newSpeed;
+        }
+
+        public override void Update()
+        {
+            ammo.Update();
         }
     }
 }
