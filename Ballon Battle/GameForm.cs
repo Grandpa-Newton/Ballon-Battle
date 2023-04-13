@@ -138,33 +138,47 @@ namespace Ballon_Battle
                 secondPlayer.Update(new Vector2(0f, 0.01f));
             if(isKdown)
                 secondPlayer.Update(new Vector2(0f, -0.01f));
-            if(isJdown)
+           /* if(isJdown)
             {
                 
-            }
+            }*/
 
-            if (landCollider.IntersectsWith(firstPlayer.GetCollider()))
+            if (landCollider.IntersectsWith(firstPlayer.GetCollider()) || !firstPlayer.CheckAlive())
             {
                 glTimer.Stop();
                 MessageBox.Show("GAME IS OVER! FIRST PLAYER IS LOSED.");
                 
                 this.Close();
             }
-            if (landCollider.IntersectsWith(secondPlayer.GetCollider()))
+            if (landCollider.IntersectsWith(secondPlayer.GetCollider()) || !secondPlayer.CheckAlive())
             {
                 glTimer.Stop();
                 MessageBox.Show("GAME IS OVER! SECOND PLAYER IS LOSED.");
                 this.Close();
             }
 
-            foreach (var item in firstAmmos)
+            for (int i=0; i < firstAmmos.Count; i++)
             {
-                item.Update();
+                firstAmmos[i].Update();
+                if (secondPlayer.GetCollider().IntersectsWith(firstAmmos[i].GetCollider()))
+                {
+                    firstAmmos.RemoveAt(i);
+                    secondPlayer.GetDamage();
+                }
+                    
             }
-            foreach(var item in secondAmmos)
+
+            for (int i = 0; i < secondAmmos.Count; i++)
             {
-                item.Update();
+                secondAmmos[i].Update();
+                if (firstPlayer.GetCollider().IntersectsWith(secondAmmos[i].GetCollider()))
+                {
+                    secondAmmos.RemoveAt(i);
+                    firstPlayer.GetDamage();
+                }
+                    
             }
+
             firstPlayer.Update();
             secondPlayer.Update();
             //firstPlayer.Update();
@@ -219,12 +233,13 @@ namespace Ballon_Battle
                     }
                 case Keys.J:
                     {
-                        secondAmmos.Add(new SupersonicAmmo(secondPlayer.PositionCenter, true));
+                        secondAmmos.Add(new SupersonicAmmo(secondPlayer.PositionCenter, true, TextureDrawer.LoadTexure("supersonicAmmo.png")));
                         isJdown = false;
                         break;
                     }
                 case Keys.D:
                     {
+                        firstAmmos.Add(new SupersonicAmmo(firstPlayer.PositionCenter, false, TextureDrawer.LoadTexure("supersonicAmmo_2.png")));
                         isDdown = false;
                         break;
                     }

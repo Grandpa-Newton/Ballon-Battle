@@ -29,7 +29,7 @@ namespace GameLibrary
         }
         public int Armour { get; set; } = 0;
         public int Health { get; set; } = 100;
-        public int Fuel { get; set; } = 5000; // по таймеру отнимается каждый кадр
+        public int Fuel { get; set; } = 700; // по таймеру отнимается каждый кадр
         public bool CheckAlive()
         {
             if (Health <= 0)
@@ -41,7 +41,7 @@ namespace GameLibrary
 
         public void Update(Vector2 movement)
         {
-            if (isMoving)
+            if (isMoving || Fuel <= 0)
                 return;
             PositionCenter += movement;
             Fuel--;
@@ -54,6 +54,11 @@ namespace GameLibrary
             isMoving = true; // !!! возможно убрать!
             PositionCenter += Speed;
             isMoving = false;
+        }
+
+        public void GetDamage() // получение дамага после удара
+        {
+            Health -= 15;
         }
 
         public void Input()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,9 +13,9 @@ namespace AmmoLibrary
 {
     public class SupersonicAmmo : Ammo // сверхзвуковой
     {
-        public SupersonicAmmo(Vector2 position, bool isLeft)
+        public SupersonicAmmo(Vector2 position, bool isLeft, Texture sprite)
         {
-            this.sprite = TextureDrawer.LoadTexure("supersonicAmmo.png");
+            this.sprite = sprite;
             this.PositionCenter = position;
             this.isLeft = isLeft;
         }
@@ -27,10 +28,10 @@ namespace AmmoLibrary
         {
             return new Vector2[4]
             {
-                PositionCenter + new Vector2(-0.05f, -0.1f),
-                PositionCenter + new Vector2(0.05f, -0.1f),
-                PositionCenter + new Vector2(0.05f, 0.1f),
-                PositionCenter + new Vector2(-0.05f, 0.1f),
+                PositionCenter + new Vector2(-0.03f, -0.0125f),
+                PositionCenter + new Vector2(0.03f, -0.0125f),
+                PositionCenter + new Vector2(0.03f, 0.0125f),
+                PositionCenter + new Vector2(-0.03f, 0.0125f),
             };
         }
 
@@ -55,6 +56,22 @@ namespace AmmoLibrary
                 PositionCenter -= GetSpeed();
             else
                 PositionCenter += GetSpeed();
+        }
+
+        public override RectangleF GetCollider()
+        {
+            Vector2[] colliderPosition = getPosition(); // добавить более точную коллизию!
+
+            float inaccuracy = 0.12f; // для более корректного отображения коллизии
+
+            float colliderWidth = (colliderPosition[2].X - colliderPosition[3].X) / 2.0f;
+            float colliderHeight = (colliderPosition[3].Y - colliderPosition[0].Y) / 2.0f;
+
+            float[] convertedLeftTop = CoordinatesConverter.Convert(colliderPosition[3].X - inaccuracy, colliderPosition[3].Y);
+
+            RectangleF collider = new RectangleF(convertedLeftTop[0], convertedLeftTop[1], colliderWidth, colliderHeight);
+
+            return collider;
         }
     }
 }

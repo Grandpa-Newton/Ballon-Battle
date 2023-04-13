@@ -1,6 +1,7 @@
 ﻿using OpenTK;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -17,6 +18,11 @@ namespace AmmoLibrary.characteristics_changing
         public override void Draw()
         {
             ammo.Draw();
+        }
+
+        public override RectangleF GetCollider()
+        {
+            return ammo.GetCollider();
         }
 
         public override int GetDistance()
