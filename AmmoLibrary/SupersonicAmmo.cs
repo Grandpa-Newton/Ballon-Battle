@@ -47,7 +47,7 @@ namespace AmmoLibrary
 
         public override Vector2 GetSpeed()
         {
-            return new Vector2(0.01f, 0.0f);
+            return new Vector2(0.025f, 0.0f);
         }
 
         public override void Update()

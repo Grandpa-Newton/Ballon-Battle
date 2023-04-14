@@ -173,6 +173,7 @@ namespace Ballon_Battle
                     firstAmmos.RemoveAt(i);
                 }
             }
+            Debug.WriteLine($"first Ammos: {firstAmmos.Count}");
 
             for (int i = 0; i < secondAmmos.Count; i++)
             {
@@ -187,6 +188,9 @@ namespace Ballon_Battle
                     secondAmmos.RemoveAt(i);
                 }
             }
+
+
+            Debug.WriteLine($"second Ammos: {secondAmmos.Count}");
 
             firstPlayer.Update();
             secondPlayer.Update();
