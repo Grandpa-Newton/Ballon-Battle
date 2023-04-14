@@ -28,7 +28,8 @@ namespace Ballon_Battle
         RectangleF landCollider;
         RectangleF screenCollider; // границы экрана
         List<Ammo> firstAmmos; // текущий снаряд первого игрока
-        List<Ammo> secondAmmos; // текущий снаряд второго игрока
+        List<Ammo> secondAmmos; // текущий снаряд второго игрока4
+        List<Explode> explodes; // анимации взрывов
 
         bool isWdown, isSdown, isIdown, isKdown, isJdown, isDdown;
         
@@ -81,6 +82,8 @@ namespace Ballon_Battle
             secondAmmos = new List<Ammo>();
 
             screenCollider = new RectangleF(0.0f, 0.125f, 1.0f, 0.875f);
+
+            explodes = new List<Explode>();
         }
         
         private void glControl_Paint(object sender, PaintEventArgs e)
@@ -129,6 +132,19 @@ namespace Ballon_Battle
             {
                 item.Draw();
             }
+            for (int i = 0; i < explodes.Count; i++)
+            {
+                try
+                {
+                    explodes[i].Draw();
+                }
+                catch
+                {
+                    explodes.RemoveAt(i);
+                }
+
+            }
+
         }
 
         private void UpdateGame()
@@ -149,15 +165,24 @@ namespace Ballon_Battle
             if (landCollider.IntersectsWith(firstPlayer.GetCollider()) || !firstPlayer.CheckAlive())
             {
                 glTimer.Stop();
-                MessageBox.Show("GAME IS OVER! FIRST PLAYER IS LOSED.");
+                glTimer.Tick -= glTimer_Tick;
+                explodes.Add(new Explode(firstPlayer.GetPosition()));
+                glTimer.Tick += glTimer_FirstPlayerLooseTick;
+                glTimer.Start();
+                return;
+                //glTimer.Stop();
+                //MessageBox.Show("GAME IS OVER! FIRST PLAYER IS LOSED.");
                 
-                this.Close();
+                //this.Close();
             }
             if (landCollider.IntersectsWith(secondPlayer.GetCollider()) || !secondPlayer.CheckAlive())
             {
                 glTimer.Stop();
-                MessageBox.Show("GAME IS OVER! SECOND PLAYER IS LOSED.");
-                this.Close();
+                glTimer.Tick -= glTimer_Tick;
+                explodes.Add(new Explode(secondPlayer.GetPosition()));
+                glTimer.Tick += glTimer_SecondPlayerLooseTick;
+                glTimer.Start();
+                return;
             }
 
             for (int i=0; i < firstAmmos.Count; i++)
@@ -165,6 +190,7 @@ namespace Ballon_Battle
                 firstAmmos[i].Update();
                 if (secondPlayer.GetCollider().IntersectsWith(firstAmmos[i].GetCollider()))
                 {
+                    explodes.Add(new Explode(firstAmmos[i].GetPosition()));
                     firstAmmos.RemoveAt(i);
                     secondPlayer.GetDamage();
                 }
@@ -180,6 +206,7 @@ namespace Ballon_Battle
                 secondAmmos[i].Update();
                 if (firstPlayer.GetCollider().IntersectsWith(secondAmmos[i].GetCollider()))
                 {
+                    explodes.Add(new Explode(secondAmmos[i].GetPosition()));
                     secondAmmos.RemoveAt(i);
                     firstPlayer.GetDamage();
                 }
@@ -197,7 +224,56 @@ namespace Ballon_Battle
             //firstPlayer.Update();
         }
 
-        
+        private void glTimer_FirstPlayerLooseTick(object sender, EventArgs e)
+        {
+            glControl.Refresh();
+            for (int i = 0; i < explodes.Count; i++)
+            {
+                try
+                {
+                    Debug.WriteLine($"Explodes.Count = {explodes[i].Count}");
+
+                    explodes[i].Draw();
+                }
+                catch
+                {
+                    explodes.RemoveAt(i);
+                }
+
+            }
+            
+            if (explodes.Count<=0)
+            {
+                glTimer.Stop();
+                MessageBox.Show("GAME IS OVER! FIRST PLAYER IS LOSED.");
+
+                this.Close();
+            }
+        }
+
+        private void glTimer_SecondPlayerLooseTick(object sender, EventArgs e)
+        {
+            glControl.Refresh();
+            for (int i = 0; i < explodes.Count; i++)
+            {
+                try
+                {
+                    explodes[i].Draw();
+                }
+                catch
+                {
+                    explodes.RemoveAt(i);
+                }
+
+            }
+            if (explodes.Count <= 0)
+            {
+                glTimer.Stop();
+                MessageBox.Show("GAME IS OVER! SECOND PLAYER IS LOSED.");
+
+                this.Close();
+            }
+        }
 
         private void glTimer_Tick(object sender, EventArgs e) // для обновления картинки каждые 16 миллисекунд (чуть больше 60 фреймов в секунде)
         {

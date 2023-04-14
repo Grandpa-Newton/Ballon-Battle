@@ -21,10 +21,10 @@ namespace AmmoLibrary
         }
         public override void Draw()
         {
-            ObjectsDrawing.Draw(sprite, getPosition());
+            ObjectsDrawing.Draw(sprite, GetPosition());
         }
 
-        private Vector2[] getPosition()
+        public override Vector2[] GetPosition()
         {
             return new Vector2[4]
             {
@@ -60,7 +60,7 @@ namespace AmmoLibrary
 
         public override RectangleF GetCollider()
         {
-            Vector2[] colliderPosition = getPosition(); // добавить более точную коллизию!
+            Vector2[] colliderPosition = GetPosition(); // добавить более точную коллизию!
 
 
             float colliderWidth = (colliderPosition[2].X - colliderPosition[3].X) / 2.0f;

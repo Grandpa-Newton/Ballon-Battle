@@ -25,6 +25,11 @@ namespace AmmoLibrary
             return 120;
         }
 
+        public override Vector2[] GetPosition()
+        {
+            throw new NotImplementedException();
+        }
+
         public override int GetRadius()
         {
             return 45;

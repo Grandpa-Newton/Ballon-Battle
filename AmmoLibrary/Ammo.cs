@@ -21,5 +21,7 @@ namespace AmmoLibrary
         public abstract int GetRadius();
         public abstract void Draw();
         public abstract RectangleF GetCollider();
+
+        public abstract Vector2[] GetPosition();
     }
 }

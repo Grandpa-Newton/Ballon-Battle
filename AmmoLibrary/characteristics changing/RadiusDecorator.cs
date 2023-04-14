@@ -42,5 +42,10 @@ namespace AmmoLibrary.characteristics_changing
         {
             return ammo.GetCollider();
         }
+
+        public override Vector2[] GetPosition()
+        {
+            return ammo.GetPosition();
+        }
     }
 }

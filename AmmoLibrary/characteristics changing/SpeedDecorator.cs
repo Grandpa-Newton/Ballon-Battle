@@ -30,6 +30,11 @@ namespace AmmoLibrary.characteristics_changing
             return ammo.GetDistance();
         }
 
+        public override Vector2[] GetPosition()
+        {
+            return ammo.GetPosition();
+        }
+
         public override int GetRadius()
         {
             return ammo.GetRadius();

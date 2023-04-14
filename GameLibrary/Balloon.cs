@@ -67,7 +67,7 @@ namespace GameLibrary
 
         public RectangleF GetCollider()
         {
-            Vector2[] colliderPosition = getPosition(); // добавить более точную коллизию!
+            Vector2[] colliderPosition = GetPosition(); // добавить более точную коллизию!
 
             float colliderWidth = (colliderPosition[2].X - colliderPosition[3].X)/2.0f;
             float colliderHeight = (colliderPosition[3].Y - colliderPosition[0].Y)/2.0f;
@@ -81,10 +81,10 @@ namespace GameLibrary
 
         public void Draw()
         {
-            ObjectsDrawing.Draw(BalloonSprite, getPosition());
+            ObjectsDrawing.Draw(BalloonSprite, GetPosition());
         }
 
-        private Vector2[] getPosition()
+        public Vector2[] GetPosition()
         {
             return new Vector2[4]
             {
