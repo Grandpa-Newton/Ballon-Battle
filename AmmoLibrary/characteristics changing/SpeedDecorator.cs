@@ -1,4 +1,5 @@
-﻿using OpenTK;
+﻿using GraphicsOpenGL;
+using OpenTK;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,16 +14,28 @@ namespace AmmoLibrary.characteristics_changing
     {
         public SpeedDecorator(Ammo ammo) : base(ammo)
         {
+            this.sprite = ammo.sprite;
+            this.PositionCenter = ammo.PositionCenter;
         }
 
         public override void Draw()
         {
-            ammo.Draw();
+            ObjectsDrawing.Draw(sprite, GetPosition());
         }
 
         public override RectangleF GetCollider()
         {
-            return ammo.GetCollider();
+            Vector2[] colliderPosition = GetPosition(); // добавить более точную коллизию!
+
+
+            float colliderWidth = (colliderPosition[2].X - colliderPosition[3].X) / 2.0f;
+            float colliderHeight = (colliderPosition[3].Y - colliderPosition[0].Y) / 2.0f;
+
+            float[] convertedLeftTop = CoordinatesConverter.Convert(colliderPosition[3].X, colliderPosition[3].Y);
+
+            RectangleF collider = new RectangleF(convertedLeftTop[0], convertedLeftTop[1], colliderWidth, colliderHeight);
+
+            return collider;
         }
 
         public override int GetDistance()
@@ -32,7 +45,13 @@ namespace AmmoLibrary.characteristics_changing
 
         public override Vector2[] GetPosition()
         {
-            return ammo.GetPosition();
+            return new Vector2[4]
+            {
+                PositionCenter + new Vector2(-0.03f, -0.0125f),
+                PositionCenter + new Vector2(0.03f, -0.0125f),
+                PositionCenter + new Vector2(0.03f, 0.0125f),
+                PositionCenter + new Vector2(-0.03f, 0.0125f),
+            };
         }
 
         public override int GetRadius()
@@ -43,19 +62,23 @@ namespace AmmoLibrary.characteristics_changing
         public override Vector2 GetSpeed()
         {
             Vector2 newSpeed = ammo.GetSpeed();
-            newSpeed.X *= 5.5f;
+            newSpeed.X *= 1.5f;
 
             return newSpeed;
         }
 
         public override void Spawn(Vector2 position, bool isLeft)
         {
-            ammo.Spawn(position, isLeft);
+            this.PositionCenter = position;
+            this.isLeft = isLeft;
         }
 
         public override void Update()
         {
-            ammo.Update();
+            if (isLeft) // для проверки, в какую сторону летит снаряд
+                PositionCenter -= GetSpeed();
+            else
+                PositionCenter += GetSpeed();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace AmmoLibrary
 {
     public abstract class Ammo
     {
-        protected Texture sprite;
+        public Texture sprite;
         public Vector2 PositionCenter;
         protected bool isLeft;
         public abstract void Update();

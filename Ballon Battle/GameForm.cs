@@ -184,6 +184,7 @@ namespace Ballon_Battle
         {
             firstPlayerTicks++;
             secondPlayerTicks++;
+
             if (isWdown && firstPlayer.GetCollider().IntersectsWith(screenCollider)) // ?
                 firstPlayer.Update(new Vector2(0f, 0.01f));
             if (isSdown)
@@ -192,16 +193,16 @@ namespace Ballon_Battle
                 secondPlayer.Update(new Vector2(0f, 0.01f));
             if(isKdown)
                 secondPlayer.Update(new Vector2(0f, -0.01f));
-            if(isJdown && firstPlayerTicks>=50)
-            {
-                firstPlayerTicks = 0;
-                secondAmmos.Add(secondPlayer.GetCurrentAmmo(true));
-                Debug.WriteLine($"Speed = {secondAmmos[0].GetSpeed()}");
-
-            }
-            if (isDdown && secondPlayerTicks >= 50)
+            if(isJdown && secondPlayerTicks>=50)
             {
                 secondPlayerTicks = 0;
+                secondAmmos.Add(secondPlayer.GetCurrentAmmo(true));
+                Debug.WriteLine($"Speed = {secondAmmos[secondAmmos.Count-1].GetSpeed()}");
+
+            }
+            if (isDdown && firstPlayerTicks >= 50)
+            {
+                firstPlayerTicks = 0;
                 firstAmmos.Add(firstPlayer.GetCurrentAmmo(false));
 
             }
@@ -437,7 +438,7 @@ namespace Ballon_Battle
                 prizePozitionX = 1.05f;
             }
 
-            float prizePozitionY = (float)(random.Next((int)(-0.6f * Height), (int)(0.7f * Height))) / (float)Height; // спавн в пределах экрана от 10% сверху и 30% снизу
+            float prizePozitionY = (float)(random.Next((int)(-0.6f * Height), (int)(0.7f * Height))) / (float)Height; // спавн в пределах экрана (-0.6;0.7)
 
             int prizeType = random.Next(0, 4);
 
