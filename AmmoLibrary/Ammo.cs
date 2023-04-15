@@ -14,7 +14,7 @@ namespace AmmoLibrary
     {
         public Texture sprite;
         public Vector2 PositionCenter;
-        protected bool isLeft;
+        public bool isLeft;
 
         public Vector2 Speed { get; set; }
 

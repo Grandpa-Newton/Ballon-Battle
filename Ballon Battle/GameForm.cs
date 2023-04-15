@@ -94,7 +94,7 @@ namespace Ballon_Battle
 
             secondAmmos = new List<Ammo>();
 
-            screenCollider = new RectangleF(0.0f, 0.125f, 1.0f, 0.875f);
+            screenCollider = new RectangleF(0.0f, 0.05f, 1.0f, 0.875f);
 
             explodes = new List<Explode>();
 
@@ -196,14 +196,17 @@ namespace Ballon_Battle
             if(isJdown && secondPlayerTicks>=50)
             {
                 secondPlayerTicks = 0;
-                secondAmmos.Add(secondPlayer.GetCurrentAmmo(true));
-                Debug.WriteLine($"Speed = {secondAmmos[secondAmmos.Count-1].GetSpeed()}");
+                Ammo newAmmo = secondPlayer.GetCurrentAmmo(true);
+                secondAmmos.Add(newAmmo);
+                //secondAmmos.Add(secondPlayer.GetCurrentAmmo(true));
+                Debug.WriteLine($"Speed = {secondAmmos[secondAmmos.Count-1].Speed}");
 
             }
             if (isDdown && firstPlayerTicks >= 50)
             {
                 firstPlayerTicks = 0;
-                firstAmmos.Add(firstPlayer.GetCurrentAmmo(false));
+                Ammo newAmmo = firstPlayer.GetCurrentAmmo(false);
+                firstAmmos.Add(newAmmo);
 
             }
 
@@ -252,6 +255,7 @@ namespace Ballon_Battle
 
             for (int i = 0; i < secondAmmos.Count; i++)
             {
+                int thisCount = secondAmmos.Count;
                 secondAmmos[i].Update();
                 if (firstPlayer.GetCollider().IntersectsWith(secondAmmos[i].GetCollider()))
                 {
@@ -259,10 +263,12 @@ namespace Ballon_Battle
                     secondAmmos.RemoveAt(i);
                     firstPlayer.GetDamage();
                 }
-                else if(!secondAmmos[i].GetCollider().IntersectsWith(screenCollider)) // ВЫХОД ЗА РАМКИ МАССИВА
+                else if(!(secondAmmos[i].GetCollider().IntersectsWith(screenCollider))) // ВЫХОД ЗА РАМКИ МАССИВА
                 {
                     secondAmmos.RemoveAt(i);
                 }
+                if (thisCount != secondAmmos.Count)
+                    i--;
             }
             
             if(currentPrize!=null)

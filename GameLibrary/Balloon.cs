@@ -150,7 +150,8 @@ namespace GameLibrary
         public Ammo GetCurrentAmmo(bool isLeft)
         {
             ammos[currentAmmo].Spawn(PositionCenter, isLeft);
-            return ammos[currentAmmo];
+            SupersonicAmmo newAmmo = new SupersonicAmmo(ammos[currentAmmo]);
+            return newAmmo;
         }
 
         public void ChangeAmmoCharesterictics(int decoratorType)

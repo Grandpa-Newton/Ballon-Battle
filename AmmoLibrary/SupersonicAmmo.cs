@@ -29,6 +29,18 @@ namespace AmmoLibrary
             this.Radius = 30;
             this.Speed = new Vector2(0.025f, 0.0f);
         }
+
+        public SupersonicAmmo(Ammo clone) // для копирования объектов, а не ссылок
+        {
+            this.sprite = clone.sprite;
+            PositionCenter = clone.PositionCenter;
+            this.isLeft = clone.isLeft;
+            Speed = clone.Speed;
+            Distance = clone.Distance;
+            Radius = clone.Radius;
+            Position = clone.Position;
+        }
+
         public override void Draw()
         {
             //ObjectsDrawing.Draw(sprite, GetPosition());

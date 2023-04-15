@@ -10,7 +10,7 @@ namespace AmmoLibrary
     {
         protected Ammo ammo;
 
-        public AmmoDecorator (Ammo ammo)
+        public AmmoDecorator(Ammo ammo)
         {
             this.ammo = ammo;
         }
