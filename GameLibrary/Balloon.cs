@@ -58,10 +58,53 @@ namespace GameLibrary
 
         public void GetDamage() // получение дамага после удара
         {
-            Health -= 15;
+            int damage = 15;
+            if(Armour>0)
+            {
+                if(Armour>damage)
+                {
+                    Armour -= damage;
+                }
+                else
+                {
+                    int remainder = damage - Armour; // если брони меньше, чем урона, то сначала сносятся пункты брони до нуля, после - остаток со здоровья.
+                    Health -= remainder;
+                }
+            }
+            else
+                Health -= damage;
+            if (Health < 0)
+                Health = 0;
         }
 
-        public void Input()
+        public void IncreaseHealth()
+        {
+            int extraHealth = 20;
+            Health += extraHealth;
+            if (Health > 100)
+                Health = 100;
+        }
+
+        public void IncreaseArmour()
+        {
+            int extraArmour = 20;
+            Armour += extraArmour;
+            if (Armour > 100)
+                Armour = 100;
+        }
+
+        public void IncreaseFuel()
+        {
+            int extraFuel = 200;
+            Fuel += extraFuel;
+            if (Fuel > 700)
+                Fuel = 700;
+        }
+
+
+
+        public void Input() // ??
+
         {
         }
 

@@ -17,6 +17,7 @@ using System.Diagnostics;
 using AmmoLibrary;
 using PrizesLibrary;
 using PrizesLibrary.Generators;
+using System.Reflection.Emit;
 
 namespace Ballon_Battle
 {
@@ -34,6 +35,9 @@ namespace Ballon_Battle
         List<Explode> explodes; // анимации взрывов
         Random random = new Random();
         Prize currentPrize = null;
+        System.Windows.Forms.Label firstPlayerInfo;
+        System.Windows.Forms.Label secondPlayerInfo;
+
 
         bool isWdown, isSdown, isIdown, isKdown, isJdown, isDdown;
         
@@ -89,6 +93,25 @@ namespace Ballon_Battle
             screenCollider = new RectangleF(0.0f, 0.125f, 1.0f, 0.875f);
 
             explodes = new List<Explode>();
+
+
+            firstPlayerInfo = new System.Windows.Forms.Label();
+            firstPlayerInfo.SetBounds((int)(0.1 * Width), (int)(0.05 * Height), (int)(0.2 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
+            firstPlayerInfo.Text = "Test";
+            firstPlayerInfo.ForeColor = Color.White;
+            firstPlayerInfo.Visible = true;
+            firstPlayerInfo.BackColor = Color.Black;
+            this.Controls.Add(firstPlayerInfo);
+
+            secondPlayerInfo = new System.Windows.Forms.Label();
+            secondPlayerInfo.SetBounds((int)(0.7 * Width), (int)(0.05 * Height), (int)(0.2 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
+            secondPlayerInfo.Text = "Test";
+            secondPlayerInfo.ForeColor = Color.White;
+            secondPlayerInfo.Visible = true;
+            secondPlayerInfo.BackColor = Color.Black;
+            this.Controls.Add(secondPlayerInfo);
+
+            glControl.SendToBack();
         }
         
         private void glControl_Paint(object sender, PaintEventArgs e)
@@ -224,10 +247,55 @@ namespace Ballon_Battle
             if(currentPrize!=null)
             {
                 currentPrize.Update();
-                if (!screenCollider.IntersectsWith(currentPrize.GetCollider()))
+                if (firstPlayer.GetCollider().IntersectsWith(currentPrize.GetCollider()))
+                {
+                    if (currentPrize is AmmoPrize)
+                    {
+                        currentPrize = null;
+                    }
+                    else if (currentPrize is ArmourPrize)
+                    {
+                        firstPlayer.IncreaseArmour();
+                        currentPrize = null;
+                    }
+                    else if (currentPrize is FuelPrize)
+                    {
+                        firstPlayer.IncreaseFuel();
+                        currentPrize = null;
+                    }
+                    else if (currentPrize is HealthPrize)
+                    {
+                        firstPlayer.IncreaseHealth();
+                        currentPrize = null;
+                    }
+                }
+                if (currentPrize != null && secondPlayer.GetCollider().IntersectsWith(currentPrize.GetCollider()))
+                {
+                    if (currentPrize is AmmoPrize)
+                    {
+                        currentPrize = null;
+                    }
+                    else if (currentPrize is ArmourPrize)
+                    {
+                        secondPlayer.IncreaseArmour();
+                        currentPrize = null;
+                    }
+                    else if (currentPrize is FuelPrize)
+                    {
+                        secondPlayer.IncreaseFuel();
+                        currentPrize = null;
+                    }
+                    else if (currentPrize is HealthPrize)
+                    {
+                        secondPlayer.IncreaseHealth();
+                        currentPrize = null;
+                    }
+                }
+                if (currentPrize != null && !screenCollider.IntersectsWith(currentPrize.GetCollider()))
                 {
                     currentPrize = null;
                 }
+                
             }
                 
 
@@ -235,6 +303,15 @@ namespace Ballon_Battle
             firstPlayer.Update();
             secondPlayer.Update();
             //firstPlayer.Update();
+
+
+            firstPlayerInfo.SetBounds((int)(0.1 * Width), (int)(0.05 * Height), (int)(0.23 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
+            firstPlayerInfo.Font = new Font("Arial", 0.01f * Width);
+            firstPlayerInfo.Text = $"Health = {firstPlayer.Health}, Armour = {firstPlayer.Armour}, Fuel = {firstPlayer.Fuel}";
+
+            secondPlayerInfo.SetBounds((int)(0.7 * Width), (int)(0.05 * Height), (int)(0.23 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
+            secondPlayerInfo.Font = new Font("Arial", 0.01f * Width);
+            secondPlayerInfo.Text = $"Health = {secondPlayer.Health}, Armour = {secondPlayer.Armour}, Fuel = {secondPlayer.Fuel}";
         }
 
         private void glTimer_FirstPlayerLooseTick(object sender, EventArgs e)
@@ -330,7 +407,7 @@ namespace Ballon_Battle
                 prizePozitionX = 1.05f;
             }
 
-            float prizePozitionY = (float)(random.Next((int)(0.1 * Height), (int)(0.7 * Height))) / (float)Height; // спавн в пределах экрана от 10% сверху и 30% снизу
+            float prizePozitionY = (float)(random.Next((int)(-0.6f * Height), (int)(0.7f * Height))) / (float)Height; // спавн в пределах экрана от 10% сверху и 30% снизу
 
             int prizeType = random.Next(0, 4);
 
