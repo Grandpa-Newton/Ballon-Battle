@@ -30,7 +30,7 @@ namespace AmmoLibrary
             return 100;
         }
 
-        public override Vector2[] GetPosition()
+        public override void GetPosition()
         {
             throw new NotImplementedException();
         }

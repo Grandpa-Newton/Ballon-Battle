@@ -35,8 +35,8 @@ namespace GameLibrary
             this.ammos = new List<Ammo>()
             {
                 new SupersonicAmmo(TextureDrawer.LoadTexure("supersonicAmmo.png")),
-                new PiercingAmmo(TextureDrawer.LoadTexure("supersonicAmmo.png")),
-                new ExplosiveAmmo(TextureDrawer.LoadTexure("supersonicAmmo.png")),
+           //     new PiercingAmmo(TextureDrawer.LoadTexure("supersonicAmmo.png")),
+             //   new ExplosiveAmmo(TextureDrawer.LoadTexure("supersonicAmmo.png")),
             };
         }
         public int Armour { get; set; } = 0;
@@ -80,6 +80,7 @@ namespace GameLibrary
                 else
                 {
                     int remainder = damage - Armour; // если брони меньше, чем урона, то сначала сносятся пункты брони до нуля, после - остаток со здоровья.
+                    Armour = 0;
                     Health -= remainder;
                 }
             }

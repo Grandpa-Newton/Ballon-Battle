@@ -43,9 +43,9 @@ namespace AmmoLibrary.characteristics_changing
             return ammo.GetCollider();
         }
 
-        public override Vector2[] GetPosition()
+        public override void GetPosition()
         {
-            return ammo.GetPosition();
+            ammo.GetPosition();
         }
 
         public override void Spawn(Vector2 position, bool isLeft)

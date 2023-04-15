@@ -240,7 +240,7 @@ namespace Ballon_Battle
                 firstAmmos[i].Update();
                 if (secondPlayer.GetCollider().IntersectsWith(firstAmmos[i].GetCollider()))
                 {
-                    explodes.Add(new Explode(firstAmmos[i].GetPosition()));
+                    explodes.Add(new Explode(firstAmmos[i].Position));
                     firstAmmos.RemoveAt(i);
                     secondPlayer.GetDamage();
                 }
@@ -255,7 +255,7 @@ namespace Ballon_Battle
                 secondAmmos[i].Update();
                 if (firstPlayer.GetCollider().IntersectsWith(secondAmmos[i].GetCollider()))
                 {
-                    explodes.Add(new Explode(secondAmmos[i].GetPosition()));
+                    explodes.Add(new Explode(secondAmmos[i].Position));
                     secondAmmos.RemoveAt(i);
                     firstPlayer.GetDamage();
                 }

@@ -15,6 +15,14 @@ namespace AmmoLibrary
         public Texture sprite;
         public Vector2 PositionCenter;
         protected bool isLeft;
+
+        public Vector2 Speed { get; set; }
+
+        public int Distance { get; set; }
+
+        public int Radius { get; set; }
+
+        public Vector2[] Position { get; set; }
         public abstract void Update();
         public abstract Vector2 GetSpeed();
         public abstract int GetDistance();
@@ -22,8 +30,9 @@ namespace AmmoLibrary
         public abstract void Draw();
         public abstract RectangleF GetCollider();
 
-        public abstract Vector2[] GetPosition();
+    //    public abstract Vector2[] GetPosition();
 
+        public abstract void GetPosition();
         public abstract void Spawn(Vector2 position, bool isLeft);
     }
 }
