@@ -100,7 +100,7 @@ namespace Ballon_Battle
 
 
             firstPlayerInfo = new System.Windows.Forms.Label();
-            firstPlayerInfo.SetBounds((int)(0.1 * Width), (int)(0.05 * Height), (int)(0.2 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
+            firstPlayerInfo.SetBounds((int)(0.1 * Width), (int)(0.05 * Height), (int)(0.26 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
             firstPlayerInfo.Text = "Test";
             firstPlayerInfo.ForeColor = Color.White;
             firstPlayerInfo.Visible = true;
@@ -108,7 +108,7 @@ namespace Ballon_Battle
             this.Controls.Add(firstPlayerInfo);
 
             secondPlayerInfo = new System.Windows.Forms.Label();
-            secondPlayerInfo.SetBounds((int)(0.7 * Width), (int)(0.05 * Height), (int)(0.2 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
+            secondPlayerInfo.SetBounds((int)(0.7 * Width), (int)(0.05 * Height), (int)(0.26 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
             secondPlayerInfo.Text = "Test";
             secondPlayerInfo.ForeColor = Color.White;
             secondPlayerInfo.Visible = true;
@@ -334,11 +334,11 @@ namespace Ballon_Battle
             //firstPlayer.Update();
 
 
-            firstPlayerInfo.SetBounds((int)(0.1 * Width), (int)(0.05 * Height), (int)(0.23 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
+            firstPlayerInfo.SetBounds((int)(0.1 * Width), (int)(0.05 * Height), (int)(0.26 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
             firstPlayerInfo.Font = new Font("Arial", 0.01f * Width);
             firstPlayerInfo.Text = $"Health = {firstPlayer.Health}, Armour = {firstPlayer.Armour}, Fuel = {firstPlayer.Fuel}";
 
-            secondPlayerInfo.SetBounds((int)(0.7 * Width), (int)(0.05 * Height), (int)(0.23 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
+            secondPlayerInfo.SetBounds((int)(0.7 * Width), (int)(0.05 * Height), (int)(0.26 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
             secondPlayerInfo.Font = new Font("Arial", 0.01f * Width);
             secondPlayerInfo.Text = $"Health = {secondPlayer.Health}, Armour = {secondPlayer.Armour}, Fuel = {secondPlayer.Fuel}";
 
