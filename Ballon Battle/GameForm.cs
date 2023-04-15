@@ -140,7 +140,7 @@ namespace Ballon_Battle
                 new Vector2(1.0f, -1.0f),
                 new Vector2(1.0f, 1.0f),
                 new Vector2(-1.0f, 1.0f),
-            });
+            }, false);
 
             ObjectsDrawing.Draw(landTexture, new Vector2[4]
             {
@@ -148,13 +148,13 @@ namespace Ballon_Battle
                 new Vector2(1.0f, -1.0f),
                 new Vector2(1.0f, -0.75f),
                 new Vector2(-1.0f, -0.75f),
-            });
+            }, false);
 
             landCollider = new RectangleF(0.0f, 0.875f, 1.0f, 0.125f);
 
-            firstPlayer.Draw();
+            firstPlayer.Draw(false);
 
-            secondPlayer.Draw();
+            secondPlayer.Draw(false);
 
             foreach (var item in firstAmmos)
             {
@@ -168,7 +168,7 @@ namespace Ballon_Battle
             {
                 try
                 {
-                    explodes[i].Draw();
+                    explodes[i].Draw(false);
                 }
                 catch
                 {
@@ -177,7 +177,7 @@ namespace Ballon_Battle
 
             }
             if (currentPrize != null)
-                currentPrize.Draw();
+                currentPrize.Draw(false);
         }
 
         private void UpdateGame()
@@ -354,7 +354,7 @@ namespace Ballon_Battle
                 {
                     Debug.WriteLine($"Explodes.Count = {explodes[i].Count}");
 
-                    explodes[i].Draw();
+                    explodes[i].Draw(false);
                 }
                 catch
                 {
@@ -381,7 +381,7 @@ namespace Ballon_Battle
             {
                 try
                 {
-                    explodes[i].Draw();
+                    explodes[i].Draw(false);
                 }
                 catch
                 {

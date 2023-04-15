@@ -33,7 +33,13 @@ namespace AmmoLibrary
         {
             //ObjectsDrawing.Draw(sprite, GetPosition());
             GetPosition();
-            ObjectsDrawing.Draw(sprite, Position);
+            if(isLeft)
+            {
+                ObjectsDrawing.Draw(sprite, Position, false);
+            }
+            else
+                ObjectsDrawing.Draw(sprite, Position, true);
+
         }
 
         public override void GetPosition()

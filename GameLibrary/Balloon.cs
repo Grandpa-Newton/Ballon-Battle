@@ -135,9 +135,9 @@ namespace GameLibrary
             return collider;
         }
 
-        public void Draw()
+        public void Draw(bool isFlipped)
         {
-            ObjectsDrawing.Draw(BalloonSprite, GetPosition());
+            ObjectsDrawing.Draw(BalloonSprite, GetPosition(), isFlipped);
         }
 
         public void ChangeAmmo()

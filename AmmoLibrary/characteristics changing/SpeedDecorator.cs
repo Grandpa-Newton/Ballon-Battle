@@ -38,7 +38,12 @@ namespace AmmoLibrary.characteristics_changing
         public override void Draw()
         {
             GetPosition();
-            ObjectsDrawing.Draw(sprite, Position);
+            if (isLeft)
+            {
+                ObjectsDrawing.Draw(sprite, Position, false);
+            }
+            else
+                ObjectsDrawing.Draw(sprite, Position, true);
         }
 
         public override RectangleF GetCollider()

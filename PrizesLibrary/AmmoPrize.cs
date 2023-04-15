@@ -18,9 +18,9 @@ namespace PrizesLibrary
             this.sprite = sprite;
         }
 
-        public override void Draw()
+        public override void Draw(bool isFlipped)
         {
-            ObjectsDrawing.Draw(sprite, getPosition());
+            ObjectsDrawing.Draw(sprite, getPosition(), isFlipped);
         }
 
         public override RectangleF GetCollider()

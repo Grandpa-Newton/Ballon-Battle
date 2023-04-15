@@ -15,7 +15,7 @@ namespace PrizesLibrary
         protected bool isLeft;
         protected Texture sprite;
         protected abstract Vector2 getSpeed();
-        public abstract void Draw();
+        public abstract void Draw(bool isFlipped);
         public abstract RectangleF GetCollider();
 
         protected abstract Vector2[] getPosition();

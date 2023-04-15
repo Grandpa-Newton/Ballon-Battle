@@ -35,11 +35,11 @@ namespace GameLibrary
             };
         }
 
-        public void Draw()
+        public void Draw(bool isFlipped)
         {
             try
             {
-                ObjectsDrawing.Draw(animation[Count], position);
+                ObjectsDrawing.Draw(animation[Count], position, isFlipped);
             }
             catch
             {

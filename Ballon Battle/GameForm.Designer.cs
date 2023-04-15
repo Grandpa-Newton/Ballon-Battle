@@ -68,7 +68,7 @@ namespace Ballon_Battle
             // 
             // prizeTimer
             // 
-            this.prizeTimer.Interval = 500;
+            this.prizeTimer.Interval = 5000;
             this.prizeTimer.Tick += new System.EventHandler(this.prizeTimer_Tick);
             // 
             // GameForm
