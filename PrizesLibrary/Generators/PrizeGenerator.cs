@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Ballon_Battle;
+using OpenTK;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +10,9 @@ namespace PrizesLibrary
 {
     public abstract class PrizeGenerator
     {
+        protected Texture sprite;
 
-        public abstract Prize Create(double speed);
+        public abstract Prize Create(Vector2 centerPosition, bool isLeft);
 
 
     }

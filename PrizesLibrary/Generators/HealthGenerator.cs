@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Ballon_Battle;
+using OpenTK;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,11 +9,16 @@ using System.Threading.Tasks;
 namespace PrizesLibrary
 {
 
-    internal class HealthGenerator : PrizeGenerator
+    public class HealthGenerator : PrizeGenerator
     {
-        public override Prize Create(double speed)
+        public HealthGenerator()
         {
-            return new HealthPrize(speed);
+            sprite = TextureDrawer.LoadTexure("healthPrize.png");
+        }
+
+        public override Prize Create(Vector2 centerPosition, bool isLeft)
+        {
+            return new HealthPrize(centerPosition, isLeft, sprite);
         }
     }
 }

@@ -15,6 +15,8 @@ using OpenTK.Input;
 using GameLibrary;
 using System.Diagnostics;
 using AmmoLibrary;
+using PrizesLibrary;
+using PrizesLibrary.Generators;
 
 namespace Ballon_Battle
 {
@@ -30,6 +32,8 @@ namespace Ballon_Battle
         List<Ammo> firstAmmos; // текущий снаряд первого игрока
         List<Ammo> secondAmmos; // текущий снаряд второго игрока4
         List<Explode> explodes; // анимации взрывов
+        Random random = new Random();
+        Prize currentPrize = null;
 
         bool isWdown, isSdown, isIdown, isKdown, isJdown, isDdown;
         
@@ -51,6 +55,7 @@ namespace Ballon_Battle
             this.startButton.Visible = false;
             glControl.Visible = true;
             glTimer.Start();
+            prizeTimer.Start();
         }
 
         private void glControl_Load(object sender, EventArgs e)
@@ -144,7 +149,8 @@ namespace Ballon_Battle
                 }
 
             }
-
+            if (currentPrize != null)
+                currentPrize.Draw();
         }
 
         private void UpdateGame()
@@ -199,7 +205,6 @@ namespace Ballon_Battle
                     firstAmmos.RemoveAt(i);
                 }
             }
-            Debug.WriteLine($"first Ammos: {firstAmmos.Count}");
 
             for (int i = 0; i < secondAmmos.Count; i++)
             {
@@ -215,10 +220,18 @@ namespace Ballon_Battle
                     secondAmmos.RemoveAt(i);
                 }
             }
+            
+            if(currentPrize!=null)
+            {
+                currentPrize.Update();
+                if (!screenCollider.IntersectsWith(currentPrize.GetCollider()))
+                {
+                    currentPrize = null;
+                }
+            }
+                
 
-
-            Debug.WriteLine($"second Ammos: {secondAmmos.Count}");
-
+            
             firstPlayer.Update();
             secondPlayer.Update();
             //firstPlayer.Update();
@@ -251,6 +264,8 @@ namespace Ballon_Battle
             }
         }
 
+        
+
         private void glTimer_SecondPlayerLooseTick(object sender, EventArgs e)
         {
             glControl.Refresh();
@@ -277,11 +292,69 @@ namespace Ballon_Battle
 
         private void glTimer_Tick(object sender, EventArgs e) // для обновления картинки каждые 16 миллисекунд (чуть больше 60 фреймов в секунде)
         {
-       //     firstPlayer.PositionCenter += new Vector2(0.5f, 0.5f);
+            //     firstPlayer.PositionCenter += new Vector2(0.5f, 0.5f);
+
+            //Prize prize = new FuelPrize();
+
+            //if (prize is FuelPrize)
+            //    Debug.WriteLine("prize is FuelPrize");
             
             UpdateGame();
 
             glControl.Refresh();
+        }
+
+        private void prizeTimer_Tick(object sender, EventArgs e)
+        {
+            if (currentPrize != null)
+                return;
+
+            Prize newPrize = null;
+            PrizeGenerator prizeGenerator=null;
+            float prizePozitionX;
+            bool isLeft; // переменная, отвечающая за направление движения
+
+            int prizeSpawnSide = random.Next(0, 2); // 0 - спавнится слева, 1 - справа
+
+
+
+            if (prizeSpawnSide == 0)
+            {
+                isLeft = false;
+                prizePozitionX = -1.05f;
+            }
+                
+            else
+            {
+                isLeft = true;
+                prizePozitionX = 1.05f;
+            }
+
+            float prizePozitionY = (float)(random.Next((int)(0.1 * Height), (int)(0.7 * Height))) / (float)Height; // спавн в пределах экрана от 10% сверху и 30% снизу
+
+            int prizeType = random.Next(0, 4);
+
+            switch(prizeType)
+            {
+                case 0:
+                    prizeGenerator = new AmmoGenerator();
+                    break;
+                case 1:
+                    prizeGenerator = new ArmourGenerator();
+                    break;
+                case 2:
+                    prizeGenerator = new FuelGenerator();
+                    break;
+                case 3:
+                    prizeGenerator = new HealthGenerator();
+                    break;
+            }
+            if(prizeGenerator != null)
+            {
+                newPrize = prizeGenerator.Create(new Vector2(prizePozitionX, prizePozitionY), isLeft);
+                currentPrize = newPrize;
+            }
+                
         }
 
         private void GameForm_Resize(object sender, EventArgs e)

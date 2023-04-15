@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Ballon_Battle;
+using OpenTK;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +8,16 @@ using System.Threading.Tasks;
 
 namespace PrizesLibrary
 {
-    internal class FuelGenerator : PrizeGenerator
+    public class FuelGenerator : PrizeGenerator
     {
-        public override Prize Create(double speed)
+        public FuelGenerator()
         {
-            return new FuelPrize(speed);
+            sprite = TextureDrawer.LoadTexure("fuelPrize.png");
+        }
+
+        public override Prize Create(Vector2 centerPosition, bool isLeft)
+        {
+            return new FuelPrize(centerPosition, isLeft, sprite);
         }
     }
 }

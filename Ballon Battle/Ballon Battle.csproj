@@ -101,6 +101,10 @@
       <Project>{16d2cbd1-221e-4207-898c-e6701fd6d650}</Project>
       <Name>GameLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PrizesLibrary\PrizesLibrary.csproj">
+      <Project>{653ada59-e7c7-419c-bbdb-e0c3be6d3471}</Project>
+      <Name>PrizesLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\testBalloon.png">
@@ -174,6 +178,26 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Assets\Animation\5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\healthPrize.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\fuelPrize.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\armorPrize.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\ammoPrize.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

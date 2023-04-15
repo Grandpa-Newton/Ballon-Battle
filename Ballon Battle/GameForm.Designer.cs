@@ -1,4 +1,6 @@
-﻿namespace Ballon_Battle
+﻿using OpenTK.Graphics;
+
+namespace Ballon_Battle
 {
     partial class GameForm
     {
@@ -32,6 +34,7 @@
             this.startButton = new System.Windows.Forms.Button();
             this.glControl = new OpenTK.GLControl();
             this.glTimer = new System.Windows.Forms.Timer(this.components);
+            this.prizeTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // startButton
@@ -63,6 +66,11 @@
             this.glTimer.Interval = 16;
             this.glTimer.Tick += new System.EventHandler(this.glTimer_Tick);
             // 
+            // prizeTimer
+            // 
+            this.prizeTimer.Interval = 5000;
+            this.prizeTimer.Tick += new System.EventHandler(this.prizeTimer_Tick);
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -82,5 +90,6 @@
         private System.Windows.Forms.Button startButton;
         private OpenTK.GLControl glControl;
         private System.Windows.Forms.Timer glTimer;
+        private System.Windows.Forms.Timer prizeTimer;
     }
 }

@@ -6,18 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PrizesLibrary
+namespace PrizesLibrary.Generators
 {
-    public class ArmourGenerator : PrizeGenerator
+    public class AmmoGenerator : PrizeGenerator
     {
-        public ArmourGenerator()
+        public AmmoGenerator()
         {
-            sprite = TextureDrawer.LoadTexure("armorPrize.png");
+            sprite = TextureDrawer.LoadTexure("ammoPrize.png");
         }
-
         public override Prize Create(Vector2 centerPosition, bool isLeft)
         {
-            return new ArmourPrize(centerPosition, isLeft, sprite);
+            return new AmmoPrize(centerPosition, isLeft, sprite);
         }
     }
 }
