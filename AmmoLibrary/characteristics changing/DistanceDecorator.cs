@@ -47,5 +47,10 @@ namespace AmmoLibrary.characteristics_changing
         {
             return ammo.GetPosition();
         }
+
+        public override void Spawn(Vector2 position, bool isLeft)
+        {
+            ammo.Spawn(position, isLeft);
+        }
     }
 }

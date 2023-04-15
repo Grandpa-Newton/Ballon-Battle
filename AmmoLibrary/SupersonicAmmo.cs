@@ -19,9 +19,9 @@ namespace AmmoLibrary
             this.isLeft = isLeft;
         }
 
-        public SupersonicAmmo()
+        public SupersonicAmmo(Texture sprite)
         {
-
+            this.sprite = sprite;
         }
         public override void Draw()
         {
@@ -77,9 +77,8 @@ namespace AmmoLibrary
             return collider;
         }
 
-        public override void Spawn(Vector2 position, bool isLeft, Texture sprite)
+        public override void Spawn(Vector2 position, bool isLeft)
         {
-            this.sprite = sprite;
             this.PositionCenter = position;
             this.isLeft = isLeft;
         }

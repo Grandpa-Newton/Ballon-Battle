@@ -1,4 +1,5 @@
-﻿using OpenTK;
+﻿using GraphicsOpenGL;
+using OpenTK;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,7 +11,10 @@ namespace AmmoLibrary
 {
     public class ExplosiveAmmo : Ammo // фугасный
     {
-
+        public ExplosiveAmmo(Texture sprite)
+        {
+            this.sprite = sprite;
+        }
         public override void Draw()
         {
             throw new NotImplementedException();
@@ -39,6 +43,12 @@ namespace AmmoLibrary
         public override Vector2 GetSpeed()
         {
             return new Vector2(0.005f, 0.0f);
+        }
+
+        public override void Spawn(Vector2 position, bool isLeft)
+        {
+            this.PositionCenter = position;
+            this.isLeft = isLeft;
         }
 
         public override void Update()

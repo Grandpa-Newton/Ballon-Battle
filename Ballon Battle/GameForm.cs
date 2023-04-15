@@ -31,16 +31,19 @@ namespace Ballon_Battle
         Balloon secondPlayer;
         RectangleF landCollider;
         RectangleF screenCollider; // границы экрана
-        List<Ammo> firstAmmos; // текущий снаряд первого игрока
-        List<Ammo> secondAmmos; // текущий снаряд второго игрока4
+        List<Ammo> firstAmmos; // текущие снаряды первого игрока
+        List<Ammo> secondAmmos; // текущие снаряды второго игрока
         List<Explode> explodes; // анимации взрывов
         Random random = new Random();
         Prize currentPrize = null;
         System.Windows.Forms.Label firstPlayerInfo;
         System.Windows.Forms.Label secondPlayerInfo;
 
-
         bool isWdown, isSdown, isIdown, isKdown, isJdown, isDdown;
+        bool isJUp = false;
+
+        int secondPlayerTicks = 50; // показатель, отвечающий за кулдаун снарядов второго игрока
+        int firstPlayerTicks = 50;
         
         public GameForm()
         {
@@ -179,6 +182,8 @@ namespace Ballon_Battle
 
         private void UpdateGame()
         {
+            firstPlayerTicks++;
+            secondPlayerTicks++;
             if (isWdown && firstPlayer.GetCollider().IntersectsWith(screenCollider)) // ?
                 firstPlayer.Update(new Vector2(0f, 0.01f));
             if (isSdown)
@@ -187,10 +192,24 @@ namespace Ballon_Battle
                 secondPlayer.Update(new Vector2(0f, 0.01f));
             if(isKdown)
                 secondPlayer.Update(new Vector2(0f, -0.01f));
-           /* if(isJdown)
+            if(isJdown && firstPlayerTicks>=50)
             {
-                
-            }*/
+                firstPlayerTicks = 0;
+                secondAmmos.Add(secondPlayer.GetCurrentAmmo(true));
+                Debug.WriteLine($"Speed = {secondAmmos[0].GetSpeed()}");
+
+            }
+            if (isDdown && secondPlayerTicks >= 50)
+            {
+                secondPlayerTicks = 0;
+                firstAmmos.Add(firstPlayer.GetCurrentAmmo(false));
+
+            }
+
+            /* if(isJdown)
+             {
+
+             }*/
 
             if (landCollider.IntersectsWith(firstPlayer.GetCollider()) || !firstPlayer.CheckAlive())
             {
@@ -224,7 +243,7 @@ namespace Ballon_Battle
                     firstAmmos.RemoveAt(i);
                     secondPlayer.GetDamage();
                 }
-                else if (!firstAmmos[i].GetCollider().IntersectsWith(screenCollider))
+                else if (!firstAmmos[i].GetCollider().IntersectsWith(screenCollider)) // ВЫХОД ЗА РАМКИ МАССИВА
                 {
                     firstAmmos.RemoveAt(i);
                 }
@@ -239,7 +258,7 @@ namespace Ballon_Battle
                     secondAmmos.RemoveAt(i);
                     firstPlayer.GetDamage();
                 }
-                else if(!secondAmmos[i].GetCollider().IntersectsWith(screenCollider))
+                else if(!secondAmmos[i].GetCollider().IntersectsWith(screenCollider)) // ВЫХОД ЗА РАМКИ МАССИВА
                 {
                     secondAmmos.RemoveAt(i);
                 }
@@ -252,20 +271,26 @@ namespace Ballon_Battle
                 {
                     if (currentPrize is AmmoPrize)
                     {
+                        Debug.WriteLine("TESTAMMO");
+                        int decoratorType = random.Next(0, 3);
+                        firstPlayer.ChangeAmmoCharesterictics(2); // БУДЕТ RAND
                         currentPrize = null;
                     }
                     else if (currentPrize is ArmourPrize)
                     {
+                        Debug.WriteLine("TESTARMOUR");
                         firstPlayer.IncreaseArmour();
                         currentPrize = null;
                     }
                     else if (currentPrize is FuelPrize)
                     {
+                        Debug.WriteLine("TESTFUEL");
                         firstPlayer.IncreaseFuel();
                         currentPrize = null;
                     }
                     else if (currentPrize is HealthPrize)
                     {
+                        Debug.WriteLine("TESTHEALTH");
                         firstPlayer.IncreaseHealth();
                         currentPrize = null;
                     }
@@ -274,6 +299,8 @@ namespace Ballon_Battle
                 {
                     if (currentPrize is AmmoPrize)
                     {
+                        int decoratorType = random.Next(0, 3);
+                        secondPlayer.ChangeAmmoCharesterictics(2); // БУДЕТ RAND
                         currentPrize = null;
                     }
                     else if (currentPrize is ArmourPrize)
@@ -313,6 +340,8 @@ namespace Ballon_Battle
             secondPlayerInfo.SetBounds((int)(0.7 * Width), (int)(0.05 * Height), (int)(0.23 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
             secondPlayerInfo.Font = new Font("Arial", 0.01f * Width);
             secondPlayerInfo.Text = $"Health = {secondPlayer.Health}, Armour = {secondPlayer.Armour}, Fuel = {secondPlayer.Fuel}";
+
+            
         }
 
         private void glTimer_FirstPlayerLooseTick(object sender, EventArgs e)
@@ -473,13 +502,11 @@ namespace Ballon_Battle
                     }
                 case Keys.J:
                     {
-                        secondAmmos.Add(new SupersonicAmmo(secondPlayer.PositionCenter, true, TextureDrawer.LoadTexure("supersonicAmmo.png")));
                         isJdown = false;
                         break;
                     }
                 case Keys.D:
                     {
-                        firstAmmos.Add(new SupersonicAmmo(firstPlayer.PositionCenter, false, TextureDrawer.LoadTexure("supersonicAmmo_2.png")));
                         isDdown = false;
                         break;
                     }
@@ -511,7 +538,6 @@ namespace Ballon_Battle
                     }
                 case Keys.J:
                     {
-                        
                         isJdown = true;
                         break;
                     }

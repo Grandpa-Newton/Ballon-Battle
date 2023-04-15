@@ -43,9 +43,14 @@ namespace AmmoLibrary.characteristics_changing
         public override Vector2 GetSpeed()
         {
             Vector2 newSpeed = ammo.GetSpeed();
-            newSpeed.X *= 1.5f;
+            newSpeed.X *= 5.5f;
 
             return newSpeed;
+        }
+
+        public override void Spawn(Vector2 position, bool isLeft)
+        {
+            ammo.Spawn(position, isLeft);
         }
 
         public override void Update()

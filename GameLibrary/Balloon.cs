@@ -12,6 +12,7 @@ using System.Media;
 using System.Diagnostics;
 using GraphicsOpenGL;
 using AmmoLibrary;
+using AmmoLibrary.characteristics_changing;
 
 namespace GameLibrary
 {
@@ -22,7 +23,7 @@ namespace GameLibrary
         public Texture BalloonSprite;
         private bool isMoving = false; // переменная для проверки на то, двигает ли игрок воздушный шар
         List<Ammo> ammos; // список с видами снарядов
-        int currentAmmo; // показатель, отвечающий за то, какой сейчас снаряд у игрока
+        int currentAmmo=0; // показатель, отвечающий за то, какой сейчас снаряд у игрока
         
 
         public Balloon(Vector2 startPosition, Texture baloonSprite)
@@ -33,9 +34,9 @@ namespace GameLibrary
             this.currentAmmo = 0;
             this.ammos = new List<Ammo>()
             {
-                new SupersonicAmmo(),
-                new PiercingAmmo(),
-                new ExplosiveAmmo(),
+                new SupersonicAmmo(TextureDrawer.LoadTexure("supersonicAmmo.png")),
+                new PiercingAmmo(TextureDrawer.LoadTexure("supersonicAmmo.png")),
+                new ExplosiveAmmo(TextureDrawer.LoadTexure("supersonicAmmo.png")),
             };
         }
         public int Armour { get; set; } = 0;
@@ -145,18 +146,38 @@ namespace GameLibrary
                 currentAmmo = 0;
         }
 
-        public Ammo getCurrentAmmo(Vector2 position, bool isLeft, Texture sprite)
+        public Ammo GetCurrentAmmo(bool isLeft)
         {
+            ammos[currentAmmo].Spawn(PositionCenter, isLeft);
             return ammos[currentAmmo];
         }
 
-        /*public void ChangeAmmoCharesterictics(Ammo)
+        public void ChangeAmmoCharesterictics(int decoratorType)
         {
-            for (int i = 0; i < ammos.Count; i++)
+            switch(decoratorType)
             {
-                ammos[i] = 
+                case 0:
+                    for (int i = 0; i < ammos.Count; i++)
+                    {
+                        ammos[i] = new DistanceDecorator(ammos[i]);
+                    }
+                    break;
+                case 1:
+                    for (int i = 0; i < ammos.Count; i++)
+                    {
+                        ammos[i] = new RadiusDecorator(ammos[i]);
+                    }
+                    break;
+                case 2:
+                    for (int i = 0; i < ammos.Count; i++)
+                    {
+                        ammos[i] = new SpeedDecorator(ammos[i]);
+                    //    Debug.WriteLine($"{ammos[i].GetSpeed()}");
+                    }
+                    break;
             }
-        }*/
+            
+        }
 
         public Vector2[] GetPosition()
         {

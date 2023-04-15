@@ -24,6 +24,6 @@ namespace AmmoLibrary
 
         public abstract Vector2[] GetPosition();
 
-        public abstract void Spawn(Vector2 position, bool isLeft, Texture sprite);
+        public abstract void Spawn(Vector2 position, bool isLeft);
     }
 }
