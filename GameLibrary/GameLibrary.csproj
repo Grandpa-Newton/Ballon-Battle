@@ -57,6 +57,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AmmoLibrary\AmmoLibrary.csproj">
+      <Project>{38ef77ca-88fd-41c6-bb18-83251b56ca7b}</Project>
+      <Name>AmmoLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GraphicsOpenGL\GraphicsOpenGL.csproj">
       <Project>{6f70f34a-2e1e-4760-824f-6d1b9ed4067b}</Project>
       <Name>GraphicsOpenGL</Name>

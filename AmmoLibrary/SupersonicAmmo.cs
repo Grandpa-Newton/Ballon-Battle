@@ -18,6 +18,11 @@ namespace AmmoLibrary
             this.PositionCenter = position;
             this.isLeft = isLeft;
         }
+
+        public SupersonicAmmo()
+        {
+
+        }
         public override void Draw()
         {
             ObjectsDrawing.Draw(sprite, GetPosition());
@@ -70,6 +75,13 @@ namespace AmmoLibrary
             RectangleF collider = new RectangleF(convertedLeftTop[0], convertedLeftTop[1], colliderWidth, colliderHeight);
 
             return collider;
+        }
+
+        public override void Spawn(Vector2 position, bool isLeft, Texture sprite)
+        {
+            this.sprite = sprite;
+            this.PositionCenter = position;
+            this.isLeft = isLeft;
         }
     }
 }

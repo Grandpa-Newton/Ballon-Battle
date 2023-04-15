@@ -11,6 +11,7 @@ using OpenTK.Input;
 using System.Media;
 using System.Diagnostics;
 using GraphicsOpenGL;
+using AmmoLibrary;
 
 namespace GameLibrary
 {
@@ -20,6 +21,8 @@ namespace GameLibrary
         public Vector2 Speed;
         public Texture BalloonSprite;
         private bool isMoving = false; // переменная для проверки на то, двигает ли игрок воздушный шар
+        List<Ammo> ammos; // список с видами снарядов
+        int currentAmmo; // показатель, отвечающий за то, какой сейчас снаряд у игрока
         
 
         public Balloon(Vector2 startPosition, Texture baloonSprite)
@@ -27,6 +30,13 @@ namespace GameLibrary
             this.PositionCenter = startPosition;
             this.BalloonSprite = baloonSprite;
             this.Speed = new Vector2(0, -0.001f); // изначально скорость нулевая
+            this.currentAmmo = 0;
+            this.ammos = new List<Ammo>()
+            {
+                new SupersonicAmmo(),
+                new PiercingAmmo(),
+                new ExplosiveAmmo(),
+            };
         }
         public int Armour { get; set; } = 0;
         public int Health { get; set; } = 100;
@@ -127,6 +137,26 @@ namespace GameLibrary
         {
             ObjectsDrawing.Draw(BalloonSprite, GetPosition());
         }
+
+        public void ChangeAmmo()
+        {
+            currentAmmo++;
+            if (currentAmmo >= ammos.Count)
+                currentAmmo = 0;
+        }
+
+        public Ammo getCurrentAmmo(Vector2 position, bool isLeft, Texture sprite)
+        {
+            return ammos[currentAmmo];
+        }
+
+        /*public void ChangeAmmoCharesterictics(Ammo)
+        {
+            for (int i = 0; i < ammos.Count; i++)
+            {
+                ammos[i] = 
+            }
+        }*/
 
         public Vector2[] GetPosition()
         {

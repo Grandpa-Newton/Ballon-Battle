@@ -23,5 +23,7 @@ namespace AmmoLibrary
         public abstract RectangleF GetCollider();
 
         public abstract Vector2[] GetPosition();
+
+        public abstract void Spawn(Vector2 position, bool isLeft, Texture sprite);
     }
 }
