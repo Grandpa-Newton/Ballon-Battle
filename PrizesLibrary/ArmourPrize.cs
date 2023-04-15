@@ -1,5 +1,4 @@
-﻿using Ballon_Battle;
-using GameLibrary;
+﻿using GraphicsOpenGL;
 using OpenTK;
 using System;
 using System.Collections.Generic;

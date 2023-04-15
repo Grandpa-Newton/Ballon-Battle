@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ballon_Battle
+namespace GraphicsOpenGL
 {
     public class Texture
     {

@@ -5,8 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GameLibrary;
-using Ballon_Battle;
+using GraphicsOpenGL;
 
 namespace PrizesLibrary
 {

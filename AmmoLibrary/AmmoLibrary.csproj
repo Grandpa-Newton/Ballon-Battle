@@ -56,14 +56,14 @@
     <Compile Include="SupersonicAmmo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GameLibrary\GameLibrary.csproj">
-      <Project>{16d2cbd1-221e-4207-898c-e6701fd6d650}</Project>
-      <Name>GameLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GraphicsOpenGL\GraphicsOpenGL.csproj">
+      <Project>{6f70f34a-2e1e-4760-824f-6d1b9ed4067b}</Project>
+      <Name>GraphicsOpenGL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

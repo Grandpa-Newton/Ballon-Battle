@@ -8,7 +8,7 @@ using OpenTK.Graphics.OpenGL;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace Ballon_Battle
+namespace GraphicsOpenGL
 {
     public class TextureDrawer
     {

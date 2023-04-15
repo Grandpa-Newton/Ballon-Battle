@@ -8,7 +8,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
 
-namespace Ballon_Battle
+namespace GraphicsOpenGL
 {
     public class ObjectsDrawing
     {

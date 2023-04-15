@@ -8,9 +8,9 @@ using System.Windows.Forms;
 using OpenTK;
 using System.Drawing;
 using OpenTK.Input;
-using Ballon_Battle;
 using System.Media;
 using System.Diagnostics;
+using GraphicsOpenGL;
 
 namespace GameLibrary
 {
@@ -20,6 +20,7 @@ namespace GameLibrary
         public Vector2 Speed;
         public Texture BalloonSprite;
         private bool isMoving = false; // переменная для проверки на то, двигает ли игрок воздушный шар
+        
 
         public Balloon(Vector2 startPosition, Texture baloonSprite)
         {
