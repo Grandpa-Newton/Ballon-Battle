@@ -172,14 +172,15 @@ namespace Ballon_Battle
             }
             for (int i = 0; i < explodes.Count; i++)
             {
-                try
-                {
-                    explodes[i].Draw(false);
-                }
-                catch
+                int thisCount = explodes.Count;
+                
+                if(!explodes[i].Draw(false))
                 {
                     explodes.RemoveAt(i);
                 }
+                
+                if (thisCount != explodes.Count)
+                    i--;
 
             }
             if (currentPrize != null)
