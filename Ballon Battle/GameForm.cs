@@ -280,7 +280,7 @@ namespace Ballon_Battle
                     {
                         Debug.WriteLine("TESTAMMO");
                         int decoratorType = random.Next(0, 3);
-                        firstPlayer.ChangeAmmoCharesterictics(2); // БУДЕТ RAND
+                        firstPlayer.ChangeAmmoCharesterictics(decoratorType); // БУДЕТ RAND
                         currentPrize = null;
                     }
                     else if (currentPrize is ArmourPrize)
@@ -307,7 +307,7 @@ namespace Ballon_Battle
                     if (currentPrize is AmmoPrize)
                     {
                         int decoratorType = random.Next(0, 3);
-                        secondPlayer.ChangeAmmoCharesterictics(2); // БУДЕТ RAND
+                        secondPlayer.ChangeAmmoCharesterictics(decoratorType); // БУДЕТ RAND
                         currentPrize = null;
                     }
                     else if (currentPrize is ArmourPrize)
@@ -515,6 +515,16 @@ namespace Ballon_Battle
                 case Keys.D:
                     {
                         isDdown = false;
+                        break;
+                    }
+                case Keys.M:
+                    {
+                        secondPlayer.ChangeAmmo();
+                        break;
+                    }
+                case Keys.X:
+                    {
+                        firstPlayer.ChangeAmmo();
                         break;
                     }
             }

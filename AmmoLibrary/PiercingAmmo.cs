@@ -14,15 +14,45 @@ namespace AmmoLibrary
         public PiercingAmmo(Texture sprite)
         {
             this.sprite = sprite;
+            this.Distance = 120;
+            this.Radius = 45;
+            this.Speed = new Vector2(0.01f, 0.0f);
+        }
+        public PiercingAmmo(Ammo clone) // для копирования объектов, а не ссылок
+        {
+            this.sprite = clone.sprite;
+            PositionCenter = clone.PositionCenter;
+            this.isLeft = clone.isLeft;
+            Speed = clone.Speed;
+            Distance = clone.Distance;
+            Radius = clone.Radius;
+            Position = clone.Position;
         }
         public override void Draw()
         {
-            throw new NotImplementedException();
+            GetPosition();
+            if (isLeft)
+            {
+                ObjectsDrawing.Draw(sprite, Position, false);
+            }
+            else
+                ObjectsDrawing.Draw(sprite, Position, true);
         }
 
         public override RectangleF GetCollider()
         {
-            throw new NotImplementedException();
+            GetPosition();
+
+            Vector2[] colliderPosition = Position;
+
+            float colliderWidth = (colliderPosition[2].X - colliderPosition[3].X) / 2.0f;
+            float colliderHeight = (colliderPosition[3].Y - colliderPosition[0].Y) / 2.0f;
+
+            float[] convertedLeftTop = CoordinatesConverter.Convert(colliderPosition[3].X, colliderPosition[3].Y);
+
+            RectangleF collider = new RectangleF(convertedLeftTop[0], convertedLeftTop[1], colliderWidth, colliderHeight);
+
+            return collider;
         }
 
         public override int GetDistance()
@@ -32,7 +62,13 @@ namespace AmmoLibrary
 
         public override void GetPosition()
         {
-            throw new NotImplementedException();
+            Position = new Vector2[4]
+            {
+                PositionCenter + new Vector2(-0.03f, -0.0125f),
+                PositionCenter + new Vector2(0.03f, -0.0125f),
+                PositionCenter + new Vector2(0.03f, 0.0125f),
+                PositionCenter + new Vector2(-0.03f, 0.0125f),
+            };
         }
 
         public override int GetRadius()
@@ -54,9 +90,9 @@ namespace AmmoLibrary
         public override void Update()
         {
             if (isLeft) // для проверки, в какую сторону летит снаряд
-                PositionCenter -= GetSpeed();
+                PositionCenter -= Speed;
             else
-                PositionCenter += GetSpeed();
+                PositionCenter += Speed;
         }
     }
 }

@@ -35,8 +35,8 @@ namespace GameLibrary
             this.ammos = new List<Ammo>()
             {
                 new SupersonicAmmo(TextureDrawer.LoadTexure("supersonicAmmo.png")),
-           //     new PiercingAmmo(TextureDrawer.LoadTexure("supersonicAmmo.png")),
-             //   new ExplosiveAmmo(TextureDrawer.LoadTexure("supersonicAmmo.png")),
+                new PiercingAmmo(TextureDrawer.LoadTexure("piercingAmmo.png")),
+                new ExplosiveAmmo(TextureDrawer.LoadTexure("explosiveAmmo.png")),
             };
         }
         public int Armour { get; set; } = 0;
@@ -149,8 +149,21 @@ namespace GameLibrary
 
         public Ammo GetCurrentAmmo(bool isLeft)
         {
+            Ammo newAmmo = null;
             ammos[currentAmmo].Spawn(PositionCenter, isLeft);
-            SupersonicAmmo newAmmo = new SupersonicAmmo(ammos[currentAmmo]);
+            switch(currentAmmo)
+            {
+                case 0:
+                    newAmmo = new SupersonicAmmo(ammos[currentAmmo]);
+                    break;
+                case 1:
+                    newAmmo = new PiercingAmmo(ammos[currentAmmo]);
+                    break;
+                case 2:
+                    newAmmo = new ExplosiveAmmo(ammos[currentAmmo]);
+                    break;
+            }
+            
             return newAmmo;
         }
 
