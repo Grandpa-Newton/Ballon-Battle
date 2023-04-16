@@ -456,7 +456,8 @@ namespace Ballon_Battle
                 glTimer.Stop();
                 MessageBox.Show("GAME IS OVER! IT'S DRAW!.");
 
-                this.Close();
+                Application.Restart();
+                Environment.Exit(0);
             }
         }
 
@@ -483,7 +484,8 @@ namespace Ballon_Battle
                 glTimer.Stop();
                 MessageBox.Show("GAME IS OVER! FIRST PLAYER IS LOSED.");
 
-                this.Close();
+                Application.Restart();
+                Environment.Exit(0);
             }
         }
 
@@ -509,7 +511,9 @@ namespace Ballon_Battle
                 glTimer.Stop();
                 MessageBox.Show("GAME IS OVER! SECOND PLAYER IS LOSED.");
 
-                this.Close();
+                Application.Restart();
+                Environment.Exit(0);
+
             }
         }
 
