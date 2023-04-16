@@ -26,7 +26,7 @@ namespace Ballon_Battle
     {
         Texture backgroundTexture;
         Texture landTexture;
-        Texture bulletTexture;
+   //     Texture bulletTexture;
         Balloon firstPlayer;
         Balloon secondPlayer;
         RectangleF landCollider;
@@ -100,7 +100,7 @@ namespace Ballon_Battle
 
             secondAmmos = new List<Ammo>();
 
-            screenCollider = new RectangleF(0.0f, 0.1f, 1.0f, 0.875f);
+            screenCollider = new RectangleF(0.0f, 0.0f, 1.0f, 0.875f);
 
             explodes = new List<Explode>();
 
@@ -191,11 +191,11 @@ namespace Ballon_Battle
             firstPlayerTicks++;
             secondPlayerTicks++;
 
-            if (isWdown && firstPlayer.GetCollider().IntersectsWith(screenCollider)) // ?
+            if (isWdown && (firstPlayer.GetCollider().Y > screenCollider.Y)) // ?
                 firstPlayer.Update(new Vector2(0f, 0.01f));
             if (isSdown)
                 firstPlayer.Update(new Vector2(0f, -0.01f));
-            if (isIdown && secondPlayer.GetCollider().IntersectsWith(screenCollider))
+            if (isIdown && (secondPlayer.GetCollider().Y > screenCollider.Y))
                 secondPlayer.Update(new Vector2(0f, 0.01f));
             if(isKdown)
                 secondPlayer.Update(new Vector2(0f, -0.01f));
@@ -252,6 +252,8 @@ namespace Ballon_Battle
             if (landCollider.IntersectsWith(firstPlayer.GetCollider()) || !firstPlayer.CheckAlive())
             {
                 glTimer.Stop();
+                prizeTimer.Stop();
+                windTimer.Stop();
                 glTimer.Tick -= glTimer_Tick;
                 explodes.Add(new Explode(firstPlayer.GetPosition()));
                 glTimer.Tick += glTimer_FirstPlayerLooseTick;
@@ -265,15 +267,31 @@ namespace Ballon_Battle
             if (landCollider.IntersectsWith(secondPlayer.GetCollider()) || !secondPlayer.CheckAlive())
             {
                 glTimer.Stop();
+                prizeTimer.Stop();
+                windTimer.Stop();
                 glTimer.Tick -= glTimer_Tick;
                 explodes.Add(new Explode(secondPlayer.GetPosition()));
                 glTimer.Tick += glTimer_SecondPlayerLooseTick;
                 glTimer.Start();
                 return;
             }
+            if(firstPlayer.GetCollider().IntersectsWith(secondPlayer.GetCollider()))
+            {
+                glTimer.Stop();
+                prizeTimer.Stop();
+                windTimer.Stop();
+                glTimer.Tick -= glTimer_Tick;
+                explodes.Add(new Explode(firstPlayer.GetPosition()));
+                explodes.Add(new Explode(secondPlayer.GetPosition()));
+                glTimer.Tick += glTimer_DrawTick;
+                glTimer.Start();
+                return;
+            }
 
             for (int i=0; i < firstAmmos.Count; i++)
             {
+                if (i >= firstAmmos.Count)
+                    break;
                 int thisCount = firstAmmos.Count;
                 firstAmmos[i].Update();
                 if (secondPlayer.GetCollider().IntersectsWith(firstAmmos[i].GetCollider(false)))
@@ -410,6 +428,35 @@ namespace Ballon_Battle
             secondPlayerInfo.Text = $"Health = {secondPlayer.Health}, Armour = {secondPlayer.Armour}, Fuel = {secondPlayer.Fuel}";
 
             
+        }
+
+        private void glTimer_DrawTick(object sender, EventArgs e)
+        {
+            glControl.Refresh();
+           /* for (int i = 0; i < explodes.Count; i++)
+            {
+                if (i >= explodes.Count)
+                    break;
+                int thisCount = explodes.Count;
+                try
+                {
+                    explodes[i].Draw(false);
+                }
+                catch
+                {
+                    explodes.RemoveAt(i);
+                }
+                if (thisCount != explodes.Count)
+                    i--;
+            }*/
+
+            if (explodes.Count <= 0)
+            {
+                glTimer.Stop();
+                MessageBox.Show("GAME IS OVER! IT'S DRAW!.");
+
+                this.Close();
+            }
         }
 
         private void glTimer_FirstPlayerLooseTick(object sender, EventArgs e)
