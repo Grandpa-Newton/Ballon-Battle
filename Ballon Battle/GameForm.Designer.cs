@@ -35,6 +35,7 @@ namespace Ballon_Battle
             this.glControl = new OpenTK.GLControl();
             this.glTimer = new System.Windows.Forms.Timer(this.components);
             this.prizeTimer = new System.Windows.Forms.Timer(this.components);
+            this.windTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // startButton
@@ -71,6 +72,11 @@ namespace Ballon_Battle
             this.prizeTimer.Interval = 5000;
             this.prizeTimer.Tick += new System.EventHandler(this.prizeTimer_Tick);
             // 
+            // windTimer
+            // 
+            this.windTimer.Interval = 10000;
+            this.windTimer.Tick += new System.EventHandler(this.windTimer_Tick);
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -91,5 +97,6 @@ namespace Ballon_Battle
         private OpenTK.GLControl glControl;
         private System.Windows.Forms.Timer glTimer;
         private System.Windows.Forms.Timer prizeTimer;
+        private System.Windows.Forms.Timer windTimer;
     }
 }

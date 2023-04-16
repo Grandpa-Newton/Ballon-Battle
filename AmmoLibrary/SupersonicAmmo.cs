@@ -25,8 +25,8 @@ namespace AmmoLibrary
         public SupersonicAmmo(Texture sprite)
         {
             this.sprite = sprite;
-            this.Distance = 80;
-            this.Radius = 30;
+            this.Distance = 1.0f;
+            this.Radius = 0.1f;
             this.Speed = new Vector2(0.025f, 0.0f);
         }
 
@@ -44,7 +44,7 @@ namespace AmmoLibrary
         public override void Draw()
         {
             //ObjectsDrawing.Draw(sprite, GetPosition());
-            GetPosition();
+            GetPosition(false);
             if(isLeft)
             {
                 ObjectsDrawing.Draw(sprite, Position, false);
@@ -54,15 +54,29 @@ namespace AmmoLibrary
 
         }
 
-        public override void GetPosition()
+        public override void GetPosition(bool isExploding)
         {
-            Position = new Vector2[4]
+            if(isExploding)
             {
-                PositionCenter + new Vector2(-0.03f, -0.0125f),
-                PositionCenter + new Vector2(0.03f, -0.0125f),
-                PositionCenter + new Vector2(0.03f, 0.0125f),
-                PositionCenter + new Vector2(-0.03f, 0.0125f),
-            };
+                Position = new Vector2[4]
+                {
+                    PositionCenter + new Vector2(-0.03f, -0.0125f) + new Vector2(-Radius, -Radius),
+                    PositionCenter + new Vector2(0.03f, -0.0125f) + new Vector2(Radius, -Radius),
+                    PositionCenter + new Vector2(0.03f, 0.0125f) + new Vector2(Radius, Radius),
+                    PositionCenter + new Vector2(-0.03f, 0.0125f) + new Vector2(-Radius, Radius),
+                };
+            }
+            else
+            {
+                Position = new Vector2[4]
+                {
+                    PositionCenter + new Vector2(-0.03f, -0.0125f),
+                    PositionCenter + new Vector2(0.03f, -0.0125f),
+                    PositionCenter + new Vector2(0.03f, 0.0125f),
+                    PositionCenter + new Vector2(-0.03f, 0.0125f),
+                };
+            }
+            
         }
 
         /*public override Vector2[] GetPosition()
@@ -76,14 +90,14 @@ namespace AmmoLibrary
             };
         }*/
 
-        public override int GetDistance()
+        public override float GetDistance()
         {
-            return 80;
+            return 1.0f;
         }
 
-        public override int GetRadius()
+        public override float GetRadius()
         {
-            return 30;
+            return 0.1f;
         }
 
         public override Vector2 GetSpeed()
@@ -101,12 +115,22 @@ namespace AmmoLibrary
                 PositionCenter -= Speed;
             else
                 PositionCenter += Speed;
-        }
 
-        public override RectangleF GetCollider()
+            Distance -= Speed.X;
+        }
+       /* public override RectangleF GetExplodeCollider()
+        {
+            GetPosition(true);
+
+            return GetCollider();
+        }*/
+
+
+        public override RectangleF GetCollider(bool isExploding)
         {
             //  Vector2[] colliderPosition = GetPosition(); // добавить более точную коллизию!
-            GetPosition();
+            
+            GetPosition(isExploding);
 
             Vector2[] colliderPosition = Position;
 

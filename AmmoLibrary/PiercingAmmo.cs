@@ -14,8 +14,8 @@ namespace AmmoLibrary
         public PiercingAmmo(Texture sprite)
         {
             this.sprite = sprite;
-            this.Distance = 120;
-            this.Radius = 45;
+            this.Distance = 1.5f;
+            this.Radius = 0.2f;
             this.Speed = new Vector2(0.01f, 0.0f);
         }
         public PiercingAmmo(Ammo clone) // для копирования объектов, а не ссылок
@@ -30,7 +30,7 @@ namespace AmmoLibrary
         }
         public override void Draw()
         {
-            GetPosition();
+            GetPosition(false);
             if (isLeft)
             {
                 ObjectsDrawing.Draw(sprite, Position, false);
@@ -39,9 +39,9 @@ namespace AmmoLibrary
                 ObjectsDrawing.Draw(sprite, Position, true);
         }
 
-        public override RectangleF GetCollider()
+        public override RectangleF GetCollider(bool isExploding)
         {
-            GetPosition();
+            GetPosition(isExploding);
 
             Vector2[] colliderPosition = Position;
 
@@ -55,25 +55,46 @@ namespace AmmoLibrary
             return collider;
         }
 
-        public override int GetDistance()
+       /* public override RectangleF GetExplodeCollider()
         {
-            return 120;
+            GetPosition(true);
+
+            return GetCollider();
+        }*/
+
+        public override float GetDistance()
+        {
+            return 1.5f;
         }
 
-        public override void GetPosition()
+        public override void GetPosition(bool isExploding)
         {
-            Position = new Vector2[4]
+            if (isExploding)
             {
-                PositionCenter + new Vector2(-0.03f, -0.0125f),
-                PositionCenter + new Vector2(0.03f, -0.0125f),
-                PositionCenter + new Vector2(0.03f, 0.0125f),
-                PositionCenter + new Vector2(-0.03f, 0.0125f),
-            };
+                Position = new Vector2[4]
+                {
+                    PositionCenter + new Vector2(-0.03f, -0.0125f) + new Vector2(-Radius, -Radius),
+                    PositionCenter + new Vector2(0.03f, -0.0125f) + new Vector2(Radius, -Radius),
+                    PositionCenter + new Vector2(0.03f, 0.0125f) + new Vector2(Radius, Radius),
+                    PositionCenter + new Vector2(-0.03f, 0.0125f) + new Vector2(-Radius, Radius),
+                };
+            }
+            else
+            {
+                Position = new Vector2[4]
+                {
+                    PositionCenter + new Vector2(-0.03f, -0.0125f),
+                    PositionCenter + new Vector2(0.03f, -0.0125f),
+                    PositionCenter + new Vector2(0.03f, 0.0125f),
+                    PositionCenter + new Vector2(-0.03f, 0.0125f),
+                };
+            }
+
         }
 
-        public override int GetRadius()
+        public override float GetRadius()
         {
-            return 45;
+            return 0.2f;
         }
 
         public override Vector2 GetSpeed()
@@ -93,6 +114,8 @@ namespace AmmoLibrary
                 PositionCenter -= Speed;
             else
                 PositionCenter += Speed;
+
+            Distance -= Speed.X;
         }
     }
 }

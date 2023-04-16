@@ -38,9 +38,14 @@ namespace Ballon_Battle
         Prize currentPrize = null;
         System.Windows.Forms.Label firstPlayerInfo;
         System.Windows.Forms.Label secondPlayerInfo;
+        float windSpeed = 0.001f; // скорость ветра
+        int windTicks = 0; // количество тиков таймера ветра
+        bool isFirstPlayerWindLeft = false; // true - ветер дует налево, false - направо
+        bool isSecondPlayerWindLeft = false;
 
-        bool isWdown, isSdown, isIdown, isKdown, isJdown, isDdown;
-        bool isJUp = false;
+
+        bool isWdown, isSdown, isIdown, isKdown, isJdown, isDdown, isAdown, isLdown;
+    //    bool isJUp = false;
 
         int secondPlayerTicks = 50; // показатель, отвечающий за кулдаун снарядов второго игрока
         int firstPlayerTicks = 50;
@@ -64,6 +69,7 @@ namespace Ballon_Battle
             glControl.Visible = true;
             glTimer.Start();
             prizeTimer.Start();
+            windTimer.Start();
         }
 
         private void glControl_Load(object sender, EventArgs e)
@@ -94,7 +100,7 @@ namespace Ballon_Battle
 
             secondAmmos = new List<Ammo>();
 
-            screenCollider = new RectangleF(0.0f, 0.05f, 1.0f, 0.875f);
+            screenCollider = new RectangleF(0.0f, 0.1f, 1.0f, 0.875f);
 
             explodes = new List<Explode>();
 
@@ -193,19 +199,47 @@ namespace Ballon_Battle
                 secondPlayer.Update(new Vector2(0f, 0.01f));
             if(isKdown)
                 secondPlayer.Update(new Vector2(0f, -0.01f));
-            if(isJdown && secondPlayerTicks>=50)
+            if((firstPlayer.GetCollider().X <= screenCollider.X) && isFirstPlayerWindLeft) // ?
+            {
+                firstPlayer.ChangeWindCondition(false);
+            }
+            else if ((firstPlayer.GetCollider().X + secondPlayer.GetCollider().Width >= screenCollider.X + screenCollider.Width) && !isFirstPlayerWindLeft)
+            {
+                firstPlayer.ChangeWindCondition(false);
+            }
+            else
+                firstPlayer.ChangeWindCondition(true);
+            if ((secondPlayer.GetCollider().X + secondPlayer.GetCollider().Width >= screenCollider.X + screenCollider.Width) && !isSecondPlayerWindLeft) // || 
+            {
+                secondPlayer.ChangeWindCondition(false);
+            }
+            else if((secondPlayer.GetCollider().X <= screenCollider.X) && isSecondPlayerWindLeft)
+            {
+                secondPlayer.ChangeWindCondition(false);
+            }
+            else
+                secondPlayer.ChangeWindCondition(true);
+            if ((isJdown || isLdown) && secondPlayerTicks>=50)
             {
                 secondPlayerTicks = 0;
-                Ammo newAmmo = secondPlayer.GetCurrentAmmo(true);
+                Ammo newAmmo = null;
+                if (isJdown)
+                    newAmmo = secondPlayer.GetCurrentAmmo(true);
+                else if (isLdown)
+                    newAmmo = secondPlayer.GetCurrentAmmo(false);
                 secondAmmos.Add(newAmmo);
                 //secondAmmos.Add(secondPlayer.GetCurrentAmmo(true));
                 Debug.WriteLine($"Speed = {secondAmmos[secondAmmos.Count-1].Speed}");
 
             }
-            if (isDdown && firstPlayerTicks >= 50)
+            if ((isDdown || isAdown) && firstPlayerTicks >= 50)
             {
                 firstPlayerTicks = 0;
-                Ammo newAmmo = firstPlayer.GetCurrentAmmo(false);
+                Ammo newAmmo = null;
+                if (isDdown)
+                    newAmmo = firstPlayer.GetCurrentAmmo(false);
+                else if (isAdown)
+                    newAmmo = firstPlayer.GetCurrentAmmo(true);
                 firstAmmos.Add(newAmmo);
 
             }
@@ -240,32 +274,59 @@ namespace Ballon_Battle
 
             for (int i=0; i < firstAmmos.Count; i++)
             {
+                int thisCount = firstAmmos.Count;
                 firstAmmos[i].Update();
-                if (secondPlayer.GetCollider().IntersectsWith(firstAmmos[i].GetCollider()))
+                if (secondPlayer.GetCollider().IntersectsWith(firstAmmos[i].GetCollider(false)))
                 {
+                    firstAmmos[i].GetPosition(true); // ?!!
                     explodes.Add(new Explode(firstAmmos[i].Position));
                     firstAmmos.RemoveAt(i);
                     secondPlayer.GetDamage();
                 }
-                else if (!firstAmmos[i].GetCollider().IntersectsWith(screenCollider)) // ВЫХОД ЗА РАМКИ МАССИВА
+                else if (!firstAmmos[i].GetCollider(false).IntersectsWith(screenCollider)) // ВЫХОД ЗА РАМКИ МАССИВА
                 {
                     firstAmmos.RemoveAt(i);
                 }
+                else if (firstAmmos[i].Distance <= 0)
+                {
+                    RectangleF ammoExplode = firstAmmos[i].GetCollider(true);
+                    explodes.Add(new Explode(firstAmmos[i].Position));
+                    firstAmmos.RemoveAt(i);
+                    if (ammoExplode.IntersectsWith(secondPlayer.GetCollider()))
+                    {
+                        secondPlayer.GetDamage();
+                    }
+                    
+                }
+                if (thisCount != firstAmmos.Count)
+                    i--;
             }
 
             for (int i = 0; i < secondAmmos.Count; i++)
             {
                 int thisCount = secondAmmos.Count;
                 secondAmmos[i].Update();
-                if (firstPlayer.GetCollider().IntersectsWith(secondAmmos[i].GetCollider()))
+                if (firstPlayer.GetCollider().IntersectsWith(secondAmmos[i].GetCollider(false)))
                 {
+                    secondAmmos[i].GetPosition(true);
                     explodes.Add(new Explode(secondAmmos[i].Position));
                     secondAmmos.RemoveAt(i);
                     firstPlayer.GetDamage();
                 }
-                else if(!(secondAmmos[i].GetCollider().IntersectsWith(screenCollider))) // ВЫХОД ЗА РАМКИ МАССИВА
+                else if(!(secondAmmos[i].GetCollider(false).IntersectsWith(screenCollider))) // ВЫХОД ЗА РАМКИ МАССИВА
                 {
                     secondAmmos.RemoveAt(i);
+                }
+                else if (secondAmmos[i].Distance <= 0)
+                {
+                    RectangleF ammoExplode = secondAmmos[i].GetCollider(true);
+                    explodes.Add(new Explode(secondAmmos[i].Position));
+                    secondAmmos.RemoveAt(i);
+                    if (ammoExplode.IntersectsWith(firstPlayer.GetCollider()))
+                    {
+                        
+                        firstPlayer.GetDamage();
+                    }
                 }
                 if (thisCount != secondAmmos.Count)
                     i--;
@@ -404,6 +465,55 @@ namespace Ballon_Battle
             }
         }
 
+        private void windTimer_Tick(object sender, EventArgs e)
+        {
+            if(windTicks == 1)
+            {
+                firstPlayer.ChangeWindCondition(false);
+                secondPlayer.ChangeWindCondition(false);
+              /*  firstPlayer.ChangeWindSpeed(new Vector2(0.0f, 0.0f));
+                secondPlayer.ChangeWindSpeed(new Vector2(0.0f, 0.0f));*/
+            }
+            else
+            {
+                int windDirection = random.Next(0, 2); // 0 - влево, 1 - вправо
+                
+                switch(windDirection)
+                {
+                    case 0:
+                        firstPlayer.ChangeWindSpeed(new Vector2(-windSpeed, 0.0f));
+                        isFirstPlayerWindLeft = true;
+                        break;
+                    case 1:
+                    
+                        firstPlayer.ChangeWindSpeed(new Vector2(windSpeed, 0.0f));
+                        isFirstPlayerWindLeft = false;
+                        break;
+                }
+                firstPlayer.ChangeWindCondition(true);
+
+                windDirection = random.Next(0, 2); // 0 - влево, 1 - вправо
+
+                switch (windDirection)
+                {
+                    case 0:
+                        
+                        secondPlayer.ChangeWindSpeed(new Vector2(-windSpeed, 0.0f));
+                        isSecondPlayerWindLeft = true;
+                        break;
+                    case 1:
+                        
+                        secondPlayer.ChangeWindSpeed(new Vector2(windSpeed, 0.0f));
+                        isSecondPlayerWindLeft = false;
+                        break;
+                }
+                secondPlayer.ChangeWindCondition(true);
+            }
+            windTicks++;
+            if (windTicks >= 2)
+                windTicks = 0;
+        }
+
         private void glTimer_Tick(object sender, EventArgs e) // для обновления картинки каждые 16 миллисекунд (чуть больше 60 фреймов в секунде)
         {
             //     firstPlayer.PositionCenter += new Vector2(0.5f, 0.5f);
@@ -517,6 +627,16 @@ namespace Ballon_Battle
                         isDdown = false;
                         break;
                     }
+                case Keys.A:
+                    {
+                        isAdown = false;
+                        break;
+                    }
+                case Keys.L:
+                    {
+                        isLdown = false;
+                        break;
+                    }
                 case Keys.M:
                     {
                         secondPlayer.ChangeAmmo();
@@ -561,6 +681,16 @@ namespace Ballon_Battle
                 case Keys.D:
                     {
                         isDdown = true;
+                        break;
+                    }
+                case Keys.A:
+                    {
+                        isAdown = true;
+                        break;
+                    }
+                case Keys.L:
+                    {
+                        isLdown = true;
                         break;
                     }
             }

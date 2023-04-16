@@ -18,21 +18,23 @@ namespace AmmoLibrary
 
         public Vector2 Speed { get; set; }
 
-        public int Distance { get; set; }
+        public float Distance { get; set; }
 
-        public int Radius { get; set; }
+        public float Radius { get; set; }
 
         public Vector2[] Position { get; set; }
         public abstract void Update();
         public abstract Vector2 GetSpeed();
-        public abstract int GetDistance();
-        public abstract int GetRadius();
+        public abstract float GetDistance();
+        public abstract float GetRadius();
         public abstract void Draw();
-        public abstract RectangleF GetCollider();
+        public abstract RectangleF GetCollider(bool isExploding);
+
+    //    public abstract RectangleF GetExplodeCollider();
 
     //    public abstract Vector2[] GetPosition();
 
-        public abstract void GetPosition();
+        public abstract void GetPosition(bool isExploding);
         public abstract void Spawn(Vector2 position, bool isLeft);
     }
 }

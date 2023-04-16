@@ -24,6 +24,8 @@ namespace GameLibrary
         private bool isMoving = false; // переменная для проверки на то, двигает ли игрок воздушный шар
         List<Ammo> ammos; // список с видами снарядов
         int currentAmmo=0; // показатель, отвечающий за то, какой сейчас снаряд у игрока
+        Vector2 windSpeed = new Vector2(0.0f, 0.0f); // скорость ветра
+        bool isWindOn = false; // работает ли ветер
         
 
         public Balloon(Vector2 startPosition, Texture baloonSprite)
@@ -57,6 +59,8 @@ namespace GameLibrary
                 return;
             PositionCenter += movement;
             Fuel--;
+            if (isWindOn)
+                PositionCenter += windSpeed;
 
             Debug.WriteLine("Fuel is " + Fuel);
         }
@@ -66,6 +70,8 @@ namespace GameLibrary
             isMoving = true; // !!! возможно убрать!
             PositionCenter += Speed;
             isMoving = false;
+            if(isWindOn)
+                PositionCenter += windSpeed;
         }
 
         public void GetDamage() // получение дамага после удара
@@ -114,7 +120,15 @@ namespace GameLibrary
                 Fuel = 700;
         }
 
+        public void ChangeWindSpeed(Vector2 windSpeed)
+        {
+            this.windSpeed = windSpeed; 
+        }
 
+        public void ChangeWindCondition(bool isWindOn)
+        {
+            this.isWindOn = isWindOn;
+        }
 
         public void Input() // ??
 
