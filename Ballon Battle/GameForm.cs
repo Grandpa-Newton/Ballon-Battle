@@ -185,7 +185,9 @@ namespace Ballon_Battle
                     newAmmo = secondPlayer.GetCurrentAmmo(true);
                 else if (keysDown[7])
                     newAmmo = secondPlayer.GetCurrentAmmo(false);
+             //   Debug.WriteLine($"Distance={newAmmo.Distance}, Radius={newAmmo.Radius}, Speed={newAmmo.Speed.X}");
                 secondAmmos.Add(newAmmo);
+                
             }
             if ((keysDown[5] || keysDown[6]) && firstPlayerTicks >= 50)
             {
@@ -195,6 +197,8 @@ namespace Ballon_Battle
                     newAmmo = firstPlayer.GetCurrentAmmo(false);
                 else if (keysDown[6])
                     newAmmo = firstPlayer.GetCurrentAmmo(true);
+
+             //   Debug.WriteLine($"Distance={newAmmo.Distance}, Radius={newAmmo.Radius}, Speed={newAmmo.Speed.X}");
                 firstAmmos.Add(newAmmo);
 
             }
