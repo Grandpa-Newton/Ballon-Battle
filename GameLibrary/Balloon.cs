@@ -22,7 +22,7 @@ namespace GameLibrary
         public Vector2 Speed;
         public Texture BalloonSprite;
     //    private bool isMoving = false; // переменная для проверки на то, двигает ли игрок воздушный шар
-        List<Ammo> ammos; // список с видами снарядов
+        readonly List<Ammo> ammos; // список с видами снарядов
         int currentAmmo=0; // показатель, отвечающий за то, какой сейчас снаряд у игрока
         Vector2 windSpeed = new Vector2(0.0f, 0.0f); // скорость ветра
         bool isWindOn = false; // работает ли ветер
@@ -35,9 +35,9 @@ namespace GameLibrary
             this.currentAmmo = 0;
             this.ammos = new List<Ammo>()
             {
-                new SupersonicAmmo(TextureDrawer.LoadTexure("supersonicAmmo.png")),
-                new PiercingAmmo(TextureDrawer.LoadTexure("piercingAmmo.png")),
-                new ExplosiveAmmo(TextureDrawer.LoadTexure("explosiveAmmo.png")),
+                new SupersonicAmmo(TextureLoader.LoadTexure("supersonicAmmo.png")),
+                new PiercingAmmo(TextureLoader.LoadTexure("piercingAmmo.png")),
+                new ExplosiveAmmo(TextureLoader.LoadTexure("explosiveAmmo.png")),
             };
         }
         public int Armour { get; set; } = 0;
@@ -140,7 +140,7 @@ namespace GameLibrary
 
         public void Draw(bool isFlipped)
         {
-            ObjectsDrawing.Draw(BalloonSprite, GetPosition(), isFlipped);
+            ObjectDrawer.Draw(BalloonSprite, GetPosition(), isFlipped);
         }
 
         public void ChangeAmmo()
@@ -178,18 +178,23 @@ namespace GameLibrary
                     for (int i = 0; i < ammos.Count; i++)
                     {
                         ammos[i] = new DistanceDecorator(ammos[i]);
+                        Debug.WriteLine("Distance Decorator");
                     }
                     break;
                 case 1:
                     for (int i = 0; i < ammos.Count; i++)
                     {
                         ammos[i] = new RadiusDecorator(ammos[i]);
+
+                        Debug.WriteLine("Radius Decorator");
                     }
                     break;
                 case 2:
                     for (int i = 0; i < ammos.Count; i++)
                     {
                         ammos[i] = new SpeedDecorator(ammos[i]);
+
+                        Debug.WriteLine("Speed Decorator");
                     }
                     break;
             }

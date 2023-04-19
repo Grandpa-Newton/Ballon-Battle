@@ -12,7 +12,7 @@ namespace PrizesLibrary.Generators
     {
         public AmmoGenerator()
         {
-            sprite = TextureDrawer.LoadTexure("ammoPrize.png");
+            sprite = TextureLoader.LoadTexure("ammoPrize.png");
         }
         public override Prize Create(Vector2 centerPosition, bool isLeft)
         {

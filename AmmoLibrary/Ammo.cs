@@ -45,18 +45,18 @@ namespace AmmoLibrary
            public abstract float GetRadius();*/
         public void Draw()
         {
-            GetPosition(false);
+            UpdatePosition(false);
             if (isLeft)
             {
-                ObjectsDrawing.Draw(Sprite, Position, false);
+                ObjectDrawer.Draw(Sprite, Position, false);
             }
             else
-                ObjectsDrawing.Draw(Sprite, Position, true);
+                ObjectDrawer.Draw(Sprite, Position, true);
         }
 
-        public RectangleF GetCollider(bool isExploding)
+        public RectangleF GetCollider(bool isExploding = false)
         {
-            GetPosition(isExploding);
+            UpdatePosition(isExploding);
 
             Vector2[] colliderPosition = Position;
 
@@ -86,7 +86,7 @@ namespace AmmoLibrary
             Distance -= Speed.X;
         }
 
-        public virtual void GetPosition(bool isExploding)
+        public virtual void UpdatePosition(bool isExploding)
         {
             float spriteWidth = 0.03f;
             float spriteHeight = 0.0125f;

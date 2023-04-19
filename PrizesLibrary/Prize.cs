@@ -14,14 +14,14 @@ namespace PrizesLibrary
         protected Vector2 centerPosition;
         protected bool isLeft;
         protected Texture sprite;
-        protected abstract Vector2 getSpeed();
+        protected abstract Vector2 GetSpeed();
         public void Draw(bool isFlipped)
         {
-            ObjectsDrawing.Draw(sprite, getPosition(), isFlipped);
+            ObjectDrawer.Draw(sprite, GetPosition(), isFlipped);
         }
         public RectangleF GetCollider()
         {
-            Vector2[] colliderPosition = getPosition(); // добавить более точную коллизию!
+            Vector2[] colliderPosition = GetPosition(); // добавить более точную коллизию!
 
 
             float colliderWidth = (colliderPosition[2].X - colliderPosition[3].X) / 2.0f;
@@ -33,7 +33,7 @@ namespace PrizesLibrary
 
             return collider;
         }
-        protected Vector2[] getPosition()
+        protected Vector2[] GetPosition()
         {
             return new Vector2[4]
             {
@@ -47,9 +47,9 @@ namespace PrizesLibrary
         public void Update()
         {
             if (isLeft) // для проверки, в какую сторону летит приз
-                centerPosition -= getSpeed();
+                centerPosition -= GetSpeed();
             else
-                centerPosition += getSpeed();
+                centerPosition += GetSpeed();
         }
         public Prize(Vector2 centerPosition, bool isLeft, Texture sprite)
         {

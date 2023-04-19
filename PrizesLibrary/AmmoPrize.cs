@@ -14,7 +14,7 @@ namespace PrizesLibrary
         public AmmoPrize(Vector2 centerPosition, bool isLeft, Texture sprite) : base(centerPosition, isLeft, sprite)
         {
         }
-        protected override Vector2 getSpeed()
+        protected override Vector2 GetSpeed()
         {
             return new Vector2(0.005f, 0.0f);
         }

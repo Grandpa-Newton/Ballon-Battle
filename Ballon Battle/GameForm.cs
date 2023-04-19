@@ -54,19 +54,13 @@ namespace Ballon_Battle
             windTimer.Start();
         }
 
-     /*   private void startButton_Click(object sender, EventArgs e)
-        {
-            this.startButton.Visible = false;
-            
-        }*/
-
         private void glControl_Load(object sender, EventArgs e)
         {
             glControl.MakeCurrent();
 
-            GL.Enable(EnableCap.Texture2D);
+        /*    GL.Enable(EnableCap.Texture2D);
             GL.Enable(EnableCap.Blend); // для отключения фона у ассетов
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);*/
             GL.Viewport(0, 0, glControl.Width, glControl.Height);
 
             LoadObjects();
@@ -78,17 +72,17 @@ namespace Ballon_Battle
 
         private void LoadObjects()
         {
-            backgroundTexture = TextureDrawer.LoadTexure("clouds.jpg");
+            backgroundTexture = TextureLoader.LoadTexure("clouds.jpg");
 
-            Texture firstPlayerTexture = TextureDrawer.LoadTexure("firstPlayerBalloon.png");
+            Texture firstPlayerTexture = TextureLoader.LoadTexure("firstPlayerBalloon.png");
 
             firstPlayer = new Balloon(new Vector2(-0.7f, 0.0f), firstPlayerTexture);
 
-            Texture secondPlayerTexture = TextureDrawer.LoadTexure("testBalloon_2.png");
+            Texture secondPlayerTexture = TextureLoader.LoadTexure("testBalloon_2.png");
 
             secondPlayer = new Balloon(new Vector2(0.7f, 0.0f), secondPlayerTexture);
 
-            landTexture = TextureDrawer.LoadTexure("grasstexture_new.png");
+            landTexture = TextureLoader.LoadTexure("grasstexture_new.png");
 
             firstAmmos = new List<Ammo>();
 
@@ -120,7 +114,7 @@ namespace Ballon_Battle
 
             // отрисовка фона
 
-            ObjectsDrawing.Draw(backgroundTexture, new Vector2[4]
+            ObjectDrawer.Draw(backgroundTexture, new Vector2[4]
             {
                 new Vector2(-1.0f, -1.0f),
                 new Vector2(1.0f, -1.0f),
@@ -130,7 +124,7 @@ namespace Ballon_Battle
 
             // отрисовка земли
 
-            ObjectsDrawing.Draw(landTexture, new Vector2[4]
+            ObjectDrawer.Draw(landTexture, new Vector2[4]
             {
                 new Vector2(-1.0f, -1.0f),
                 new Vector2(1.0f, -1.0f),
@@ -277,7 +271,7 @@ namespace Ballon_Battle
                 firstAmmos[i].Update();
                 if (secondPlayerCollider.IntersectsWith(ammoCollider))
                 {
-                    firstAmmos[i].GetPosition(true); // ?!!
+                    firstAmmos[i].UpdatePosition(true); // ?!!
                     explodes.Add(new Explode(firstAmmos[i].Position));
                     firstAmmos.RemoveAt(i);
                     secondPlayer.GetDamage();
@@ -307,7 +301,7 @@ namespace Ballon_Battle
                 secondAmmos[i].Update();
                 if (firstPlayerCollider.IntersectsWith(ammoCollider))
                 {
-                    secondAmmos[i].GetPosition(true);
+                    secondAmmos[i].UpdatePosition(true);
                     explodes.Add(new Explode(secondAmmos[i].Position));
                     secondAmmos.RemoveAt(i);
                     firstPlayer.GetDamage();
@@ -526,7 +520,7 @@ namespace Ballon_Battle
             if (currentPrize != null) // если на экране уже есть приз, то новый не должен спавниться
                 return;
 
-            Prize newPrize = null;
+            Prize newPrize;
             PrizeGenerator prizeGenerator=null;
             float prizePozitionX;
             bool isLeft; // переменная, отвечающая за направление движения

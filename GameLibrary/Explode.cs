@@ -20,11 +20,11 @@ namespace GameLibrary
 
             this.animation = new List<Texture>()
             {
-                TextureDrawer.LoadTexure("Animation/1.png"),
-                TextureDrawer.LoadTexure("Animation/2.png"),
-                TextureDrawer.LoadTexure("Animation/3.png"),
-                TextureDrawer.LoadTexure("Animation/4.png"),
-                TextureDrawer.LoadTexure("Animation/5.png"),
+                TextureLoader.LoadTexure("Animation/1.png"),
+                TextureLoader.LoadTexure("Animation/2.png"),
+                TextureLoader.LoadTexure("Animation/3.png"),
+                TextureLoader.LoadTexure("Animation/4.png"),
+                TextureLoader.LoadTexure("Animation/5.png"),
             };
         }
 
@@ -35,7 +35,7 @@ namespace GameLibrary
                 return false;
             }
 
-            ObjectsDrawing.Draw(animation[Count], position, isFlipped);
+            ObjectDrawer.Draw(animation[Count], position, isFlipped);
 
             Count++;
 

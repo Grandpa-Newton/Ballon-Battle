@@ -10,7 +10,7 @@ using System.Drawing.Imaging;
 
 namespace GraphicsOpenGL
 {
-    public class TextureDrawer
+    public class TextureLoader
     {
         public static Texture LoadTexure(string path)
         {

@@ -10,7 +10,7 @@ using System.Drawing;
 
 namespace GraphicsOpenGL
 {
-    public class ObjectsDrawing
+    public class ObjectDrawer
     {
         public static void Draw(Texture texture, Vector2[] position, bool isFlipped)
         {

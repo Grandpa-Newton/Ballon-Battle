@@ -13,7 +13,7 @@ namespace PrizesLibrary
     {
         public HealthGenerator()
         {
-            sprite = TextureDrawer.LoadTexure("healthPrize.png");
+            sprite = TextureLoader.LoadTexure("healthPrize.png");
         }
 
         public override Prize Create(Vector2 centerPosition, bool isLeft)

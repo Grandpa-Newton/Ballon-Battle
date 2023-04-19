@@ -12,7 +12,7 @@ namespace PrizesLibrary
     {
         public FuelGenerator()
         {
-            sprite = TextureDrawer.LoadTexure("fuelPrize.png");
+            sprite = TextureLoader.LoadTexure("fuelPrize.png");
         }
 
         public override Prize Create(Vector2 centerPosition, bool isLeft)

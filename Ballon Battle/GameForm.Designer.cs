@@ -118,7 +118,7 @@ namespace Ballon_Battle
 
         #endregion
 
-        private System.Windows.Forms.Button startButton;
+     
         private OpenTK.GLControl glControl;
         private System.Windows.Forms.Timer glTimer;
         private System.Windows.Forms.Timer prizeTimer;
