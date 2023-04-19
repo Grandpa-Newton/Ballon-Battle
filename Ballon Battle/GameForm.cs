@@ -1,23 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-//using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
 using GameLibrary;
 using System.Diagnostics;
 using AmmoLibrary;
 using PrizesLibrary;
 using PrizesLibrary.Generators;
-using System.Reflection.Emit;
 using GraphicsOpenGL;
 
 namespace Ballon_Battle
@@ -38,8 +29,8 @@ namespace Ballon_Battle
         List<Explode> explodes; // анимации взрывов
         Random random = new Random();
         Prize currentPrize = null; // объект текущего приза
-        System.Windows.Forms.Label firstPlayerInfo; // label для отображения текущего состояния первого игрока
-        System.Windows.Forms.Label secondPlayerInfo; // label для отображения текущего состояния второго игрока
+        Label firstPlayerInfo; // label для отображения текущего состояния первого игрока
+        Label secondPlayerInfo; // label для отображения текущего состояния второго игрока
         int maxWindSpeed = 30; // максимальная возможнная скорость ветра (умноженная на 10000)
         int minWindSpeed = 5; // минимальная скорость ветра
         int windTicks = 0; // количество тиков таймера ветра
@@ -408,11 +399,11 @@ namespace Ballon_Battle
         
         private void UpdateInfo()
         {
-            firstPlayerInfo.SetBounds((int)(0.1 * Width), (int)(0.05 * Height), (int)(0.26 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
+            firstPlayerInfo.SetBounds((int)(0.1 * Width), (int)(0.01 * Height), (int)(0.24 * Width), (int)(0.03 * Height)); // информация первого игрока (здоровье, топливо, броня)
             firstPlayerInfo.Font = new Font("Arial", 0.01f * Width);
             firstPlayerInfo.Text = $"Health = {firstPlayer.Health}, Armour = {firstPlayer.Armour}, Fuel = {firstPlayer.Fuel}";
 
-            secondPlayerInfo.SetBounds((int)(0.7 * Width), (int)(0.05 * Height), (int)(0.26 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
+            secondPlayerInfo.SetBounds((int)(0.7 * Width), (int)(0.01 * Height), (int)(0.24 * Width), (int)(0.03 * Height)); // информация первого игрока (здоровье, топливо, броня)
             secondPlayerInfo.Font = new Font("Arial", 0.01f * Width);
             secondPlayerInfo.Text = $"Health = {secondPlayer.Health}, Armour = {secondPlayer.Armour}, Fuel = {secondPlayer.Fuel}";
         }

@@ -21,13 +21,12 @@ namespace GameLibrary
         public Vector2 PositionCenter;
         public Vector2 Speed;
         public Texture BalloonSprite;
-        private bool isMoving = false; // переменная для проверки на то, двигает ли игрок воздушный шар
+    //    private bool isMoving = false; // переменная для проверки на то, двигает ли игрок воздушный шар
         List<Ammo> ammos; // список с видами снарядов
         int currentAmmo=0; // показатель, отвечающий за то, какой сейчас снаряд у игрока
         Vector2 windSpeed = new Vector2(0.0f, 0.0f); // скорость ветра
         bool isWindOn = false; // работает ли ветер
         
-
         public Balloon(Vector2 startPosition, Texture baloonSprite)
         {
             this.PositionCenter = startPosition;
@@ -43,34 +42,28 @@ namespace GameLibrary
         }
         public int Armour { get; set; } = 0;
         public int Health { get; set; } = 100;
-        public int Fuel { get; set; } = 700; // по таймеру отнимается каждый кадр
+        public int Fuel { get; set; } = 1000; // по таймеру отнимается каждый кадр
         public bool CheckAlive()
         {
             if (Health <= 0)
                 return false;
             else
                 return true;
-             
         }
 
         public void Update(Vector2 movement)
         {
-          //  movement.Normalize();
-            if (isMoving || Fuel <= 0)
+            if (Fuel <= 0)
                 return;
             PositionCenter += movement;
             Fuel--;
             if (isWindOn)
                 PositionCenter += windSpeed;
-
-            Debug.WriteLine("Fuel is " + Fuel);
         }
 
         public void Update() // обновление падения вниз
         {
-            isMoving = true; // !!! возможно убрать!
             PositionCenter += Speed;
-            isMoving = false;
             if(isWindOn)
                 PositionCenter += windSpeed;
         }
@@ -115,7 +108,7 @@ namespace GameLibrary
 
         public void IncreaseFuel()
         {
-            int extraFuel = 200;
+            int extraFuel = 350;
             Fuel += extraFuel;
             if (Fuel > 700)
                 Fuel = 700;
@@ -131,14 +124,9 @@ namespace GameLibrary
             this.isWindOn = isWindOn;
         }
 
-        public void Input() // ??
-
-        {
-        }
-
         public RectangleF GetCollider()
         {
-            Vector2[] colliderPosition = GetPosition(); // добавить более точную коллизию!
+            Vector2[] colliderPosition = GetPosition();
 
             float colliderWidth = (colliderPosition[2].X - colliderPosition[3].X)/2.0f;
             float colliderHeight = (colliderPosition[3].Y - colliderPosition[0].Y)/2.0f;
@@ -165,7 +153,7 @@ namespace GameLibrary
         public Ammo GetCurrentAmmo(bool isLeft)
         {
             Ammo newAmmo = null;
-            ammos[currentAmmo].Spawn(PositionCenter-new Vector2(0.01f, 0.07f), isLeft); // отнимаем вектор для выпуска снарядов из корзины шара
+            ammos[currentAmmo].Spawn(PositionCenter-new Vector2(0.01f, 0.07f), isLeft); // отнимаем вектор для выпуска снарядов из корзины шара, а не из центра шара
             switch(currentAmmo)
             {
                 case 0:
@@ -202,21 +190,21 @@ namespace GameLibrary
                     for (int i = 0; i < ammos.Count; i++)
                     {
                         ammos[i] = new SpeedDecorator(ammos[i]);
-                    //    Debug.WriteLine($"{ammos[i].GetSpeed()}");
                     }
                     break;
             }
-            
         }
 
         public Vector2[] GetPosition()
         {
+            float spriteWidth = 0.07f;
+            float spriteHeight = 0.14f;
             return new Vector2[4]
             {
-                PositionCenter + new Vector2(-0.07f, -0.14f),
-                PositionCenter + new Vector2(0.07f, -0.14f),
-                PositionCenter + new Vector2(0.07f, 0.14f),
-                PositionCenter + new Vector2(-0.07f, 0.14f),
+                PositionCenter + new Vector2(-spriteWidth, -spriteHeight),
+                PositionCenter + new Vector2(spriteWidth, -spriteHeight),
+                PositionCenter + new Vector2(spriteWidth, spriteHeight),
+                PositionCenter + new Vector2(-spriteWidth, spriteHeight),
             };
         }
     }
