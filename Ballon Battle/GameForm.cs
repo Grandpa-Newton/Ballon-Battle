@@ -31,7 +31,7 @@ namespace Ballon_Battle
         Prize currentPrize = null; // объект текущего приза
         Label firstPlayerInfo; // label для отображения текущего состояния первого игрока
         Label secondPlayerInfo; // label для отображения текущего состояния второго игрока
-        int maxWindSpeed = 20; // максимальная возможнная скорость ветра (умноженная на 10000)
+        int maxWindSpeed = 25; // максимальная возможнная скорость ветра (умноженная на 10000)
         int minWindSpeed = 5; // минимальная скорость ветра
         int windTicks = 0; // количество тиков таймера ветра
         bool isFirstPlayerWindLeft = false; // true - ветер дует налево, false - направо
@@ -78,7 +78,7 @@ namespace Ballon_Battle
 
             firstPlayer = new Balloon(new Vector2(-0.7f, 0.0f), firstPlayerTexture);
 
-            Texture secondPlayerTexture = TextureLoader.LoadTexure("testBalloon_2.png");
+            Texture secondPlayerTexture = TextureLoader.LoadTexure("secondPlayerBalloon.png");
 
             secondPlayer = new Balloon(new Vector2(0.7f, 0.0f), secondPlayerTexture);
 

@@ -128,6 +128,9 @@ namespace GameLibrary
         {
             Vector2[] colliderPosition = GetPosition();
 
+            colliderPosition[3].X += 0.02f; // делаем это для более точного коллайдера; т.к. модель вытянута, будем считать касание о шар позже его крайней части
+            colliderPosition[2].X -= 0.02f;
+
             float colliderWidth = (colliderPosition[2].X - colliderPosition[3].X)/2.0f;
             float colliderHeight = (colliderPosition[3].Y - colliderPosition[0].Y)/2.0f;
 
