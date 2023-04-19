@@ -61,11 +61,6 @@ namespace AmmoLibrary.characteristics_changing
             return collider;
         }
 
-        public override float GetDistance()
-        {
-            return ammo.Distance;
-        }
-
         public override void GetPosition(bool isExploding)
         {
             if (isExploding)
@@ -96,34 +91,6 @@ namespace AmmoLibrary.characteristics_changing
 
             return GetCollider();
         }*/
-
-        public override float GetRadius()
-        {
-            return ammo.Radius;
-        }
-
-        public override Vector2 GetSpeed()
-        {
-            ammo.Speed *= 3.5f;
-
-            return ammo.Speed;
-        }
-
-        public override void Spawn(Vector2 position, bool isLeft)
-        {
-            this.PositionCenter = position;
-            this.isLeft = isLeft;
-        }
-
-        public override void Update()
-        {
-            if (isLeft)
-                PositionCenter -= Speed;
-            else
-                PositionCenter += Speed;
-
-            Distance -= Speed.X;
-            //     ammo.Update();
-        }
+       
     }
 }

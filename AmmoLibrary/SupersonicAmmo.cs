@@ -12,16 +12,6 @@ namespace AmmoLibrary
 {
     public class SupersonicAmmo : Ammo // сверхзвуковой
     {
-        public SupersonicAmmo(Vector2 position, bool isLeft, Texture sprite)
-        {
-            this.sprite = sprite;
-            this.PositionCenter = position;
-            this.isLeft = isLeft;
-            //this.Distance = 80;
-            //this.Radius = 30;
-            //this.Speed = new Vector2(0.025f, 0.0f);
-        }
-
         public SupersonicAmmo(Texture sprite)
         {
             this.sprite = sprite;
@@ -89,35 +79,6 @@ namespace AmmoLibrary
                 PositionCenter + new Vector2(-0.03f, 0.0125f),
             };
         }*/
-
-        public override float GetDistance()
-        {
-            return 1.0f;
-        }
-
-        public override float GetRadius()
-        {
-            return 0.1f;
-        }
-
-        public override Vector2 GetSpeed()
-        {
-            return new Vector2(0.025f, 0.0f);
-        }
-
-        public override void Update()
-        {
-            /*if (isLeft) // для проверки, в какую сторону летит снаряд
-                PositionCenter -= GetSpeed();
-            else
-                PositionCenter += GetSpeed();*/
-            if (isLeft)
-                PositionCenter -= Speed;
-            else
-                PositionCenter += Speed;
-
-            Distance -= Speed.X;
-        }
        /* public override RectangleF GetExplodeCollider()
         {
             GetPosition(true);
@@ -144,10 +105,5 @@ namespace AmmoLibrary
             return collider;
         }
 
-        public override void Spawn(Vector2 position, bool isLeft)
-        {
-            this.PositionCenter = position;
-            this.isLeft = isLeft;
-        }
     }
 }

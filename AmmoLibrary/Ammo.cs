@@ -23,10 +23,26 @@ namespace AmmoLibrary
         public float Radius { get; set; }
 
         public Vector2[] Position { get; set; }
-        public abstract void Update();
-        public abstract Vector2 GetSpeed();
-        public abstract float GetDistance();
-        public abstract float GetRadius();
+        /*   public abstract Vector2 GetSpeed();
+           public abstract float GetDistance();
+           public abstract float GetRadius();*/
+
+
+        public void Spawn(Vector2 position, bool isLeft)
+        {
+            this.PositionCenter = position;
+            this.isLeft = isLeft;
+        }
+
+        public void Update()
+        {
+            if (isLeft) // для проверки, в какую сторону летит снаряд
+                PositionCenter -= Speed;
+            else
+                PositionCenter += Speed;
+
+            Distance -= Speed.X;
+        }
         public abstract void Draw();
         public abstract RectangleF GetCollider(bool isExploding);
 
@@ -35,6 +51,5 @@ namespace AmmoLibrary
     //    public abstract Vector2[] GetPosition();
 
         public abstract void GetPosition(bool isExploding);
-        public abstract void Spawn(Vector2 position, bool isLeft);
     }
 }

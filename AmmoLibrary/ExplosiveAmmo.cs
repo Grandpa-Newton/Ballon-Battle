@@ -55,11 +55,6 @@ namespace AmmoLibrary
             return collider;
         }
 
-        public override float GetDistance()
-        {
-            return 1.2f;
-        }
-
         public override void GetPosition(bool isExploding)
         {
             if (isExploding)
@@ -91,30 +86,5 @@ namespace AmmoLibrary
             return GetCollider();
         }*/
 
-        public override float GetRadius()
-        {
-            return 0.3f;
-        }
-
-        public override Vector2 GetSpeed()
-        {
-            return new Vector2(0.005f, 0.0f);
-        }
-
-        public override void Spawn(Vector2 position, bool isLeft)
-        {
-            this.PositionCenter = position;
-            this.isLeft = isLeft;
-        }
-
-        public override void Update()
-        {
-            if (isLeft) // для проверки, в какую сторону летит снаряд
-                PositionCenter -= Speed;
-            else
-                PositionCenter += Speed;
-
-            Distance -= Speed.X;
-        }
     }
 }
