@@ -41,10 +41,10 @@ namespace Ballon_Battle
 
         int secondPlayerTicks = 50; // показатель, отвечающий за кулдаун снарядов второго игрока
         int firstPlayerTicks = 50;
-        
+
         public GameForm()
         {
-            
+
             InitializeComponent();
             CenterToScreen();
             glControl.Size = this.Size;
@@ -58,9 +58,9 @@ namespace Ballon_Battle
         {
             glControl.MakeCurrent();
 
-        /*    GL.Enable(EnableCap.Texture2D);
+            GL.Enable(EnableCap.Texture2D);
             GL.Enable(EnableCap.Blend); // для отключения фона у ассетов
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);*/
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             GL.Viewport(0, 0, glControl.Width, glControl.Height);
 
             LoadObjects();
@@ -99,7 +99,7 @@ namespace Ballon_Battle
             for (int i = 0; i < 8; i++)
                 keysDown.Add(false);
         }
-        
+
         private void glControl_Paint(object sender, PaintEventArgs e)
         {
             GL.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
@@ -131,7 +131,7 @@ namespace Ballon_Battle
                 new Vector2(1.0f, -0.75f),
                 new Vector2(-1.0f, -0.75f),
             }, false);
-            
+
             // отрисовка игроков
 
             firstPlayer.Draw(false);
@@ -153,12 +153,12 @@ namespace Ballon_Battle
             for (int i = 0; i < explodes.Count; i++)
             {
                 int thisCount = explodes.Count;
-                
-                if(!explodes[i].Draw(false))
+
+                if (!explodes[i].Draw(false))
                 {
                     explodes.RemoveAt(i);
                 }
-                
+
                 if (thisCount != explodes.Count)
                     i--;
 
@@ -391,7 +391,7 @@ namespace Ballon_Battle
 
             }
         }
-        
+
         private void UpdateInfo()
         {
             firstPlayerInfo.SetBounds((int)(0.1 * Width), (int)(0.01 * Height), (int)(0.24 * Width), (int)(0.03 * Height)); // информация первого игрока (здоровье, топливо, броня)
@@ -445,7 +445,7 @@ namespace Ballon_Battle
         private void glTimer_FirstPlayerLooseTick(object sender, EventArgs e)
         {
             glControl.Refresh();
-            if (explodes.Count<=0)
+            if (explodes.Count <= 0)
             {
                 EndGame("ИГРА ОКОНЧЕНА! ПЕРВОЙ ИГРОК ПРОИГРАЛ. Хотите начать заново?");
             }
@@ -461,7 +461,7 @@ namespace Ballon_Battle
 
         private void windTimer_Tick(object sender, EventArgs e)
         {
-            if(windTicks == 1)
+            if (windTicks == 1)
             {
                 firstPlayer.ChangeWindCondition(false);
                 secondPlayer.ChangeWindCondition(false);
@@ -469,16 +469,16 @@ namespace Ballon_Battle
             else
             {
                 int windDirection = random.Next(0, 2); // 0 - влево, 1 - вправо
-                float windSpeed = random.Next(minWindSpeed, maxWindSpeed+1) / 10000f;
-                
-                switch(windDirection)
+                float windSpeed = random.Next(minWindSpeed, maxWindSpeed + 1) / 10000f;
+
+                switch (windDirection)
                 {
                     case 0:
                         firstPlayer.ChangeWindSpeed(new Vector2(-windSpeed, 0.0f));
                         isFirstPlayerWindLeft = true;
                         break;
                     case 1:
-                    
+
                         firstPlayer.ChangeWindSpeed(new Vector2(windSpeed, 0.0f));
                         isFirstPlayerWindLeft = false;
                         break;
@@ -486,17 +486,17 @@ namespace Ballon_Battle
                 firstPlayer.ChangeWindCondition(true);
 
                 windDirection = random.Next(0, 2); // 0 - влево, 1 - вправо
-                windSpeed = random.Next(minWindSpeed, maxWindSpeed+1) / 10000f;
+                windSpeed = random.Next(minWindSpeed, maxWindSpeed + 1) / 10000f;
 
                 switch (windDirection)
                 {
                     case 0:
-                        
+
                         secondPlayer.ChangeWindSpeed(new Vector2(-windSpeed, 0.0f));
                         isSecondPlayerWindLeft = true;
                         break;
                     case 1:
-                        
+
                         secondPlayer.ChangeWindSpeed(new Vector2(windSpeed, 0.0f));
                         isSecondPlayerWindLeft = false;
                         break;
@@ -509,7 +509,7 @@ namespace Ballon_Battle
         }
 
         private void glTimer_Tick(object sender, EventArgs e) // для обновления картинки каждые 10 миллисекунд (100 фреймов в секунду)
-        {   
+        {
             UpdateGame();
 
             glControl.Refresh();
@@ -521,7 +521,7 @@ namespace Ballon_Battle
                 return;
 
             Prize newPrize;
-            PrizeGenerator prizeGenerator=null;
+            PrizeGenerator prizeGenerator = null;
             float prizePozitionX;
             bool isLeft; // переменная, отвечающая за направление движения
 
@@ -532,7 +532,7 @@ namespace Ballon_Battle
                 isLeft = false;
                 prizePozitionX = -1.05f;
             }
-                
+
             else
             {
                 isLeft = true;
@@ -543,7 +543,7 @@ namespace Ballon_Battle
 
             int prizeType = random.Next(0, 4);
 
-            switch(prizeType)
+            switch (prizeType)
             {
                 case 0:
                     prizeGenerator = new AmmoGenerator();
@@ -558,12 +558,12 @@ namespace Ballon_Battle
                     prizeGenerator = new HealthGenerator();
                     break;
             }
-            if(prizeGenerator != null)
+            if (prizeGenerator != null)
             {
                 newPrize = prizeGenerator.Create(new Vector2(prizePozitionX, prizePozitionY), isLeft);
                 currentPrize = newPrize;
             }
-                
+
         }
 
         private void GameForm_Resize(object sender, EventArgs e)
@@ -577,55 +577,45 @@ namespace Ballon_Battle
             switch (e.KeyCode)
             {
                 case Keys.W:
-                    {
-                        keysDown[0] = false;
-                        break;
-                    }
+                    keysDown[0] = false;
+                    break;
+
                 case Keys.S:
-                    {
-                        keysDown[1] = false;
-                        break;
-                    }
+                    keysDown[1] = false;
+                    break;
+
                 case Keys.I:
-                    {
-                        keysDown[2] = false;
-                        break;
-                    }
+                    keysDown[2] = false;
+                    break;
+
                 case Keys.K:
-                    {
-                        keysDown[3] = false;
-                        break;
-                    }
+                    keysDown[3] = false;
+                    break;
+
                 case Keys.J:
-                    {
-                        keysDown[4] = false;
-                        break;
-                    }
+                    keysDown[4] = false;
+                    break;
+
                 case Keys.D:
-                    {
-                        keysDown[5] = false;
-                        break;
-                    }
+                    keysDown[5] = false;
+                    break;
+
                 case Keys.A:
-                    {
-                        keysDown[6] = false;
-                        break;
-                    }
+                    keysDown[6] = false;
+                    break;
+
                 case Keys.L:
-                    {
-                        keysDown[7] = false;
-                        break;
-                    }
+                    keysDown[7] = false;
+                    break;
+
                 case Keys.M:
-                    {
-                        secondPlayer.ChangeAmmo();
-                        break;
-                    }
+                    secondPlayer.ChangeAmmo();
+                    break;
+
                 case Keys.X:
-                    {
-                        firstPlayer.ChangeAmmo();
-                        break;
-                    }
+                    firstPlayer.ChangeAmmo();
+                    break;
+
             }
         }
         private void glControl_KeyDown(object sender, KeyEventArgs e)
@@ -633,45 +623,36 @@ namespace Ballon_Battle
             switch (e.KeyCode)
             {
                 case Keys.W:
-                    {
-                        keysDown[0] = true; 
-                        break;
-                    }
+                    keysDown[0] = true;
+                    break;
+
                 case Keys.S:
-                    {
-                        keysDown[1] = true;
-                        break;
-                    }
+                    keysDown[1] = true;
+                    break;
+
                 case Keys.I:
-                    {
-                        keysDown[2] = true;
-                        break;
-                    }
+                    keysDown[2] = true;
+                    break;
+
                 case Keys.K:
-                    {
-                        keysDown[3] = true;
-                        break;
-                    }
+                    keysDown[3] = true;
+                    break;
+
                 case Keys.J:
-                    {
-                        keysDown[4] = true;
-                        break;
-                    }
+                    keysDown[4] = true;
+                    break;
+
                 case Keys.D:
-                    {
-                        keysDown[5] = true;
-                        break;
-                    }
+                    keysDown[5] = true;
+                    break;
+
                 case Keys.A:
-                    {
-                        keysDown[6] = true;
-                        break;
-                    }
+                    keysDown[6] = true;
+                    break;
+
                 case Keys.L:
-                    {
-                        keysDown[7] = true;
-                        break;
-                    }
+                    keysDown[7] = true;
+                    break;
             }
         }
     }
