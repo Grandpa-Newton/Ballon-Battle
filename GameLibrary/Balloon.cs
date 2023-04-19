@@ -37,7 +37,7 @@ namespace GameLibrary
             {
                 new SupersonicAmmo(TextureLoader.LoadTexure("supersonicAmmo.png")),
                 new PiercingAmmo(TextureLoader.LoadTexure("piercingAmmo.png")),
-                new ExplosiveAmmo(TextureLoader.LoadTexure("explosiveAmmo.png")),
+                new ExplosiveAmmo(TextureLoader.LoadTexure("explosiveAmmo_2.png")),
             };
         }
         public int Armour { get; set; } = 0;
