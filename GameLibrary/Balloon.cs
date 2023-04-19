@@ -55,6 +55,7 @@ namespace GameLibrary
 
         public void Update(Vector2 movement)
         {
+          //  movement.Normalize();
             if (isMoving || Fuel <= 0)
                 return;
             PositionCenter += movement;
@@ -164,7 +165,7 @@ namespace GameLibrary
         public Ammo GetCurrentAmmo(bool isLeft)
         {
             Ammo newAmmo = null;
-            ammos[currentAmmo].Spawn(PositionCenter, isLeft);
+            ammos[currentAmmo].Spawn(PositionCenter-new Vector2(0.01f, 0.14f), isLeft); // отнимаем вектор для выпуска снарядов из корзины шара
             switch(currentAmmo)
             {
                 case 0:

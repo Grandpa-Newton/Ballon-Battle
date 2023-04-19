@@ -38,7 +38,10 @@ namespace Ballon_Battle
         Prize currentPrize = null;
         System.Windows.Forms.Label firstPlayerInfo;
         System.Windows.Forms.Label secondPlayerInfo;
-        float windSpeed = 0.001f; // скорость ветра
+        //float minWindSpeed = 0.001f; // минимальная скорость ветра
+        //float maxWindSpeed = 0.005f; // максимальная скорость ветра
+        int maxWindSpeed = 40;
+        int minWindSpeed = 5;
         int windTicks = 0; // количество тиков таймера ветра
         bool isFirstPlayerWindLeft = false; // true - ветер дует налево, false - направо
         bool isSecondPlayerWindLeft = false;
@@ -86,7 +89,7 @@ namespace Ballon_Battle
 
             backgroundTexture = TextureDrawer.LoadTexure("clouds.jpg");
 
-            Texture firstPlayerTexture = TextureDrawer.LoadTexure("testBalloon.png");
+            Texture firstPlayerTexture = TextureDrawer.LoadTexure("firstPlayerBalloon.png");
 
             firstPlayer = new Balloon(new Vector2(-0.7f, 0.0f), firstPlayerTexture);
 
@@ -291,8 +294,6 @@ namespace Ballon_Battle
 
             for (int i=0; i < firstAmmos.Count; i++)
             {
-                if (i >= firstAmmos.Count)
-                    break;
                 int thisCount = firstAmmos.Count;
                 firstAmmos[i].Update();
                 if (secondPlayer.GetCollider().IntersectsWith(firstAmmos[i].GetCollider(false)))
@@ -529,6 +530,7 @@ namespace Ballon_Battle
             else
             {
                 int windDirection = random.Next(0, 2); // 0 - влево, 1 - вправо
+                float windSpeed = random.Next(minWindSpeed, maxWindSpeed+1) / 10000f;
                 
                 switch(windDirection)
                 {
@@ -545,6 +547,7 @@ namespace Ballon_Battle
                 firstPlayer.ChangeWindCondition(true);
 
                 windDirection = random.Next(0, 2); // 0 - влево, 1 - вправо
+                windSpeed = random.Next(minWindSpeed, maxWindSpeed+1) / 10000f;
 
                 switch (windDirection)
                 {

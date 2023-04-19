@@ -74,7 +74,7 @@ namespace Ballon_Battle
             // 
             // windTimer
             // 
-            this.windTimer.Interval = 10000;
+            this.windTimer.Interval = 2500;
             this.windTimer.Tick += new System.EventHandler(this.windTimer_Tick);
             // 
             // GameForm
