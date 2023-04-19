@@ -27,12 +27,12 @@ namespace Ballon_Battle
         List<Ammo> firstAmmos; // текущие снаряды первого игрока
         List<Ammo> secondAmmos; // текущие снаряды второго игрока
         List<Explode> explodes; // анимации взрывов
-        Random random = new Random();
+        readonly Random random = new Random();
         Prize currentPrize = null; // объект текущего приза
         Label firstPlayerInfo; // label для отображения текущего состояния первого игрока
         Label secondPlayerInfo; // label для отображения текущего состояния второго игрока
-        int maxWindSpeed = 25; // максимальная возможнная скорость ветра (умноженная на 10000)
-        int minWindSpeed = 5; // минимальная скорость ветра
+        readonly int maxWindSpeed = 25; // максимальная возможнная скорость ветра (умноженная на 10000)
+        readonly int minWindSpeed = 5; // минимальная скорость ветра
         int windTicks = 0; // количество тиков таймера ветра
         bool isFirstPlayerWindLeft = false; // true - ветер дует налево, false - направо
         bool isSecondPlayerWindLeft = false;
@@ -515,6 +515,16 @@ namespace Ballon_Battle
         private void glTimer_Tick(object sender, EventArgs e) // для обновления картинки каждые 10 миллисекунд (100 фреймов в секунду)
         {
             UpdateGame();
+
+            /* codeResult = BattleGame.UpdateGame();
+             * switch (codeResult)
+             * {
+             *      case 1:
+             *          break;
+             * }
+             * 
+             * 
+             */
 
             glControl.Refresh();
         }
