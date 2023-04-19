@@ -165,7 +165,7 @@ namespace GameLibrary
         public Ammo GetCurrentAmmo(bool isLeft)
         {
             Ammo newAmmo = null;
-            ammos[currentAmmo].Spawn(PositionCenter-new Vector2(0.01f, 0.14f), isLeft); // отнимаем вектор для выпуска снарядов из корзины шара
+            ammos[currentAmmo].Spawn(PositionCenter-new Vector2(0.01f, 0.07f), isLeft); // отнимаем вектор для выпуска снарядов из корзины шара
             switch(currentAmmo)
             {
                 case 0:
@@ -213,10 +213,10 @@ namespace GameLibrary
         {
             return new Vector2[4]
             {
-                PositionCenter + new Vector2(-0.1f, -0.2f),
-                PositionCenter + new Vector2(0.1f, -0.2f),
-                PositionCenter + new Vector2(0.1f, 0.2f),
-                PositionCenter + new Vector2(-0.1f, 0.2f),
+                PositionCenter + new Vector2(-0.07f, -0.14f),
+                PositionCenter + new Vector2(0.07f, -0.14f),
+                PositionCenter + new Vector2(0.07f, 0.14f),
+                PositionCenter + new Vector2(-0.07f, 0.14f),
             };
         }
     }

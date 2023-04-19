@@ -24,31 +24,30 @@ namespace Ballon_Battle
 {
     public partial class GameForm : Form
     {
-        Texture backgroundTexture;
-        Texture landTexture;
-   //     Texture bulletTexture;
-        Balloon firstPlayer;
-        Balloon secondPlayer;
-        RectangleF landCollider;
+        Texture backgroundTexture; // текстура фона
+        Texture landTexture; // текстура земли
+        Balloon firstPlayer; // объект первого игрока
+        Balloon secondPlayer; // объект второго игрока
+        RectangleF landCollider; // границы земли
         RectangleF screenCollider; // границы экрана
+        RectangleF firstPlayerCollider; // коллайдер первого игрока
+        RectangleF secondPlayerCollider;
+        RectangleF currentPrizeCollider; // коллайдер для текущего приза
         List<Ammo> firstAmmos; // текущие снаряды первого игрока
         List<Ammo> secondAmmos; // текущие снаряды второго игрока
         List<Explode> explodes; // анимации взрывов
         Random random = new Random();
-        Prize currentPrize = null;
-        System.Windows.Forms.Label firstPlayerInfo;
-        System.Windows.Forms.Label secondPlayerInfo;
-        //float minWindSpeed = 0.001f; // минимальная скорость ветра
-        //float maxWindSpeed = 0.005f; // максимальная скорость ветра
-        int maxWindSpeed = 40;
-        int minWindSpeed = 5;
+        Prize currentPrize = null; // объект текущего приза
+        System.Windows.Forms.Label firstPlayerInfo; // label для отображения текущего состояния первого игрока
+        System.Windows.Forms.Label secondPlayerInfo; // label для отображения текущего состояния второго игрока
+        int maxWindSpeed = 30; // максимальная возможнная скорость ветра (умноженная на 10000)
+        int minWindSpeed = 5; // минимальная скорость ветра
         int windTicks = 0; // количество тиков таймера ветра
         bool isFirstPlayerWindLeft = false; // true - ветер дует налево, false - направо
         bool isSecondPlayerWindLeft = false;
 
-
-        bool isWdown, isSdown, isIdown, isKdown, isJdown, isDdown, isAdown, isLdown;
-    //    bool isJUp = false;
+        bool isWdown, isSdown, isIdown, isKdown, isJdown, isDdown, isAdown, isLdown; // переменные для проверки нажатия кнопки
+    //    List<bool> keysDown;
 
         int secondPlayerTicks = 50; // показатель, отвечающий за кулдаун снарядов второго игрока
         int firstPlayerTicks = 50;
@@ -59,21 +58,17 @@ namespace Ballon_Battle
             InitializeComponent();
             CenterToScreen();
             glControl.Size = this.Size;
-            glControl.Visible = false;
-            isWdown = false;
-            isSdown = false;
-            isKdown = false;
-            isKdown = false;
-        }
-
-        private void startButton_Click(object sender, EventArgs e)
-        {
-            this.startButton.Visible = false;
             glControl.Visible = true;
             glTimer.Start();
             prizeTimer.Start();
             windTimer.Start();
         }
+
+     /*   private void startButton_Click(object sender, EventArgs e)
+        {
+            this.startButton.Visible = false;
+            
+        }*/
 
         private void glControl_Load(object sender, EventArgs e)
         {
@@ -82,11 +77,17 @@ namespace Ballon_Battle
             GL.Enable(EnableCap.Texture2D);
             GL.Enable(EnableCap.Blend); // для отключения фона у ассетов
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-           
             GL.Viewport(0, 0, glControl.Width, glControl.Height);
 
-        //    GL.ClearColor(new Color4(0.631f, 0.6f, 0.227f, 1f));
+            LoadObjects();
 
+            glControl.SendToBack();
+
+            this.WindowState = FormWindowState.Maximized; // для открытия окна в полном экране
+        }
+
+        private void LoadObjects()
+        {
             backgroundTexture = TextureDrawer.LoadTexure("clouds.jpg");
 
             Texture firstPlayerTexture = TextureDrawer.LoadTexure("firstPlayerBalloon.png");
@@ -105,26 +106,9 @@ namespace Ballon_Battle
 
             screenCollider = new RectangleF(0.0f, 0.0f, 1.0f, 0.875f);
 
+            landCollider = new RectangleF(0.0f, 0.875f, 1.0f, 0.125f);
+
             explodes = new List<Explode>();
-
-
-            firstPlayerInfo = new System.Windows.Forms.Label();
-            firstPlayerInfo.SetBounds((int)(0.1 * Width), (int)(0.05 * Height), (int)(0.26 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
-            firstPlayerInfo.Text = "Test";
-            firstPlayerInfo.ForeColor = Color.White;
-            firstPlayerInfo.Visible = true;
-            firstPlayerInfo.BackColor = Color.Black;
-            this.Controls.Add(firstPlayerInfo);
-
-            secondPlayerInfo = new System.Windows.Forms.Label();
-            secondPlayerInfo.SetBounds((int)(0.7 * Width), (int)(0.05 * Height), (int)(0.26 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
-            secondPlayerInfo.Text = "Test";
-            secondPlayerInfo.ForeColor = Color.White;
-            secondPlayerInfo.Visible = true;
-            secondPlayerInfo.BackColor = Color.Black;
-            this.Controls.Add(secondPlayerInfo);
-
-            glControl.SendToBack();
         }
         
         private void glControl_Paint(object sender, PaintEventArgs e)
@@ -139,9 +123,7 @@ namespace Ballon_Battle
         private void Draw()
         {
 
-            //    ObjectsDrawing.Start(this.Width, this.Height);
-
-            //   ObjectsDrawing.Draw(backgroundTexture, new Vector2(-1.0f, 1.0f), new Vector2(0.1f, 0.1f), Vector2.Zero);
+            // отрисовка фона
 
             ObjectsDrawing.Draw(backgroundTexture, new Vector2[4]
             {
@@ -151,6 +133,8 @@ namespace Ballon_Battle
                 new Vector2(-1.0f, 1.0f),
             }, false);
 
+            // отрисовка земли
+
             ObjectsDrawing.Draw(landTexture, new Vector2[4]
             {
                 new Vector2(-1.0f, -1.0f),
@@ -158,12 +142,13 @@ namespace Ballon_Battle
                 new Vector2(1.0f, -0.75f),
                 new Vector2(-1.0f, -0.75f),
             }, false);
-
-            landCollider = new RectangleF(0.0f, 0.875f, 1.0f, 0.125f);
+            
+            // отрисовка игроков
 
             firstPlayer.Draw(false);
-
             secondPlayer.Draw(false);
+
+            // отрисовка снарядов
 
             foreach (var item in firstAmmos)
             {
@@ -173,6 +158,9 @@ namespace Ballon_Battle
             {
                 item.Draw();
             }
+
+            // отрисовка взрывов
+
             for (int i = 0; i < explodes.Count; i++)
             {
                 int thisCount = explodes.Count;
@@ -190,40 +178,17 @@ namespace Ballon_Battle
                 currentPrize.Draw(false);
         }
 
-        private void UpdateGame()
+        private void UpdateInput()
         {
-            firstPlayerTicks++;
-            secondPlayerTicks++;
-
-            if (isWdown && (firstPlayer.GetCollider().Y > screenCollider.Y)) // ?
+            if (isWdown && (firstPlayerCollider.Y > screenCollider.Y)) // ?
                 firstPlayer.Update(new Vector2(0f, 0.01f));
             if (isSdown)
                 firstPlayer.Update(new Vector2(0f, -0.01f));
-            if (isIdown && (secondPlayer.GetCollider().Y > screenCollider.Y))
+            if (isIdown && (secondPlayerCollider.Y > screenCollider.Y))
                 secondPlayer.Update(new Vector2(0f, 0.01f));
-            if(isKdown)
+            if (isKdown)
                 secondPlayer.Update(new Vector2(0f, -0.01f));
-            if((firstPlayer.GetCollider().X <= screenCollider.X) && isFirstPlayerWindLeft) // ?
-            {
-                firstPlayer.ChangeWindCondition(false);
-            }
-            else if ((firstPlayer.GetCollider().X + secondPlayer.GetCollider().Width >= screenCollider.X + screenCollider.Width) && !isFirstPlayerWindLeft)
-            {
-                firstPlayer.ChangeWindCondition(false);
-            }
-            else
-                firstPlayer.ChangeWindCondition(true);
-            if ((secondPlayer.GetCollider().X + secondPlayer.GetCollider().Width >= screenCollider.X + screenCollider.Width) && !isSecondPlayerWindLeft) // || 
-            {
-                secondPlayer.ChangeWindCondition(false);
-            }
-            else if((secondPlayer.GetCollider().X <= screenCollider.X) && isSecondPlayerWindLeft)
-            {
-                secondPlayer.ChangeWindCondition(false);
-            }
-            else
-                secondPlayer.ChangeWindCondition(true);
-            if ((isJdown || isLdown) && secondPlayerTicks>=50)
+            if ((isJdown || isLdown) && secondPlayerTicks >= 50)
             {
                 secondPlayerTicks = 0;
                 Ammo newAmmo = null;
@@ -233,7 +198,7 @@ namespace Ballon_Battle
                     newAmmo = secondPlayer.GetCurrentAmmo(false);
                 secondAmmos.Add(newAmmo);
                 //secondAmmos.Add(secondPlayer.GetCurrentAmmo(true));
-                Debug.WriteLine($"Speed = {secondAmmos[secondAmmos.Count-1].Speed}");
+                Debug.WriteLine($"Speed = {secondAmmos[secondAmmos.Count - 1].Speed}");
 
             }
             if ((isDdown || isAdown) && firstPlayerTicks >= 50)
@@ -247,13 +212,31 @@ namespace Ballon_Battle
                 firstAmmos.Add(newAmmo);
 
             }
+        }
 
-            /* if(isJdown)
-             {
-
-             }*/
-
-            if (landCollider.IntersectsWith(firstPlayer.GetCollider()) || !firstPlayer.CheckAlive())
+        private void CheckCollisions()
+        {
+            if ((firstPlayerCollider.X <= screenCollider.X) && isFirstPlayerWindLeft) // ?
+            {
+                firstPlayer.ChangeWindCondition(false);
+            }
+            else if ((firstPlayerCollider.X + secondPlayerCollider.Width >= screenCollider.X + screenCollider.Width) && !isFirstPlayerWindLeft)
+            {
+                firstPlayer.ChangeWindCondition(false);
+            }
+            else
+                firstPlayer.ChangeWindCondition(true);
+            if ((secondPlayerCollider.X + secondPlayerCollider.Width >= screenCollider.X + screenCollider.Width) && !isSecondPlayerWindLeft) // || 
+            {
+                secondPlayer.ChangeWindCondition(false);
+            }
+            else if ((secondPlayerCollider.X <= screenCollider.X) && isSecondPlayerWindLeft)
+            {
+                secondPlayer.ChangeWindCondition(false);
+            }
+            else
+                secondPlayer.ChangeWindCondition(true);
+            if (landCollider.IntersectsWith(firstPlayerCollider) || !firstPlayer.CheckAlive())
             {
                 glTimer.Stop();
                 prizeTimer.Stop();
@@ -265,10 +248,10 @@ namespace Ballon_Battle
                 return;
                 //glTimer.Stop();
                 //MessageBox.Show("GAME IS OVER! FIRST PLAYER IS LOSED.");
-                
+
                 //this.Close();
             }
-            if (landCollider.IntersectsWith(secondPlayer.GetCollider()) || !secondPlayer.CheckAlive())
+            if (landCollider.IntersectsWith(secondPlayerCollider) || !secondPlayer.CheckAlive())
             {
                 glTimer.Stop();
                 prizeTimer.Stop();
@@ -279,7 +262,7 @@ namespace Ballon_Battle
                 glTimer.Start();
                 return;
             }
-            if(firstPlayer.GetCollider().IntersectsWith(secondPlayer.GetCollider()))
+            if (firstPlayerCollider.IntersectsWith(secondPlayerCollider))
             {
                 glTimer.Stop();
                 prizeTimer.Stop();
@@ -291,19 +274,23 @@ namespace Ballon_Battle
                 glTimer.Start();
                 return;
             }
+        }
 
-            for (int i=0; i < firstAmmos.Count; i++)
+        private void UpdateAmmos()
+        {
+            for (int i = 0; i < firstAmmos.Count; i++)
             {
                 int thisCount = firstAmmos.Count;
+                RectangleF ammoCollider = firstAmmos[i].GetCollider(false);
                 firstAmmos[i].Update();
-                if (secondPlayer.GetCollider().IntersectsWith(firstAmmos[i].GetCollider(false)))
+                if (secondPlayerCollider.IntersectsWith(ammoCollider))
                 {
                     firstAmmos[i].GetPosition(true); // ?!!
                     explodes.Add(new Explode(firstAmmos[i].Position));
                     firstAmmos.RemoveAt(i);
                     secondPlayer.GetDamage();
                 }
-                else if (!firstAmmos[i].GetCollider(false).IntersectsWith(screenCollider)) // ВЫХОД ЗА РАМКИ МАССИВА
+                else if (!ammoCollider.IntersectsWith(screenCollider)) // ВЫХОД ЗА РАМКИ МАССИВА
                 {
                     firstAmmos.RemoveAt(i);
                 }
@@ -312,11 +299,10 @@ namespace Ballon_Battle
                     RectangleF ammoExplode = firstAmmos[i].GetCollider(true);
                     explodes.Add(new Explode(firstAmmos[i].Position));
                     firstAmmos.RemoveAt(i);
-                    if (ammoExplode.IntersectsWith(secondPlayer.GetCollider()))
+                    if (ammoExplode.IntersectsWith(secondPlayerCollider))
                     {
                         secondPlayer.GetDamage();
                     }
-                    
                 }
                 if (thisCount != firstAmmos.Count)
                     i--;
@@ -325,15 +311,16 @@ namespace Ballon_Battle
             for (int i = 0; i < secondAmmos.Count; i++)
             {
                 int thisCount = secondAmmos.Count;
+                RectangleF ammoCollider = secondAmmos[i].GetCollider(false);
                 secondAmmos[i].Update();
-                if (firstPlayer.GetCollider().IntersectsWith(secondAmmos[i].GetCollider(false)))
+                if (firstPlayerCollider.IntersectsWith(ammoCollider))
                 {
                     secondAmmos[i].GetPosition(true);
                     explodes.Add(new Explode(secondAmmos[i].Position));
                     secondAmmos.RemoveAt(i);
                     firstPlayer.GetDamage();
                 }
-                else if(!(secondAmmos[i].GetCollider(false).IntersectsWith(screenCollider))) // ВЫХОД ЗА РАМКИ МАССИВА
+                else if (!ammoCollider.IntersectsWith(screenCollider)) // ВЫХОД ЗА РАМКИ МАССИВА
                 {
                     secondAmmos.RemoveAt(i);
                 }
@@ -342,20 +329,24 @@ namespace Ballon_Battle
                     RectangleF ammoExplode = secondAmmos[i].GetCollider(true);
                     explodes.Add(new Explode(secondAmmos[i].Position));
                     secondAmmos.RemoveAt(i);
-                    if (ammoExplode.IntersectsWith(firstPlayer.GetCollider()))
+                    if (ammoExplode.IntersectsWith(firstPlayerCollider))
                     {
-                        
+
                         firstPlayer.GetDamage();
                     }
                 }
                 if (thisCount != secondAmmos.Count)
                     i--;
             }
-            
-            if(currentPrize!=null)
+        }
+
+        private void UpdatePrize()
+        {
+            if (currentPrize != null)
             {
+                currentPrizeCollider = currentPrize.GetCollider();
                 currentPrize.Update();
-                if (firstPlayer.GetCollider().IntersectsWith(currentPrize.GetCollider()))
+                if (firstPlayerCollider.IntersectsWith(currentPrizeCollider))
                 {
                     if (currentPrize is AmmoPrize)
                     {
@@ -383,7 +374,7 @@ namespace Ballon_Battle
                         currentPrize = null;
                     }
                 }
-                if (currentPrize != null && secondPlayer.GetCollider().IntersectsWith(currentPrize.GetCollider()))
+                if (currentPrize != null && secondPlayerCollider.IntersectsWith(currentPrizeCollider))
                 {
                     if (currentPrize is AmmoPrize)
                     {
@@ -407,20 +398,16 @@ namespace Ballon_Battle
                         currentPrize = null;
                     }
                 }
-                if (currentPrize != null && !screenCollider.IntersectsWith(currentPrize.GetCollider()))
+                if (currentPrize != null && !screenCollider.IntersectsWith(currentPrizeCollider))
                 {
                     currentPrize = null;
                 }
-                
+
             }
-                
-
-            
-            firstPlayer.Update();
-            secondPlayer.Update();
-            //firstPlayer.Update();
-
-
+        }
+        
+        private void UpdateInfo()
+        {
             firstPlayerInfo.SetBounds((int)(0.1 * Width), (int)(0.05 * Height), (int)(0.26 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
             firstPlayerInfo.Font = new Font("Arial", 0.01f * Width);
             firstPlayerInfo.Text = $"Health = {firstPlayer.Health}, Armour = {firstPlayer.Armour}, Fuel = {firstPlayer.Fuel}";
@@ -428,93 +415,62 @@ namespace Ballon_Battle
             secondPlayerInfo.SetBounds((int)(0.7 * Width), (int)(0.05 * Height), (int)(0.26 * Width), (int)(0.05 * Height)); // информация первого игрока (здоровье, топливо, броня)
             secondPlayerInfo.Font = new Font("Arial", 0.01f * Width);
             secondPlayerInfo.Text = $"Health = {secondPlayer.Health}, Armour = {secondPlayer.Armour}, Fuel = {secondPlayer.Fuel}";
+        }
 
-            
+        private void UpdateGame()
+        {
+            firstPlayerTicks++;
+            secondPlayerTicks++;
+
+            firstPlayer.Update();
+            secondPlayer.Update();
+
+            firstPlayerCollider = firstPlayer.GetCollider();
+            secondPlayerCollider = secondPlayer.GetCollider();
+
+            UpdateInput();
+            CheckCollisions();
+            UpdateAmmos();
+            UpdatePrize();
+            UpdateInfo();
+        }
+
+        private void EndGame(string message)
+        {
+            glTimer.Stop();
+            DialogResult result = MessageBox.Show(message, "Конец игры", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                Application.Restart();
+                Environment.Exit(0);
+            }
+            else
+                this.Close();
         }
 
         private void glTimer_DrawTick(object sender, EventArgs e)
         {
             glControl.Refresh();
-           /* for (int i = 0; i < explodes.Count; i++)
-            {
-                if (i >= explodes.Count)
-                    break;
-                int thisCount = explodes.Count;
-                try
-                {
-                    explodes[i].Draw(false);
-                }
-                catch
-                {
-                    explodes.RemoveAt(i);
-                }
-                if (thisCount != explodes.Count)
-                    i--;
-            }*/
 
             if (explodes.Count <= 0)
             {
-                glTimer.Stop();
-                MessageBox.Show("GAME IS OVER! IT'S DRAW!.");
-
-                Application.Restart();
-                Environment.Exit(0);
+                EndGame("ИГРА ОКОНЧЕНА! НИЧЬЯ! Хотите начать заново?");
             }
         }
-
         private void glTimer_FirstPlayerLooseTick(object sender, EventArgs e)
         {
             glControl.Refresh();
-            for (int i = 0; i < explodes.Count; i++)
-            {
-                try
-                {
-                    Debug.WriteLine($"Explodes.Count = {explodes[i].Count}");
-
-                    explodes[i].Draw(false);
-                }
-                catch
-                {
-                    explodes.RemoveAt(i);
-                }
-
-            }
-            
             if (explodes.Count<=0)
             {
-                glTimer.Stop();
-                MessageBox.Show("GAME IS OVER! FIRST PLAYER IS LOSED.");
-
-                Application.Restart();
-                Environment.Exit(0);
+                EndGame("ИГРА ОКОНЧЕНА! ПЕРВОЙ ИГРОК ПРОИГРАЛ. Хотите начать заново?");
             }
         }
-
-        
-
         private void glTimer_SecondPlayerLooseTick(object sender, EventArgs e)
         {
             glControl.Refresh();
-            for (int i = 0; i < explodes.Count; i++)
-            {
-                try
-                {
-                    explodes[i].Draw(false);
-                }
-                catch
-                {
-                    explodes.RemoveAt(i);
-                }
-
-            }
             if (explodes.Count <= 0)
             {
-                glTimer.Stop();
-                MessageBox.Show("GAME IS OVER! SECOND PLAYER IS LOSED.");
-
-                Application.Restart();
-                Environment.Exit(0);
-
+                EndGame("ИГРА ОКОНЧЕНА! ВТОРОЙ ИГРОК ПРОИГРАЛ. Хотите начать заново?");
             }
         }
 
@@ -524,8 +480,6 @@ namespace Ballon_Battle
             {
                 firstPlayer.ChangeWindCondition(false);
                 secondPlayer.ChangeWindCondition(false);
-              /*  firstPlayer.ChangeWindSpeed(new Vector2(0.0f, 0.0f));
-                secondPlayer.ChangeWindSpeed(new Vector2(0.0f, 0.0f));*/
             }
             else
             {
@@ -569,15 +523,8 @@ namespace Ballon_Battle
                 windTicks = 0;
         }
 
-        private void glTimer_Tick(object sender, EventArgs e) // для обновления картинки каждые 16 миллисекунд (чуть больше 60 фреймов в секунде)
-        {
-            //     firstPlayer.PositionCenter += new Vector2(0.5f, 0.5f);
-
-            //Prize prize = new FuelPrize();
-
-            //if (prize is FuelPrize)
-            //    Debug.WriteLine("prize is FuelPrize");
-            
+        private void glTimer_Tick(object sender, EventArgs e) // для обновления картинки каждые 10 миллисекунд (100 фреймов в секунду)
+        {   
             UpdateGame();
 
             glControl.Refresh();
@@ -585,7 +532,7 @@ namespace Ballon_Battle
 
         private void prizeTimer_Tick(object sender, EventArgs e)
         {
-            if (currentPrize != null)
+            if (currentPrize != null) // если на экране уже есть приз, то новый не должен спавниться
                 return;
 
             Prize newPrize = null;
@@ -594,8 +541,6 @@ namespace Ballon_Battle
             bool isLeft; // переменная, отвечающая за направление движения
 
             int prizeSpawnSide = random.Next(0, 2); // 0 - спавнится слева, 1 - справа
-
-
 
             if (prizeSpawnSide == 0)
             {
@@ -609,7 +554,7 @@ namespace Ballon_Battle
                 prizePozitionX = 1.05f;
             }
 
-            float prizePozitionY = (float)(random.Next((int)(-0.6f * Height), (int)(0.7f * Height))) / (float)Height; // спавн в пределах экрана (-0.6;0.7)
+            float prizePozitionY = (float)(random.Next((int)(-0.6f * Height), (int)(0.7f * Height))) / (float)Height; // спавн в пределах экрана по Y (-0.6;0.7)
 
             int prizeType = random.Next(0, 4);
 
@@ -649,27 +594,21 @@ namespace Ballon_Battle
                 case Keys.W:
                     {
                         isWdown = false;
-                    //    firstPlayer.Update(new Vector2(0f, 0.01f));
-                    //    Debug.WriteLine("W");
                         break;
                     }
                 case Keys.S:
                     {
                         isSdown = false;
-                   //     firstPlayer.Update(new Vector2(0f, -0.01f));
                         break;
                     }
                 case Keys.I:
                     {
                         isIdown = false;
-                   //     secondPlayer.Update(new Vector2(0f, 0.01f));
-                   //     Debug.WriteLine("UP ARROW");
                         break;
                     }
                 case Keys.K:
                     {
                         isKdown = false;
-                     //   secondPlayer.Update(new Vector2(0f, -0.01f));
                         break;
                     }
                 case Keys.J:
@@ -751,6 +690,4 @@ namespace Ballon_Battle
             }
         }
     }
-
-        
 }
