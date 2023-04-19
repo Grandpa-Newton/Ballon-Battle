@@ -37,7 +37,6 @@ namespace GraphicsOpenGL
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMinFilter.Linear);
 
             return new Texture(textureId, bitmap.Width, bitmap.Height);
-
         }
     }
 }

@@ -15,12 +15,48 @@ namespace PrizesLibrary
         protected bool isLeft;
         protected Texture sprite;
         protected abstract Vector2 getSpeed();
-        public abstract void Draw(bool isFlipped);
-        public abstract RectangleF GetCollider();
+        public void Draw(bool isFlipped)
+        {
+            ObjectsDrawing.Draw(sprite, getPosition(), isFlipped);
+        }
+        public RectangleF GetCollider()
+        {
+            Vector2[] colliderPosition = getPosition(); // добавить более точную коллизию!
 
-        protected abstract Vector2[] getPosition();
 
-        public abstract void Update();
+            float colliderWidth = (colliderPosition[2].X - colliderPosition[3].X) / 2.0f;
+            float colliderHeight = (colliderPosition[3].Y - colliderPosition[0].Y) / 2.0f;
+
+            float[] convertedLeftTop = CoordinatesConverter.Convert(colliderPosition[3].X, colliderPosition[3].Y);
+
+            RectangleF collider = new RectangleF(convertedLeftTop[0], convertedLeftTop[1], colliderWidth, colliderHeight);
+
+            return collider;
+        }
+        protected Vector2[] getPosition()
+        {
+            return new Vector2[4]
+            {
+                centerPosition + new Vector2(-0.06f, -0.06f),
+                centerPosition + new Vector2(0.06f, -0.06f),
+                centerPosition + new Vector2(0.06f, 0.06f),
+                centerPosition + new Vector2(-0.06f, 0.06f),
+            };
+        }
+
+        public void Update()
+        {
+            if (isLeft) // для проверки, в какую сторону летит приз
+                centerPosition -= getSpeed();
+            else
+                centerPosition += getSpeed();
+        }
+        public Prize(Vector2 centerPosition, bool isLeft, Texture sprite)
+        {
+            this.centerPosition = centerPosition;
+            this.isLeft = isLeft;
+            this.sprite = sprite;
+        }
 
     }
 }

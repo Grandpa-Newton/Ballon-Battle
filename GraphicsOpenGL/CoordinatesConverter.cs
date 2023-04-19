@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GraphicsOpenGL
 {
-    public static class CoordinatesConverter
+    public static class CoordinatesConverter // класс, предназначенный для конвертации из системы координат OpenGL в WinForms
     {
         public static float[] Convert(float pointX, float pointY)
         {

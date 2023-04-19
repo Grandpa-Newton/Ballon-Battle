@@ -425,7 +425,6 @@ namespace Ballon_Battle
             UpdatePrize();
             UpdateInfo();
         }
-
         private void EndGame(string message)
         {
             glTimer.Stop();

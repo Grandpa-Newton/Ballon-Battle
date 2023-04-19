@@ -18,7 +18,7 @@ namespace GraphicsOpenGL
 
             Vector2[] vertices;
 
-            if (isFlipped)
+            if (isFlipped) // отзеркалить ли текстуру
             {
                 vertices = new Vector2[4] // вершины спрайта
                 {
@@ -39,17 +39,11 @@ namespace GraphicsOpenGL
                 };
             }
 
-            
-
-           
-
             GL.Enable(EnableCap.Texture2D);
 
             GL.BindTexture(TextureTarget.Texture2D, texture.Id);
 
             GL.Begin(PrimitiveType.Quads);
-
-        //    GL.Color3(color);
 
             for (int i = 0; i < 4; i++)
             {
@@ -65,7 +59,6 @@ namespace GraphicsOpenGL
         {
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
-            //   GL.Ortho(-width/2f, width/2f, height/2f, -height/2f, 0f, 1f);
             GL.Ortho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
