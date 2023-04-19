@@ -31,14 +31,13 @@ namespace Ballon_Battle
         Prize currentPrize = null; // объект текущего приза
         Label firstPlayerInfo; // label для отображения текущего состояния первого игрока
         Label secondPlayerInfo; // label для отображения текущего состояния второго игрока
-        int maxWindSpeed = 30; // максимальная возможнная скорость ветра (умноженная на 10000)
+        int maxWindSpeed = 20; // максимальная возможнная скорость ветра (умноженная на 10000)
         int minWindSpeed = 5; // минимальная скорость ветра
         int windTicks = 0; // количество тиков таймера ветра
         bool isFirstPlayerWindLeft = false; // true - ветер дует налево, false - направо
         bool isSecondPlayerWindLeft = false;
 
-        bool isWdown, isSdown, isIdown, isKdown, isJdown, isDdown, isAdown, isLdown; // переменные для проверки нажатия кнопки
-    //    List<bool> keysDown;
+        List<bool> keysDown; // список для проверки нажатия кнопок (W, S, I, K, J, D, A, L)
 
         int secondPlayerTicks = 50; // показатель, отвечающий за кулдаун снарядов второго игрока
         int firstPlayerTicks = 50;
@@ -100,6 +99,11 @@ namespace Ballon_Battle
             landCollider = new RectangleF(0.0f, 0.875f, 1.0f, 0.125f);
 
             explodes = new List<Explode>();
+
+            keysDown = new List<bool>();
+
+            for (int i = 0; i < 8; i++)
+                keysDown.Add(false);
         }
         
         private void glControl_Paint(object sender, PaintEventArgs e)
@@ -171,34 +175,31 @@ namespace Ballon_Battle
 
         private void UpdateInput()
         {
-            if (isWdown && (firstPlayerCollider.Y > screenCollider.Y)) // ?
+            if (keysDown[0] && (firstPlayerCollider.Y > screenCollider.Y))
                 firstPlayer.Update(new Vector2(0f, 0.01f));
-            if (isSdown)
+            if (keysDown[1])
                 firstPlayer.Update(new Vector2(0f, -0.01f));
-            if (isIdown && (secondPlayerCollider.Y > screenCollider.Y))
+            if (keysDown[2] && (secondPlayerCollider.Y > screenCollider.Y))
                 secondPlayer.Update(new Vector2(0f, 0.01f));
-            if (isKdown)
+            if (keysDown[3])
                 secondPlayer.Update(new Vector2(0f, -0.01f));
-            if ((isJdown || isLdown) && secondPlayerTicks >= 50)
+            if ((keysDown[4] || keysDown[7]) && secondPlayerTicks >= 50)
             {
                 secondPlayerTicks = 0;
                 Ammo newAmmo = null;
-                if (isJdown)
+                if (keysDown[4])
                     newAmmo = secondPlayer.GetCurrentAmmo(true);
-                else if (isLdown)
+                else if (keysDown[7])
                     newAmmo = secondPlayer.GetCurrentAmmo(false);
                 secondAmmos.Add(newAmmo);
-                //secondAmmos.Add(secondPlayer.GetCurrentAmmo(true));
-                Debug.WriteLine($"Speed = {secondAmmos[secondAmmos.Count - 1].Speed}");
-
             }
-            if ((isDdown || isAdown) && firstPlayerTicks >= 50)
+            if ((keysDown[5] || keysDown[6]) && firstPlayerTicks >= 50)
             {
                 firstPlayerTicks = 0;
                 Ammo newAmmo = null;
-                if (isDdown)
+                if (keysDown[5])
                     newAmmo = firstPlayer.GetCurrentAmmo(false);
-                else if (isAdown)
+                else if (keysDown[6])
                     newAmmo = firstPlayer.GetCurrentAmmo(true);
                 firstAmmos.Add(newAmmo);
 
@@ -583,42 +584,42 @@ namespace Ballon_Battle
             {
                 case Keys.W:
                     {
-                        isWdown = false;
+                        keysDown[0] = false;
                         break;
                     }
                 case Keys.S:
                     {
-                        isSdown = false;
+                        keysDown[1] = false;
                         break;
                     }
                 case Keys.I:
                     {
-                        isIdown = false;
+                        keysDown[2] = false;
                         break;
                     }
                 case Keys.K:
                     {
-                        isKdown = false;
+                        keysDown[3] = false;
                         break;
                     }
                 case Keys.J:
                     {
-                        isJdown = false;
+                        keysDown[4] = false;
                         break;
                     }
                 case Keys.D:
                     {
-                        isDdown = false;
+                        keysDown[5] = false;
                         break;
                     }
                 case Keys.A:
                     {
-                        isAdown = false;
+                        keysDown[6] = false;
                         break;
                     }
                 case Keys.L:
                     {
-                        isLdown = false;
+                        keysDown[7] = false;
                         break;
                     }
                 case Keys.M:
@@ -639,42 +640,42 @@ namespace Ballon_Battle
             {
                 case Keys.W:
                     {
-                        isWdown = true;
+                        keysDown[0] = true; 
                         break;
                     }
                 case Keys.S:
                     {
-                        isSdown = true;
+                        keysDown[1] = true;
                         break;
                     }
                 case Keys.I:
                     {
-                        isIdown = true;
+                        keysDown[2] = true;
                         break;
                     }
                 case Keys.K:
                     {
-                        isKdown = true;
+                        keysDown[3] = true;
                         break;
                     }
                 case Keys.J:
                     {
-                        isJdown = true;
+                        keysDown[4] = true;
                         break;
                     }
                 case Keys.D:
                     {
-                        isDdown = true;
+                        keysDown[5] = true;
                         break;
                     }
                 case Keys.A:
                     {
-                        isAdown = true;
+                        keysDown[6] = true;
                         break;
                     }
                 case Keys.L:
                     {
-                        isLdown = true;
+                        keysDown[7] = true;
                         break;
                     }
             }
