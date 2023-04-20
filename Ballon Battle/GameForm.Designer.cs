@@ -1,5 +1,6 @@
 ﻿using OpenTK.Graphics;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace Ballon_Battle
 {
@@ -70,7 +71,7 @@ namespace Ballon_Battle
             // 
             // firstPlayerInfo
             // 
-            this.firstPlayerInfo.BackColor = System.Drawing.Color.Black;
+            this.firstPlayerInfo.BackColor = Color.FromArgb(65, 142, 196);
             this.firstPlayerInfo.ForeColor = System.Drawing.Color.White;
             this.firstPlayerInfo.Location = new System.Drawing.Point(0, 0);
             this.firstPlayerInfo.Name = "firstPlayerInfo";
@@ -79,7 +80,7 @@ namespace Ballon_Battle
             // 
             // secondPlayerInfo
             // 
-            this.secondPlayerInfo.BackColor = System.Drawing.Color.Black;
+            this.secondPlayerInfo.BackColor = Color.FromArgb(65, 142, 196);
             this.secondPlayerInfo.ForeColor = System.Drawing.Color.White;
             this.secondPlayerInfo.Location = new System.Drawing.Point(0, 0);
             this.secondPlayerInfo.Name = "secondPlayerInfo";
