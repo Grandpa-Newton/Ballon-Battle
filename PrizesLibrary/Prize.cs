@@ -51,11 +51,10 @@ namespace PrizesLibrary
             else
                 centerPosition += GetSpeed();
         }
-        public Prize(Vector2 centerPosition, bool isLeft, Texture sprite)
+        public Prize(Vector2 centerPosition, bool isLeft)
         {
             this.centerPosition = centerPosition;
             this.isLeft = isLeft;
-            this.sprite = sprite;
         }
 
     }

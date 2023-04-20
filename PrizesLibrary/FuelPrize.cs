@@ -11,8 +11,11 @@ namespace PrizesLibrary
 {
     public class FuelPrize : Prize
     {
-        public FuelPrize(Vector2 centerPosition, bool isLeft, Texture sprite) : base(centerPosition, isLeft, sprite)
+        public FuelPrize(Vector2 centerPosition, bool isLeft) : base(centerPosition, isLeft)
         {
+            this.centerPosition = centerPosition;
+            this.isLeft = isLeft;
+            this.sprite = TextureLoader.LoadTexure("fuelPrize.png");
         }
 
         protected override Vector2 GetSpeed()

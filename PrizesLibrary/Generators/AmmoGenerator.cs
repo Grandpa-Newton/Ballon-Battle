@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PrizesLibrary.Generators
+namespace PrizesLibrary
 {
-    public class AmmoGenerator : PrizeGenerator
+  /*  public class AmmoGenerator //: PrizeGenerator
     {
         public AmmoGenerator()
         {
@@ -18,5 +18,5 @@ namespace PrizesLibrary.Generators
         {
             return new AmmoPrize(centerPosition, isLeft, sprite);
         }
-    }
+    }*/
 }

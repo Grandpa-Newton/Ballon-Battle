@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace PrizesLibrary
 {
 
-    public class HealthGenerator : PrizeGenerator
+  /*  public class HealthGenerator //: PrizeGenerator
     {
         public HealthGenerator()
         {
@@ -20,5 +20,5 @@ namespace PrizesLibrary
         {
             return new HealthPrize(centerPosition, isLeft, sprite);
         }
-    }
+    }*/
 }

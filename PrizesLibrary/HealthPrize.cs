@@ -11,8 +11,11 @@ namespace PrizesLibrary
 {
     public class HealthPrize : Prize
     {
-        public HealthPrize(Vector2 centerPosition, bool isLeft, Texture sprite) : base(centerPosition, isLeft, sprite)
+        public HealthPrize(Vector2 centerPosition, bool isLeft) : base(centerPosition, isLeft)
         {
+            this.centerPosition = centerPosition;
+            this.isLeft = isLeft;
+            this.sprite = TextureLoader.LoadTexure("healthPrize.png");
         }
 
         protected override Vector2 GetSpeed()

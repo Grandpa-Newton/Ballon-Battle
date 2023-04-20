@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PrizesLibrary
 {
-    public class ArmourGenerator : PrizeGenerator
+  /*  public class ArmourGenerator //: PrizeGenerator
     {
         public ArmourGenerator()
         {
@@ -19,5 +19,5 @@ namespace PrizesLibrary
         {
             return new ArmourPrize(centerPosition, isLeft, sprite);
         }
-    }
+    }*/
 }

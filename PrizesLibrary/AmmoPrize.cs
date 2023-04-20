@@ -11,8 +11,11 @@ namespace PrizesLibrary
 {
     public class AmmoPrize : Prize
     {
-        public AmmoPrize(Vector2 centerPosition, bool isLeft, Texture sprite) : base(centerPosition, isLeft, sprite)
+        public AmmoPrize(Vector2 centerPosition, bool isLeft) : base(centerPosition, isLeft)
         {
+            this.centerPosition = centerPosition;
+            this.isLeft = isLeft;
+            this.sprite = TextureLoader.LoadTexure("ammoPrize.png");
         }
         protected override Vector2 GetSpeed()
         {

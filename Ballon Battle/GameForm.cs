@@ -8,7 +8,7 @@ using GameLibrary;
 using System.Diagnostics;
 using AmmoLibrary;
 using PrizesLibrary;
-using PrizesLibrary.Generators;
+using PrizesLibrary;
 using GraphicsOpenGL;
 
 namespace Ballon_Battle
@@ -534,49 +534,55 @@ namespace Ballon_Battle
             if (currentPrize != null) // если на экране уже есть приз, то новый не должен спавниться
                 return;
 
-            Prize newPrize;
-            PrizeGenerator prizeGenerator = null;
-            float prizePozitionX;
-            bool isLeft; // переменная, отвечающая за направление движения
+            PrizeGenerator prizeGeneretor = new PrizeGenerator();
 
-            int prizeSpawnSide = random.Next(0, 2); // 0 - спавнится слева, 1 - справа
 
-            if (prizeSpawnSide == 0)
-            {
-                isLeft = false;
-                prizePozitionX = -1.05f;
-            }
+            /* Prize newPrize;
+             PrizeGenerator prizeGenerator = null;
+             float prizePozitionX;
+             bool isLeft; // переменная, отвечающая за направление движения
 
-            else
-            {
-                isLeft = true;
-                prizePozitionX = 1.05f;
-            }
+             int prizeSpawnSide = random.Next(0, 2); // 0 - спавнится слева, 1 - справа
 
-            float prizePozitionY = (float)(random.Next((int)(-0.6f * Height), (int)(0.7f * Height))) / (float)Height; // спавн в пределах экрана по Y (-0.6;0.7)
+             if (prizeSpawnSide == 0)
+             {
+                 isLeft = false;
+                 prizePozitionX = -1.05f;
+             }
 
-            int prizeType = random.Next(0, 4);
+             else
+             {
+                 isLeft = true;
+                 prizePozitionX = 1.05f;
+             }
 
-            switch (prizeType)
-            {
-                case 0:
-                    prizeGenerator = new AmmoGenerator();
-                    break;
-                case 1:
-                    prizeGenerator = new ArmourGenerator();
-                    break;
-                case 2:
-                    prizeGenerator = new FuelGenerator();
-                    break;
-                case 3:
-                    prizeGenerator = new HealthGenerator();
-                    break;
-            }
-            if (prizeGenerator != null)
-            {
-                newPrize = prizeGenerator.Create(new Vector2(prizePozitionX, prizePozitionY), isLeft);
-                currentPrize = newPrize;
-            }
+             float prizePozitionY = (float)(random.Next((int)(-0.6f * Height), (int)(0.7f * Height))) / (float)Height; // спавн в пределах экрана по Y (-0.6;0.7)
+
+             int prizeType = random.Next(0, 4);
+
+             switch (prizeType)
+             {
+                 case 0:
+                     prizeGenerator = new AmmoGenerator();
+                     break;
+                 case 1:
+                     prizeGenerator = new ArmourGenerator();
+                     break;
+                 case 2:
+                     prizeGenerator = new FuelGenerator();
+                     break;
+                 case 3:
+                     prizeGenerator = new HealthGenerator();
+                     break;
+             }
+             if (prizeGenerator != null)
+             {
+                 newPrize = prizeGenerator.Create(new Vector2(prizePozitionX, prizePozitionY), isLeft);
+                 currentPrize = newPrize;
+             }*/
+            Prize newPrize = prizeGeneretor.Create(this.Width, this.Height);
+
+            currentPrize = newPrize;
 
         }
 

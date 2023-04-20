@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PrizesLibrary
 {
-    public class FuelGenerator : PrizeGenerator
+    /*public class FuelGenerator// : PrizeGenerator
     {
         public FuelGenerator()
         {
@@ -19,5 +19,5 @@ namespace PrizesLibrary
         {
             return new FuelPrize(centerPosition, isLeft, sprite);
         }
-    }
+    }*/
 }
