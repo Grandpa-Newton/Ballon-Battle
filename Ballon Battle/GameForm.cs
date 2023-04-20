@@ -210,7 +210,7 @@ namespace Ballon_Battle
             {
                 firstPlayer.ChangeWindCondition(false);
             }
-            else if ((firstPlayerCollider.X + secondPlayerCollider.Width >= screenCollider.X + screenCollider.Width) && !isFirstPlayerWindLeft)
+            else if ((firstPlayerCollider.X + firstPlayerCollider.Width >= screenCollider.X + screenCollider.Width) && !isFirstPlayerWindLeft)
             {
                 firstPlayer.ChangeWindCondition(false);
             }
