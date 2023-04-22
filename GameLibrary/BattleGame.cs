@@ -1,19 +1,21 @@
-﻿using System;
+﻿using AmmoLibrary;
+using GameLibrary;
+using GraphicsOpenGL;
+using OpenTK;
+using PrizesLibrary;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
-using OpenTK;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
-using GameLibrary;
 using System.Diagnostics;
-using AmmoLibrary;
-using PrizesLibrary;
-using PrizesLibrary;
-using GraphicsOpenGL;
+using System.Windows.Forms;
 
-namespace Ballon_Battle
+namespace GameLibrary
 {
-    public partial class GameForm : Form
+    public class BattleGame
     {
         Texture backgroundTexture; // текстура фона
         Texture landTexture; // текстура земли
@@ -41,35 +43,6 @@ namespace Ballon_Battle
 
         int secondPlayerTicks = 50; // показатель, отвечающий за кулдаун снарядов второго игрока
         int firstPlayerTicks = 50;
-
-        public GameForm()
-        {
-
-            InitializeComponent();
-            CenterToScreen();
-            glControl.Size = this.Size;
-            glControl.Visible = true;
-            glTimer.Start();
-            prizeTimer.Start();
-            windTimer.Start();
-
-        }
-
-        private void glControl_Load(object sender, EventArgs e)
-        {
-            glControl.MakeCurrent();
-
-            GL.Enable(EnableCap.Texture2D);
-            GL.Enable(EnableCap.Blend); // для отключения фона у ассетов
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-            GL.Viewport(0, 0, glControl.Width, glControl.Height);
-
-            LoadObjects();
-
-            glControl.SendToBack();
-
-            this.WindowState = FormWindowState.Maximized; // для открытия окна в полном экране
-        }
 
         private void LoadObjects()
         {
@@ -101,10 +74,9 @@ namespace Ballon_Battle
                 keysDown.Add(false);
         }
 
-        private void glControl_Paint(object sender, PaintEventArgs e)
+        public void glControl_Paint(object sender, PaintEventArgs e)
         {
             GL.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
-
             Draw();
 
             glControl.SwapBuffers();
@@ -186,9 +158,9 @@ namespace Ballon_Battle
                     newAmmo = secondPlayer.GetCurrentAmmo(true);
                 else if (keysDown[7])
                     newAmmo = secondPlayer.GetCurrentAmmo(false);
-             //   Debug.WriteLine($"Distance={newAmmo.Distance}, Radius={newAmmo.Radius}, Speed={newAmmo.Speed.X}");
+                //   Debug.WriteLine($"Distance={newAmmo.Distance}, Radius={newAmmo.Radius}, Speed={newAmmo.Speed.X}");
                 secondAmmos.Add(newAmmo);
-                
+
             }
             if ((keysDown[5] || keysDown[6]) && firstPlayerTicks >= 50)
             {
@@ -199,7 +171,7 @@ namespace Ballon_Battle
                 else if (keysDown[6])
                     newAmmo = firstPlayer.GetCurrentAmmo(true);
 
-             //   Debug.WriteLine($"Distance={newAmmo.Distance}, Radius={newAmmo.Radius}, Speed={newAmmo.Speed.X}");
+                //   Debug.WriteLine($"Distance={newAmmo.Distance}, Radius={newAmmo.Radius}, Speed={newAmmo.Speed.X}");
                 firstAmmos.Add(newAmmo);
 
             }
@@ -678,3 +650,4 @@ namespace Ballon_Battle
         }
     }
 }
+

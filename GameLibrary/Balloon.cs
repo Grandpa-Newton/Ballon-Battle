@@ -215,5 +215,10 @@ namespace GameLibrary
                 PositionCenter + new Vector2(-spriteWidth, spriteHeight),
             };
         }
+
+        public string GetInfo()
+        {
+            return $"Health = {Health}, Armour = {Armour}, Fuel = {Fuel}";
+        }
     }
 }
