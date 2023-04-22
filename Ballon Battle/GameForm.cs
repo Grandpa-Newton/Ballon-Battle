@@ -15,6 +15,7 @@ namespace Ballon_Battle
 {
     public partial class GameForm : Form
     {
+        
         Texture backgroundTexture; // текстура фона
         Texture landTexture; // текстура земли
         Balloon firstPlayer; // объект первого игрока
