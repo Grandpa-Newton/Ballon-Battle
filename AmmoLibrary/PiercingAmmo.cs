@@ -14,7 +14,7 @@ namespace AmmoLibrary
         public PiercingAmmo(Texture sprite) : base(sprite)
         {
             this.Sprite = sprite;
-            this.Distance = 1.5f;
+            this.Distance = 1.8f;
             this.Radius = 0.1f;
             this.Speed = new Vector2(0.012f, 0.0f);
         }

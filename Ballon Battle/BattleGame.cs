@@ -1,4 +1,4 @@
-﻿/*using AmmoLibrary;
+﻿using AmmoLibrary;
 using GameLibrary;
 using GraphicsOpenGL;
 using OpenTK;
@@ -11,7 +11,6 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
 using System.Diagnostics;
-using PrizesLibrary.Generators;
 
 namespace Ballon_Battle
 {
@@ -422,51 +421,13 @@ namespace Ballon_Battle
             if (currentPrize != null) // если на экране уже есть приз, то новый не должен спавниться
                 return;
 
-            Prize newPrize;
-            PrizeGenerator prizeGenerator = null;
-            float prizePozitionX;
-            bool isLeft; // переменная, отвечающая за направление движения
+            PrizeGenerator prizeGenerator = new PrizeGenerator();
 
-            int prizeSpawnSide = random.Next(0, 2); // 0 - спавнится слева, 1 - справа
+            Prize newPrize = prizeGenerator.Create(form.Width, form.Height);
 
-            if (prizeSpawnSide == 0)
-            {
-                isLeft = false;
-                prizePozitionX = -1.05f;
-            }
-
-            else
-            {
-                isLeft = true;
-                prizePozitionX = 1.05f;
-            }
-
-            float prizePozitionY = (float)(random.Next((int)(-0.6f * form.Height), (int)(0.7f * form.Height))) / (float)form.Height; // спавн в пределах экрана по Y (-0.6;0.7)
-
-            int prizeType = random.Next(0, 4);
-
-            switch (prizeType)
-            {
-                case 0:
-                    prizeGenerator = new AmmoGenerator();
-                    break;
-                case 1:
-                    prizeGenerator = new ArmourGenerator();
-                    break;
-                case 2:
-                    prizeGenerator = new FuelGenerator();
-                    break;
-                case 3:
-                    prizeGenerator = new HealthGenerator();
-                    break;
-            }
-            if (prizeGenerator != null)
-            {
-                newPrize = prizeGenerator.Create(new Vector2(prizePozitionX, prizePozitionY), isLeft);
-                currentPrize = newPrize;
-            }
+            currentPrize = newPrize;
 
         }
     }
-}*/
+}
 

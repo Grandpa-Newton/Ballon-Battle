@@ -52,13 +52,14 @@ namespace Ballon_Battle
             glTimer.Start();
             prizeTimer.Start();
             windTimer.Start();
+
         }
 
         private void glControl_Load(object sender, EventArgs e)
         {
             glControl.MakeCurrent();
 
-            GL.Enable(EnableCap.Texture2D);
+        /*    GL.Enable(EnableCap.Texture2D);
             GL.Enable(EnableCap.Blend); // для отключения фона у ассетов
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             GL.Viewport(0, 0, glControl.Width, glControl.Height);
@@ -67,7 +68,7 @@ namespace Ballon_Battle
 
             glControl.SendToBack();
 
-            this.WindowState = FormWindowState.Maximized; // для открытия окна в полном экране
+            this.WindowState = FormWindowState.Maximized; // для открытия окна в полном экране*/
         }
 
         private void LoadObjects()
@@ -88,7 +89,7 @@ namespace Ballon_Battle
 
             secondAmmos = new List<Ammo>();
 
-            screenCollider = new RectangleF(0.0f, 0.0f, 1.0f, 0.875f);
+            screenCollider = new RectangleF(0.0f, 0.05f, 1.0f, 0.875f);
 
             landCollider = new RectangleF(0.0f, 0.875f, 1.0f, 0.125f);
 
@@ -342,7 +343,7 @@ namespace Ballon_Battle
                     {
                         Debug.WriteLine("TESTAMMO");
                         int decoratorType = random.Next(0, 3);
-                        firstPlayer.ChangeAmmoCharesterictics(decoratorType); // БУДЕТ RAND
+                        firstPlayer.ChangeAmmoCharesterictics(decoratorType);
                         currentPrize = null;
                     }
                     else if (currentPrize is ArmourPrize)
@@ -534,7 +535,7 @@ namespace Ballon_Battle
             if (currentPrize != null) // если на экране уже есть приз, то новый не должен спавниться
                 return;
 
-            PrizeGenerator prizeGeneretor = new PrizeGenerator();
+            PrizeGenerator prizeGenerator = new PrizeGenerator();
 
 
             /* Prize newPrize;
@@ -580,7 +581,7 @@ namespace Ballon_Battle
                  newPrize = prizeGenerator.Create(new Vector2(prizePozitionX, prizePozitionY), isLeft);
                  currentPrize = newPrize;
              }*/
-            Prize newPrize = prizeGeneretor.Create(this.Width, this.Height);
+            Prize newPrize = prizeGenerator.Create(this.Width, this.Height);
 
             currentPrize = newPrize;
 
