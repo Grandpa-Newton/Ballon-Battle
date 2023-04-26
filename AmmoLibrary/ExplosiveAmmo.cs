@@ -11,9 +11,9 @@ namespace AmmoLibrary
 {
     public class ExplosiveAmmo : Ammo // фугасный
     {
-        public ExplosiveAmmo(Texture sprite) : base(sprite)
+        public ExplosiveAmmo() : base()
         {
-            this.Sprite = sprite;
+            this.Sprite = TextureLoader.LoadTexure("explosiveAmmo_2.png");
             this.Distance = 1.2f;
             this.Radius = 0.2f;
             this.Speed = new Vector2(0.009f, 0.0f);

@@ -52,6 +52,7 @@
     <Compile Include="TextureLoader.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GraphicsLibraryDiagram.cd" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
   </ItemGroup>

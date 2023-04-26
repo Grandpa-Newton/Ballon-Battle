@@ -11,9 +11,10 @@ namespace AmmoLibrary
 {
     public class PiercingAmmo : Ammo // бронебойный 
     {
-        public PiercingAmmo(Texture sprite) : base(sprite)
+        
+        public PiercingAmmo() : base()
         {
-            this.Sprite = sprite;
+            this.Sprite = TextureLoader.LoadTexure("piercingAmmo.png");
             this.Distance = 1.8f;
             this.Radius = 0.1f;
             this.Speed = new Vector2(0.012f, 0.0f);

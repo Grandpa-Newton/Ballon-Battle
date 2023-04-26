@@ -12,9 +12,9 @@ namespace AmmoLibrary
 {
     public class SupersonicAmmo : Ammo // сверхзвуковой
     {
-        public SupersonicAmmo(Texture sprite) : base(sprite)
+        public SupersonicAmmo() : base()
         {
-            this.Sprite = sprite;
+            this.Sprite = TextureLoader.LoadTexure("supersonicAmmo.png");
             this.Distance = 1.0f;
             this.Radius = 0.05f;
             this.Speed = new Vector2(0.0145f, 0.0f);

@@ -36,11 +36,16 @@ namespace AmmoLibrary
             Position = clone.Position;
         }
 
-        public Ammo(Texture sprite)
+        public Ammo()
+        {
+
+        }
+
+     /*   public Ammo(Texture sprite)
         {
             this.Sprite = sprite;
         }
-        /*   public abstract Vector2 GetSpeed();
+           public abstract Vector2 GetSpeed();
            public abstract float GetDistance();
            public abstract float GetRadius();*/
         public void Draw()

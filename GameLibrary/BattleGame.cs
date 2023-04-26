@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace GameLibrary
 {
@@ -18,6 +19,7 @@ namespace GameLibrary
     {
         Texture backgroundTexture; // текстура фона
         Texture landTexture; // текстура земли
+        Texture grassTexture; // текстура травы
         Balloon firstPlayer; // объект первого игрока
         Balloon secondPlayer; // объект второго игрока
         RectangleF landCollider; // границы земли
@@ -41,7 +43,7 @@ namespace GameLibrary
         int secondPlayerTicks = 50; // показатель, отвечающий за кулдаун снарядов второго игрока
         int firstPlayerTicks = 50;
 
-        private void LoadObjects()
+        public void LoadObjects()
         {
             backgroundTexture = TextureLoader.LoadTexure("clouds.jpg");
 
@@ -53,15 +55,17 @@ namespace GameLibrary
 
             secondPlayer = new Balloon(new Vector2(0.7f, 0.0f), secondPlayerTexture);
 
-            landTexture = TextureLoader.LoadTexure("testLand.png");
+            landTexture = TextureLoader.LoadTexure("testLandNew.png");
+
+            grassTexture = TextureLoader.LoadTexure("grasstexture.png");
 
             firstAmmos = new List<Ammo>();
 
             secondAmmos = new List<Ammo>();
 
-            screenCollider = new RectangleF(0.0f, 0.0f, 1.0f, 0.875f);
+            screenCollider = new RectangleF(0.0f, 0.05f, 1.0f, 0.825f);
 
-            landCollider = new RectangleF(0.0f, 0.875f, 1.0f, 0.125f);
+            landCollider = new RectangleF(0.0f, 0.89f, 1.0f, 0.12f);
 
             explodes = new List<Explode>();
 
@@ -77,7 +81,7 @@ namespace GameLibrary
             GL.Enable(EnableCap.Blend); // для отключения фона у ассетов
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-            LoadObjects();
+            //LoadObjects();
         }
 
         public void Draw()
@@ -92,15 +96,27 @@ namespace GameLibrary
                 new Vector2(-1.0f, 1.0f),
             }, false);
 
+            // отрисовка травы
+
+            ObjectDrawer.Draw(grassTexture, new Vector2[4]
+            {
+                new Vector2(-1.0f, -0.8f),
+                new Vector2(1.0f, -0.8f),
+                new Vector2(1.0f, -0.55f),
+                new Vector2(-1.0f, -0.55f),
+            }, false);
+
             // отрисовка земли
 
             ObjectDrawer.Draw(landTexture, new Vector2[4]
             {
                 new Vector2(-1.0f, -1.0f),
                 new Vector2(1.0f, -1.0f),
-                new Vector2(1.0f, -0.75f),
-                new Vector2(-1.0f, -0.75f),
+                new Vector2(1.0f, -0.78f),
+                new Vector2(-1.0f, -0.78f),
             }, false);
+
+            
 
             // отрисовка игроков
 
@@ -137,10 +153,8 @@ namespace GameLibrary
                 currentPrize.Draw(false);
         }
 
-        public int Update(List<bool> keysDown)
+        public int Update()
         {
-            this.keysDown = keysDown;
-
             firstPlayerTicks++;
             secondPlayerTicks++;
 
@@ -151,7 +165,7 @@ namespace GameLibrary
             secondPlayerCollider = secondPlayer.GetCollider();
 
             UpdateInput();
-            int codeResult = CheckCollisions(); // 0 - продолжить выполнение работы 1 - завершить приложение (поражение первого),
+            int codeResult = checkCollisions(); // 0 - продолжить выполнение работы 1 - завершить приложение (поражение первого),
                                                 // 2 - завершить приложение (поражение второго), 3 - завершить приложение (ничья)
             if (codeResult != 0)
             {
@@ -197,7 +211,7 @@ namespace GameLibrary
                 firstAmmos.Add(newAmmo);
             }
         }
-        public int CheckCollisions()
+        private int checkCollisions()
         {
             if ((firstPlayerCollider.X <= screenCollider.X) && isFirstPlayerWindLeft) // ?
             {
@@ -221,6 +235,7 @@ namespace GameLibrary
                 secondPlayer.ChangeWindCondition(true);
             if (landCollider.IntersectsWith(firstPlayerCollider) || !firstPlayer.CheckAlive())
             {
+                explodes.Add(new Explode(firstPlayer.GetPosition()));
                 return 1;
                 //glTimer.Stop();
                 //MessageBox.Show("GAME IS OVER! FIRST PLAYER IS LOSED.");
@@ -229,10 +244,14 @@ namespace GameLibrary
             }
             if (landCollider.IntersectsWith(secondPlayerCollider) || !secondPlayer.CheckAlive())
             {
+
+                explodes.Add(new Explode(secondPlayer.GetPosition()));
                 return 2;
             }
             if (firstPlayerCollider.IntersectsWith(secondPlayerCollider))
             {
+                explodes.Add(new Explode(firstPlayer.GetPosition()));
+                explodes.Add(new Explode(secondPlayer.GetPosition()));
                 return 3;
             }
             return 0;
@@ -428,6 +447,104 @@ namespace GameLibrary
             currentPrize = newPrize;
 
         }
+
+        public void UpdateKeyDown(KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.W:
+                    keysDown[0] = true;
+                    break;
+
+                case Keys.S:
+                    keysDown[1] = true;
+                    break;
+
+                case Keys.I:
+                    keysDown[2] = true;
+                    break;
+
+                case Keys.K:
+                    keysDown[3] = true;
+                    break;
+
+                case Keys.J:
+                    keysDown[4] = true;
+                    break;
+
+                case Keys.D:
+                    keysDown[5] = true;
+                    break;
+
+                case Keys.A:
+                    keysDown[6] = true;
+                    break;
+
+                case Keys.L:
+                    keysDown[7] = true;
+                    break;
+            }
+        }
+
+        public void UpdateKeyUp(KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.W:
+                    keysDown[0] = false;
+                    break;
+
+                case Keys.S:
+                    keysDown[1] = false;
+                    break;
+
+                case Keys.I:
+                    keysDown[2] = false;
+                    break;
+
+                case Keys.K:
+                    keysDown[3] = false;
+                    break;
+
+                case Keys.J:
+                    keysDown[4] = false;
+                    break;
+
+                case Keys.D:
+                    keysDown[5] = false;
+                    break;
+
+                case Keys.A:
+                    keysDown[6] = false;
+                    break;
+
+                case Keys.L:
+                    keysDown[7] = false;
+                    break;
+
+                case Keys.M:
+                    secondPlayer.ChangeAmmo();
+                    break;
+
+                case Keys.X:
+                    firstPlayer.ChangeAmmo();
+                    break;
+
+            }
+        }
+
+        public string GetFirstPlayerInfo()
+        {
+            return firstPlayer.GetInfo();
+        }
+        public string GetSecondPlayerInfo()
+        {
+            return secondPlayer.GetInfo();
+        }
+
+        public int GetExplodesCount()
+        {
+            return explodes.Count;
+        }
     }
 }
-

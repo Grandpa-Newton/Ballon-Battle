@@ -47,10 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Balloon.cs" />
+    <Compile Include="BattleGame.cs" />
     <Compile Include="Explode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GameLibraryDiagram.cd" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -62,6 +64,10 @@
     <ProjectReference Include="..\GraphicsOpenGL\GraphicsOpenGL.csproj">
       <Project>{6f70f34a-2e1e-4760-824f-6d1b9ed4067b}</Project>
       <Name>GraphicsOpenGL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PrizesLibrary\PrizesLibrary.csproj">
+      <Project>{653ada59-e7c7-419c-bbdb-e0c3be6d3471}</Project>
+      <Name>PrizesLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -60,6 +60,7 @@
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
+    <None Include="PrizeLibraryDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GraphicsOpenGL\GraphicsOpenGL.csproj">

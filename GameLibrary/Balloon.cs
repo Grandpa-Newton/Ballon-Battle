@@ -35,9 +35,9 @@ namespace GameLibrary
             this.currentAmmo = 0;
             this.ammos = new List<Ammo>()
             {
-                new SupersonicAmmo(TextureLoader.LoadTexure("supersonicAmmo.png")),
-                new PiercingAmmo(TextureLoader.LoadTexure("piercingAmmo.png")),
-                new ExplosiveAmmo(TextureLoader.LoadTexure("explosiveAmmo_2.png")),
+                new SupersonicAmmo(),
+                new PiercingAmmo(),
+                new ExplosiveAmmo(),
             };
         }
         public int Armour { get; set; } = 0;
@@ -110,8 +110,8 @@ namespace GameLibrary
         {
             int extraFuel = 350;
             Fuel += extraFuel;
-            if (Fuel > 700)
-                Fuel = 700;
+            if (Fuel > 1000)
+                Fuel = 1000;
         }
 
         public void ChangeWindSpeed(Vector2 windSpeed)
@@ -128,7 +128,7 @@ namespace GameLibrary
         {
             Vector2[] colliderPosition = GetPosition();
 
-            colliderPosition[3].X += 0.02f; // делаем это для более точного коллайдера; т.к. модель вытянута, будем считать касание о шар позже его крайней части
+            colliderPosition[3].X += 0.02f; // делаем это для более точного коллайдера; т.к. модель вытянута, будем считать касание о шар дальше его крайней точки
             colliderPosition[2].X -= 0.02f;
 
             float colliderWidth = (colliderPosition[2].X - colliderPosition[3].X)/2.0f;
@@ -218,7 +218,7 @@ namespace GameLibrary
 
         public string GetInfo()
         {
-            return $"Health = {Health}, Armour = {Armour}, Fuel = {Fuel}";
+            return $"Health = {Health}, Armour = {Armour}, Fuel = {Fuel}, Radius = {100*ammos[currentAmmo].Radius}, Distance = {100*ammos[currentAmmo].Distance}, Speed = {100*ammos[currentAmmo].Speed.X}";
         }
     }
 }
