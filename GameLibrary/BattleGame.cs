@@ -15,34 +15,129 @@ using System.Windows.Forms;
 
 namespace GameLibrary
 {
+    /// <summary>
+    /// Движок игры, содержащий всю основную логику
+    /// </summary>
     public class BattleGame
     {
-        Texture backgroundTexture; // текстура фона
-        Texture landTexture; // текстура земли
-        Texture grassTexture; // текстура травы
-        Balloon firstPlayer; // объект первого игрока
-        Balloon secondPlayer; // объект второго игрока
-        RectangleF landCollider; // границы земли
-        RectangleF screenCollider; // границы экрана
-        RectangleF firstPlayerCollider; // коллайдер первого игрока
+        /// <summary>
+        /// Текстура заднего фона сцены
+        /// </summary>
+        Texture backgroundTexture;
+
+        /// <summary>
+        /// Текстура земли
+        /// </summary>
+        Texture landTexture;
+
+        /// <summary>
+        /// Текстура травы
+        /// </summary>
+        Texture grassTexture;
+
+        /// <summary>
+        /// Объект первого игрока
+        /// </summary>
+        Balloon firstPlayer;
+
+        /// <summary>
+        /// Объект второго игрока
+        /// </summary>
+        Balloon secondPlayer;
+
+        /// <summary>
+        /// Границы земли
+        /// </summary>
+        RectangleF landCollider;
+
+        /// <summary>
+        /// Границы экрана
+        /// </summary>
+        RectangleF screenCollider;
+
+        /// <summary>
+        /// Границы объекта первого игрока
+        /// </summary>
+        RectangleF firstPlayerCollider;
+
+        /// <summary>
+        /// Границы объекта второго игрока
+        /// </summary>
         RectangleF secondPlayerCollider;
-        RectangleF currentPrizeCollider; // коллайдер для текущего приза
-        List<Ammo> firstAmmos; // текущие снаряды первого игрока
-        List<Ammo> secondAmmos; // текущие снаряды второго игрока
-        List<Explode> explodes; // анимации взрывов
+
+        /// <summary>
+        /// Границы объекта приза, находящегося на сцене
+        /// </summary>
+        RectangleF currentPrizeCollider;
+
+        /// <summary>
+        /// Список с выпущенными первым игроком снарядами, находящимися на сцене
+        /// </summary>
+        List<Ammo> firstAmmos;
+
+        /// <summary>
+        /// Список с выпущенными вторым игроком снарядами, находящимися на сцене
+        /// </summary>
+        List<Ammo> secondAmmos;
+
+        /// <summary>
+        /// Список с взрывами, происходящими на сцене
+        /// </summary>
+        List<Explode> explodes;
+
+        /// <summary>
+        /// Объект для генерации случайных чисел
+        /// </summary>
         Random random = new Random();
-        Prize currentPrize = null; // объект текущего приза
-        int maxWindSpeed = 20; // максимальная возможнная скорость ветра (умноженная на 10000)
-        int minWindSpeed = 5; // минимальная скорость ветра
-        int windTicks = 0; // количество тиков таймера ветра
-        bool isFirstPlayerWindLeft = false; // true - ветер дует налево, false - направо
+
+        /// <summary>
+        /// Объект текущего приза
+        /// </summary>
+        Prize currentPrize = null;
+
+        /// <summary>
+        /// Максимально возможная скорость ветра, умноженная на 10000
+        /// </summary>
+        int maxWindSpeed = 20;
+
+        /// <summary>
+        /// Минимально возможная скорость ветра, умноженная на 10000
+        /// </summary>
+        int minWindSpeed = 5;
+
+        /// <summary>
+        /// Количество тиков таймера ветра
+        /// </summary>
+        int windTicks = 0;
+
+        /// <summary>
+        /// Переменная, отвечающая за направление ветра для первого игркоа (true - ветер дует налево, false - направо)
+        /// </summary>
+        bool isFirstPlayerWindLeft = false;
+
+        /// <summary>
+        /// Переменная, отвечающая за направление ветра для второго игркоа (true - ветер дует налево, false - направо)
+        /// </summary>
         bool isSecondPlayerWindLeft = false;
 
-        List<bool> keysDown; // список для проверки нажатия кнопок (W, S, I, K, J, D, A, L)
+        /// <summary>
+        /// Список для проверки нажатия кнопок игроками (W, S, I, K, J, D, A, L, X, M)
+        /// </summary>
+        List<bool> keysDown;
 
-        int secondPlayerTicks = 50; // показатель, отвечающий за кулдаун снарядов второго игрока
+        /// <summary>
+        /// Количество тиков выстрелов второго игрока, отвечает за выпуск снарядов не ранее 50 тиков
+        /// </summary>
+        int secondPlayerTicks = 50;
+
+        /// <summary>
+        /// Количество тиков выстрелов первого игрока, отвечает за выпуск снарядов не ранее 50 тиков
+        /// </summary>
         int firstPlayerTicks = 50;
 
+        /// <summary>
+        /// Загружает объекты, необходимые для процесса игры
+        /// </summary>
         public void LoadObjects()
         {
             backgroundTexture = TextureLoader.LoadTexure("clouds.jpg");
@@ -75,19 +170,21 @@ namespace GameLibrary
                 keysDown.Add(false);
         }
 
+        /// <summary>
+        /// Включение, необходимых для функционирования OpenGL, функций
+        /// </summary>
         public void LoadGLControl()
         {
             GL.Enable(EnableCap.Texture2D);
-            GL.Enable(EnableCap.Blend); // для отключения фона у ассетов
+            GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-
-            //LoadObjects();
         }
 
+        /// <summary>
+        /// Отрисовывает объекты (фон, траву, землю, игроков, снаряды, взрывы и приз)
+        /// </summary>
         public void Draw()
         {
-            // отрисовка фона
-
             ObjectDrawer.Draw(backgroundTexture, new Vector2[4]
             {
                 new Vector2(-1.0f, -1.0f),
@@ -95,8 +192,6 @@ namespace GameLibrary
                 new Vector2(1.0f, 1.0f),
                 new Vector2(-1.0f, 1.0f),
             }, false);
-
-            // отрисовка травы
 
             ObjectDrawer.Draw(grassTexture, new Vector2[4]
             {
@@ -106,8 +201,6 @@ namespace GameLibrary
                 new Vector2(-1.0f, -0.55f),
             }, false);
 
-            // отрисовка земли
-
             ObjectDrawer.Draw(landTexture, new Vector2[4]
             {
                 new Vector2(-1.0f, -1.0f),
@@ -116,14 +209,9 @@ namespace GameLibrary
                 new Vector2(-1.0f, -0.78f),
             }, false);
 
-            
-
-            // отрисовка игроков
 
             firstPlayer.Draw(false);
             secondPlayer.Draw(false);
-
-            // отрисовка снарядов
 
             foreach (var item in firstAmmos)
             {
@@ -133,8 +221,6 @@ namespace GameLibrary
             {
                 item.Draw();
             }
-
-            // отрисовка взрывов
 
             for (int i = 0; i < explodes.Count; i++)
             {
@@ -153,6 +239,14 @@ namespace GameLibrary
                 currentPrize.Draw(false);
         }
 
+        /// <summary>
+        /// Обновление игры
+        /// </summary>
+        /// <returns>Код завершения программы (0 - продолжение игры,
+        /// 1 - заверешение игры поражением первого игрока, 
+        /// 2 - завершение игры поражением второго игрока, 
+        /// 3 - завершение игры ничьей)
+        /// </returns>
         public int Update()
         {
             firstPlayerTicks++;
@@ -164,19 +258,22 @@ namespace GameLibrary
             firstPlayerCollider = firstPlayer.GetCollider();
             secondPlayerCollider = secondPlayer.GetCollider();
 
-            UpdateInput();
-            int codeResult = checkCollisions(); // 0 - продолжить выполнение работы 1 - завершить приложение (поражение первого),
-                                                // 2 - завершить приложение (поражение второго), 3 - завершить приложение (ничья)
+            updateInput();
+            int codeResult = checkCollisions(); 
             if (codeResult != 0)
             {
                 return codeResult;
             }
-            UpdateAmmos();
-            UpdatePrize();
+            updateAmmos();
+            updatePrize();
 
             return 0;
         }
-        public void UpdateInput()
+
+        /// <summary>
+        /// Обновление нажатия кнопок на клавиатуре игроками
+        /// </summary>
+        private void updateInput()
         {
             if (keysDown[0] && (firstPlayerCollider.Y > screenCollider.Y))
                 firstPlayer.Update(new Vector2(0f, 0.01f));
@@ -211,6 +308,15 @@ namespace GameLibrary
                 firstAmmos.Add(newAmmo);
             }
         }
+
+        /// <summary>
+        /// Обработка столкновения коллайдеров и проверка на то, больше ли 0 значение здоровья шаров
+        /// </summary>
+        /// <returns>Код завершения метода (0 - продолжение игры,
+        /// 1 - заверешение игры поражением первого игрока, 
+        /// 2 - завершение игры поражением второго игрока, 
+        /// 3 - завершение игры ничьей)
+        /// </returns></returns>
         private int checkCollisions()
         {
             if ((firstPlayerCollider.X <= screenCollider.X) && isFirstPlayerWindLeft) // ?
@@ -237,10 +343,6 @@ namespace GameLibrary
             {
                 explodes.Add(new Explode(firstPlayer.GetPosition()));
                 return 1;
-                //glTimer.Stop();
-                //MessageBox.Show("GAME IS OVER! FIRST PLAYER IS LOSED.");
-
-                //this.Close();
             }
             if (landCollider.IntersectsWith(secondPlayerCollider) || !secondPlayer.CheckAlive())
             {
@@ -257,7 +359,10 @@ namespace GameLibrary
             return 0;
         }
 
-        public void UpdateAmmos()
+        /// <summary>
+        /// Обновление состояния выпущенных снарядов
+        /// </summary>
+        private void updateAmmos()
         {
             for (int i = 0; i < firstAmmos.Count; i++)
             {
@@ -266,12 +371,12 @@ namespace GameLibrary
                 firstAmmos[i].Update();
                 if (secondPlayerCollider.IntersectsWith(ammoCollider))
                 {
-                    firstAmmos[i].UpdatePosition(true); // ?!!
+                    firstAmmos[i].UpdatePosition(true);
                     explodes.Add(new Explode(firstAmmos[i].Position));
                     firstAmmos.RemoveAt(i);
                     secondPlayer.GetDamage();
                 }
-                else if (!ammoCollider.IntersectsWith(screenCollider)) // ВЫХОД ЗА РАМКИ МАССИВА
+                else if (!ammoCollider.IntersectsWith(screenCollider))
                 {
                     firstAmmos.RemoveAt(i);
                 }
@@ -301,7 +406,7 @@ namespace GameLibrary
                     secondAmmos.RemoveAt(i);
                     firstPlayer.GetDamage();
                 }
-                else if (!ammoCollider.IntersectsWith(screenCollider)) // ВЫХОД ЗА РАМКИ МАССИВА
+                else if (!ammoCollider.IntersectsWith(screenCollider))
                 {
                     secondAmmos.RemoveAt(i);
                 }
@@ -321,7 +426,10 @@ namespace GameLibrary
             }
         }
 
-        public void UpdatePrize()
+        /// <summary>
+        /// Обновление состояния текущего приза и добавление эффектов от него
+        /// </summary>
+        private void updatePrize()
         {
             if (currentPrize != null)
             {
@@ -331,26 +439,21 @@ namespace GameLibrary
                 {
                     if (currentPrize is AmmoPrize)
                     {
-                        Debug.WriteLine("TESTAMMO");
-                        int decoratorType = random.Next(0, 3);
-                        firstPlayer.ChangeAmmoCharesterictics(decoratorType); // БУДЕТ RAND
+                        firstPlayer.ChangeAmmoCharesterictics();
                         currentPrize = null;
                     }
                     else if (currentPrize is ArmourPrize)
                     {
-                        Debug.WriteLine("TESTARMOUR");
                         firstPlayer.IncreaseArmour();
                         currentPrize = null;
                     }
                     else if (currentPrize is FuelPrize)
                     {
-                        Debug.WriteLine("TESTFUEL");
                         firstPlayer.IncreaseFuel();
                         currentPrize = null;
                     }
                     else if (currentPrize is HealthPrize)
                     {
-                        Debug.WriteLine("TESTHEALTH");
                         firstPlayer.IncreaseHealth();
                         currentPrize = null;
                     }
@@ -359,8 +462,7 @@ namespace GameLibrary
                 {
                     if (currentPrize is AmmoPrize)
                     {
-                        int decoratorType = random.Next(0, 3);
-                        secondPlayer.ChangeAmmoCharesterictics(decoratorType); // БУДЕТ RAND
+                        secondPlayer.ChangeAmmoCharesterictics();
                         currentPrize = null;
                     }
                     else if (currentPrize is ArmourPrize)
@@ -383,10 +485,12 @@ namespace GameLibrary
                 {
                     currentPrize = null;
                 }
-
             }
         }
 
+        /// <summary>
+        /// Обновление состояния ветра
+        /// </summary>
         public void UpdateWind()
         {
             if (windTicks == 1)
@@ -396,7 +500,7 @@ namespace GameLibrary
             }
             else
             {
-                int windDirection = random.Next(0, 2); // 0 - влево, 1 - вправо
+                int windDirection = random.Next(0, 2);
                 float windSpeed = random.Next(minWindSpeed, maxWindSpeed + 1) / 10000f;
 
                 switch (windDirection)
@@ -413,7 +517,7 @@ namespace GameLibrary
                 }
                 firstPlayer.ChangeWindCondition(true);
 
-                windDirection = random.Next(0, 2); // 0 - влево, 1 - вправо
+                windDirection = random.Next(0, 2);
                 windSpeed = random.Next(minWindSpeed, maxWindSpeed + 1) / 10000f;
 
                 switch (windDirection)
@@ -435,19 +539,27 @@ namespace GameLibrary
             if (windTicks >= 2)
                 windTicks = 0;
         }
-        public void SpawnPrize(int width, int height)
+
+        /// <summary>
+        /// Генерация приза в случае отсутствия на сцене приза
+        /// </summary>
+        /// <param name="height">Текущая высота экрана</param>
+        public void SpawnPrize(int height)
         {
-            if (currentPrize != null) // если на экране уже есть приз, то новый не должен спавниться
+            if (currentPrize != null)
                 return;
 
             PrizeGenerator prizeGenerator = new PrizeGenerator();
 
-            Prize newPrize = prizeGenerator.Create(width, height);
+            Prize newPrize = prizeGenerator.Create(height);
 
             currentPrize = newPrize;
-
         }
 
+        /// <summary>
+        /// Обновление списка с нажатыми кнопками после события нажатия клавиши
+        /// </summary>
+        /// <param name="e">Нажатая клавиша</param>
         public void UpdateKeyDown(KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -486,6 +598,10 @@ namespace GameLibrary
             }
         }
 
+        /// <summary>
+        /// Обновление списка с нажатыми кнопками после события отпускания клавиши
+        /// </summary>
+        /// <param name="e">Отжатая клавиша</param>
         public void UpdateKeyUp(KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -533,15 +649,28 @@ namespace GameLibrary
             }
         }
 
+        /// <summary>
+        /// Получение информации о первом игроке
+        /// </summary>
+        /// <returns>Информация о первом игроке</returns>
         public string GetFirstPlayerInfo()
         {
             return firstPlayer.GetInfo();
         }
+
+        /// <summary>
+        /// Получение информации о втором игркое
+        /// </summary>
+        /// <returns>Информация о втором игроке</returns>
         public string GetSecondPlayerInfo()
         {
             return secondPlayer.GetInfo();
         }
 
+        /// <summary>
+        /// Получение значения количества взрывов на экране
+        /// </summary>
+        /// <returns>Количество взрывов на экране</returns>
         public int GetExplodesCount()
         {
             return explodes.Count;

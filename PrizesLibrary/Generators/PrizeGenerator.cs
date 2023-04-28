@@ -9,25 +9,24 @@ using System.Threading.Tasks;
 
 namespace PrizesLibrary
 {
-/*    public abstract class PrizeGenerator
-    {
-        protected Texture sprite;
-
-        public abstract Prize Create(Vector2 centerPosition, bool isLeft);
-
-
-    }*/
-
+    /// <summary>
+    /// Генератор призов, реализующий шаблон "фабричный метод"
+    /// </summary>
     public class PrizeGenerator
     {
-        public Prize Create(int width, int height)
+        /// <summary>
+        /// Создание объекта приза
+        /// </summary>
+        /// <param name="height">Высота экрана</param>
+        /// <returns>Созданный генератором приз</returns>
+        public Prize Create(int height)
         {
             Random random = new Random();
             Prize newPrize=null;
             float prizePozitionX;
-            bool isLeft; // переменная, отвечающая за направление движения
+            bool isLeft;
 
-            int prizeSpawnSide = random.Next(0, 2); // 0 - спавнится слева, 1 - справа
+            int prizeSpawnSide = random.Next(0, 2);
 
             if (prizeSpawnSide == 0)
             {
@@ -41,7 +40,7 @@ namespace PrizesLibrary
                 prizePozitionX = 1.05f;
             }
 
-            float prizePozitionY = (float)(random.Next((int)(-0.6f * height), (int)(0.7f * height))) / (float)height; // спавн в пределах экрана по Y (-0.6;0.7)
+            float prizePozitionY = (float)(random.Next((int)(-0.6f * height), (int)(0.7f * height))) / (float)height;
 
             int prizeType = random.Next(0, 4);
 

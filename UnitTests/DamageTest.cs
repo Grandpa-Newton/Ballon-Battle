@@ -9,21 +9,25 @@ using OpenTK.Graphics;
 
 namespace UnitTests
 {
+    /// <summary>
+    /// Класс для проверки корректности выполнения метода GetDamage у игрока
+    /// </summary>
     [TestClass]
     public class DamageTest
     {
+        /// <summary>
+        /// Проверка корректности выполнения метода GetDamage без наличия брони у игрока
+        /// (создаётся окно GameWindow для загрузки необходимых для выполнения OpenGL функций)
+        /// </summary>
         [TestMethod]
         public void GetDamageTestMethod()
         {
             // Arrange
             GameWindow window = new GameWindow(1, 1, GraphicsMode.Default, "", GameWindowFlags.Default, DisplayDevice.Default, 3, 0, GraphicsContextFlags.Default);
-            // создаём окно OpenGL для предотвращения
-            // ошибок доступа к видеопамяти
-            // при загрузке текстур в конструкторе Balloon
             window.Visible = false;
             BattleGame game = new BattleGame();
             game.LoadGLControl();
-            Balloon balloon = new Balloon(Vector2.Zero, null); // отрисовка и позиция для проверки нам не требуется
+            Balloon balloon = new Balloon(Vector2.Zero, null);
             int expectedHealth = 85;
             int actualHealth;
 
@@ -35,6 +39,10 @@ namespace UnitTests
             Assert.AreEqual(expectedHealth, actualHealth);
         }
 
+        /// <summary>
+        /// Проверка корректности выполнения метода GetDamage с наличием брони у игрока
+        /// (создаётся окно GameWindow для загрузки необходимых для выполнения OpenGL функций)
+        /// </summary>
         [TestMethod]
         public void GetDamageWithArmourTestMethod()
         {

@@ -8,16 +8,34 @@ using GraphicsOpenGL;
 
 namespace GameLibrary
 {
+    /// <summary>
+    /// Взрыв после столкновения коллайдеров снарядов или игроков
+    /// </summary>
     public class Explode
     {
+        /// <summary>
+        /// Список текстур для анимации взрыва
+        /// </summary>
         List<Texture> animation;
+
+        /// <summary>
+        /// Позиция для отрисовки взрыва
+        /// </summary>
         Vector2[] position;
-        public int Count; // отвечает за номер анимации
+
+        /// <summary>
+        /// Номер анимации в списке
+        /// </summary>
+        public int Count;
+
+        /// <summary>
+        /// Конструктор создания взрыва
+        /// </summary>
+        /// <param name="position">Позиция взрыва</param>
         public Explode(Vector2[] position)
         {
             this.position = position;
             this.Count = 0;
-
             this.animation = new List<Texture>()
             {
                 TextureLoader.LoadTexure("Animation/1.png"),
@@ -28,6 +46,12 @@ namespace GameLibrary
             };
         }
 
+        /// <summary>
+        /// Отрисовка взрыва
+        /// </summary>
+        /// <param name="isFlipped">Значение, отвечающее за то, следует ли отразить текстуру объекта или нет 
+        /// (true - текстура отражается, false - не отражается</param>
+        /// <returns></returns>
         public bool Draw(bool isFlipped)
         {
             if(Count >= animation.Count)

@@ -4,22 +4,29 @@ using OpenTK.Graphics;
 using OpenTK;
 using System;
 using AmmoLibrary;
-using AmmoLibrary.characteristics_changing;
 
 namespace UnitTests
 {
+    /// <summary>
+    /// Класс для проверки корректности функционирования декораторов
+    /// </summary>
     [TestClass]
     public class DecoratorsTest
     {
+        /// <summary>
+        /// Проверка корректности выполнения декоратора на увеличение дистанции полёта снаряда
+        /// (создаётся окно GameWindow для загрузки необходимых для выполнения OpenGL функций)
+        /// </summary>
         [TestMethod]
         public void DistanceDecoratorTestMethod()
         {
+            // Arrange
             GameWindow window = new GameWindow(1, 1, GraphicsMode.Default, "", GameWindowFlags.Default, DisplayDevice.Default, 3, 0, GraphicsContextFlags.Default);
             window.Visible = false;
             BattleGame game = new BattleGame();
             Ammo ammo;
             game.LoadGLControl();
-            ammo = new ExplosiveAmmo(); // отрисовка и позиция для проверки нам не требуется
+            ammo = new ExplosiveAmmo();
             float actualDistance;
             float expectedDistance=1.5f;
 
@@ -31,15 +38,20 @@ namespace UnitTests
             Assert.AreEqual(actualDistance, expectedDistance);
         }
 
+        /// <summary>
+        /// Проверка корректности выполнения декоратора на увеличение радиуса действия снаряда
+        /// (создаётся окно GameWindow для загрузки необходимых для выполнения OpenGL функций)
+        /// </summary>
         [TestMethod]
         public void RadiusDecoratorTestMethod()
         {
+            // Arrange
             GameWindow window = new GameWindow(1, 1, GraphicsMode.Default, "", GameWindowFlags.Default, DisplayDevice.Default, 3, 0, GraphicsContextFlags.Default);
             window.Visible = false;
             BattleGame game = new BattleGame();
             Ammo ammo;
             game.LoadGLControl();
-            ammo = new SupersonicAmmo(); // отрисовка и позиция для проверки нам не требуется
+            ammo = new SupersonicAmmo();
             float actualRadius;
             float expectedRadius = 0.06f;
 
@@ -51,15 +63,20 @@ namespace UnitTests
             Assert.AreEqual(actualRadius, expectedRadius);
         }
 
+        /// <summary>
+        /// Проверка корректности выполнения декоратора на увеличение скорости полёта снаряда
+        /// (создаётся окно GameWindow для загрузки необходимых для выполнения OpenGL функций)
+        /// </summary>
         [TestMethod]
         public void SpeedDecoratorTestMethod()
         {
+            // Arrange
             GameWindow window = new GameWindow(1, 1, GraphicsMode.Default, "", GameWindowFlags.Default, DisplayDevice.Default, 3, 0, GraphicsContextFlags.Default);
             window.Visible = false;
             BattleGame game = new BattleGame();
             Ammo ammo;
             game.LoadGLControl();
-            ammo = new PiercingAmmo(); // отрисовка и позиция для проверки нам не требуется
+            ammo = new PiercingAmmo(); 
             float actualSpeed;
             float expectedSpeed = 0.0156f;
 

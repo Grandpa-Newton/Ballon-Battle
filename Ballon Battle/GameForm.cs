@@ -14,10 +14,24 @@ namespace Ballon_Battle
 {
     public partial class GameForm : Form
     {
-        BattleGame gameEngine; // объект игрового движка
-        Label firstPlayerInfo; // label для отображения текущего состояния первого игрока
+        /// <summary>
+        /// Объект игрового движка
+        /// </summary>
+        BattleGame gameEngine;
+
+        /// <summary>
+        /// Label для отображения текущего состояния первого игрока
+        /// </summary>
+        Label firstPlayerInfo;
+
+        /// <summary>
+        /// Label для отображения текущего состояния второго игрока
+        /// </summary>
         Label secondPlayerInfo; // label для отображения текущего состояния второго игрока
 
+        /// <summary>
+        /// Конструктор формы
+        /// </summary>
         public GameForm()
         {
 
@@ -31,6 +45,11 @@ namespace Ballon_Battle
             gameEngine = new BattleGame();
         }
 
+        /// <summary>
+        /// Обработчик события загрузки GLControl
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void glControl_Load(object sender, EventArgs e)
         {
             glControl.MakeCurrent();
@@ -43,6 +62,12 @@ namespace Ballon_Battle
 
             this.WindowState = FormWindowState.Maximized; // для открытия окна в полном экране
         }
+
+        /// <summary>
+        /// Обработчик события для отрисовки GLControl
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void glControl_Paint(object sender, PaintEventArgs e)
         {
             GL.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit); // ?
@@ -52,7 +77,10 @@ namespace Ballon_Battle
             glControl.SwapBuffers();
         }
 
-        private void UpdateInfo()
+        /// <summary>
+        /// Обновление информации об игроках в Label
+        /// </summary>
+        private void updateInfo()
         {
             firstPlayerInfo.SetBounds((int)(0.05 * Width), (int)(0.01 * Height), (int)(0.45 * Width), (int)(0.03 * Height)); // информация первого игрока (здоровье, топливо, броня)
             firstPlayerInfo.Font = new Font("Arial", 0.008f * Width);
@@ -63,7 +91,11 @@ namespace Ballon_Battle
             secondPlayerInfo.Text = gameEngine.GetSecondPlayerInfo();
         }
 
-        private void EndGame(string message)
+        /// <summary>
+        /// Завершение игры
+        /// </summary>
+        /// <param name="message">Сообщение, выводимое при завершении игры</param>
+        private void endGame(string message)
         {
             glTimer.Stop();
             DialogResult result = MessageBox.Show(message, "Конец игры", MessageBoxButtons.YesNo);
@@ -76,38 +108,65 @@ namespace Ballon_Battle
                 this.Close();
         }
 
+        /// <summary>
+        /// Обработчик события тика таймера игры перед окончанием игры в случае ничьей
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void glTimer_DrawTick(object sender, EventArgs e)
         {
             glControl.Refresh();
 
             if (gameEngine.GetExplodesCount() <= 0)
             {
-                EndGame("ИГРА ОКОНЧЕНА! НИЧЬЯ! Хотите начать заново?");
+                endGame("ИГРА ОКОНЧЕНА! НИЧЬЯ! Хотите начать заново?");
             }
         }
+
+        /// <summary>
+        /// Обработчик события тика таймера игры перед окончанием игры в случае поражения первого игрока
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void glTimer_FirstPlayerLooseTick(object sender, EventArgs e)
         {
             glControl.Refresh();
             if (gameEngine.GetExplodesCount() <= 0)
             {
-                EndGame("ИГРА ОКОНЧЕНА! ПЕРВОЙ ИГРОК ПРОИГРАЛ. Хотите начать заново?");
+                endGame("ИГРА ОКОНЧЕНА! ПЕРВОЙ ИГРОК ПРОИГРАЛ. Хотите начать заново?");
             }
         }
+        
+        /// <summary>
+        /// Обработчик события тика таймера игры перед окончанием игры в случае поражения второго игрока
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void glTimer_SecondPlayerLooseTick(object sender, EventArgs e)
         {
             glControl.Refresh();
             if (gameEngine.GetExplodesCount() <= 0)
             {
-                EndGame("ИГРА ОКОНЧЕНА! ВТОРОЙ ИГРОК ПРОИГРАЛ. Хотите начать заново?");
+                endGame("ИГРА ОКОНЧЕНА! ВТОРОЙ ИГРОК ПРОИГРАЛ. Хотите начать заново?");
             }
         }
 
+        /// <summary>
+        /// Обработчик события тика таймера, отвечающего за появление ветра
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void windTimer_Tick(object sender, EventArgs e)
         {
             gameEngine.UpdateWind();
         }
 
-        private void glTimer_Tick(object sender, EventArgs e) // для обновления картинки каждые 10 миллисекунд (100 фреймов в секунду)
+        /// <summary>
+        /// Обработчик события для обновления картинки каждые 10 миллисекунд
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void glTimer_Tick(object sender, EventArgs e)
         {
             int resultCode = gameEngine.Update();
 
@@ -143,27 +202,48 @@ namespace Ballon_Battle
 
             }
 
-            UpdateInfo();
+            updateInfo();
 
             glControl.Refresh();
         }
 
+        /// <summary>
+        /// Обработчик события тика таймера, отвечающего за генерацию призов
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void prizeTimer_Tick(object sender, EventArgs e)
         {
-            gameEngine.SpawnPrize(this.Width, this.Height);
+            gameEngine.SpawnPrize(this.Height);
 
         }
 
+        /// <summary>
+        /// Отвечает за изменение размера GLControl при изменении размера окна
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GameForm_Resize(object sender, EventArgs e)
         {
             glControl.Size = this.Size;
             GL.Viewport(0, 0, Width, Height);
         }
 
+        /// <summary>
+        /// Обработчик события отпускания кнопки клавиатуры
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void glControl_KeyUp(object sender, KeyEventArgs e)
         {
             gameEngine.UpdateKeyUp(e);
         }
+
+        /// <summary>
+        /// Обработчки события нажатия кнопки клавиатуры
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void glControl_KeyDown(object sender, KeyEventArgs e)
         {
             gameEngine.UpdateKeyDown(e);

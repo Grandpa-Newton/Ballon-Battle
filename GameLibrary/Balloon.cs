@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using OpenTK;
 using System.Drawing;
 using OpenTK.Input;
@@ -12,26 +11,58 @@ using System.Media;
 using System.Diagnostics;
 using GraphicsOpenGL;
 using AmmoLibrary;
-using AmmoLibrary.characteristics_changing;
 
 namespace GameLibrary
 {
+    /// <summary>
+    /// Класс воздушного шара (игрока)
+    /// </summary>
     public class Balloon
     {
+        /// <summary>
+        /// Центр позиции шара
+        /// </summary>
         public Vector2 PositionCenter;
+        /// <summary>
+        /// Скорость шара
+        /// </summary>
         public Vector2 Speed;
+
+        /// <summary>
+        /// Спрайт воздушного шара
+        /// </summary>
         public Texture BalloonSprite;
-    //    private bool isMoving = false; // переменная для проверки на то, двигает ли игрок воздушный шар
-        readonly List<Ammo> ammos; // список с видами снарядов
-        int currentAmmo=0; // показатель, отвечающий за то, какой сейчас снаряд у игрока
-        Vector2 windSpeed = new Vector2(0.0f, 0.0f); // скорость ветра
-        bool isWindOn = false; // работает ли ветер
+
+        /// <summary>
+        /// Список с текущими снарядамиы игрока
+        /// </summary>
         
+        private List<Ammo> ammos;
+        /// <summary>
+        /// Показатель, отвечающий за то, какой сейчас снаряд выбран у игрока
+        /// </summary>
+        
+        private int currentAmmo=0;
+        /// <summary>
+        /// Скорость ветра игрока
+        /// </summary>
+        private Vector2 windSpeed = new Vector2(0.0f, 0.0f); 
+
+        /// <summary>
+        /// Показатель, отвечающий за то, работает ветер или нет (true - работает, false - нет)
+        /// </summary>
+        private bool isWindOn = false;
+        
+        /// <summary>
+        /// Конструктор создания шара
+        /// </summary>
+        /// <param name="startPosition">Начальная позиция</param>
+        /// <param name="baloonSprite">Спрайт игрока</param>
         public Balloon(Vector2 startPosition, Texture baloonSprite)
         {
             this.PositionCenter = startPosition;
             this.BalloonSprite = baloonSprite;
-            this.Speed = new Vector2(0, -0.001f); // изначально скорость нулевая
+            this.Speed = new Vector2(0, -0.001f);
             this.currentAmmo = 0;
             this.ammos = new List<Ammo>()
             {
@@ -40,9 +71,26 @@ namespace GameLibrary
                 new ExplosiveAmmo(),
             };
         }
+
+        /// <summary>
+        /// Показатель брони
+        /// </summary>
         public int Armour { get; set; } = 0;
+
+        /// <summary>
+        /// Показатель здоровья
+        /// </summary>
         public int Health { get; set; } = 100;
-        public int Fuel { get; set; } = 1000; // по таймеру отнимается каждый кадр
+
+        /// <summary>
+        /// Показатель топлива
+        /// </summary>
+        public int Fuel { get; set; } = 1000;
+
+        /// <summary>
+        /// Проверка на то, равняется ли показатель здоровья игрока нулю
+        /// </summary>
+        /// <returns>true - показатель здоровья игрока выше нуля, false - показатель здоровья игрока равно нулю</returns>
         public bool CheckAlive()
         {
             if (Health <= 0)
@@ -51,6 +99,10 @@ namespace GameLibrary
                 return true;
         }
 
+        /// <summary>
+        /// Обновление позиции шара при его движении
+        /// </summary>
+        /// <param name="movement">Показатель, отвечающий за направление движение игрока</param>
         public void Update(Vector2 movement)
         {
             if (Fuel <= 0)
@@ -61,14 +113,20 @@ namespace GameLibrary
                 PositionCenter += windSpeed;
         }
 
-        public void Update() // обновление падения вниз
+        /// <summary>
+        /// Обновление падения игрока вниз при отсутствии нажатия клавиш
+        /// </summary>
+        public void Update()
         {
             PositionCenter += Speed;
             if(isWindOn)
                 PositionCenter += windSpeed;
         }
 
-        public void GetDamage() // получение дамага после удара
+        /// <summary>
+        /// Получение урона при столкновении со снарядами
+        /// </summary>
+        public void GetDamage()
         {
             int damage = 15;
             if(Armour>0)
@@ -79,7 +137,7 @@ namespace GameLibrary
                 }
                 else
                 {
-                    int remainder = damage - Armour; // если брони меньше, чем урона, то сначала сносятся пункты брони до нуля, после - остаток со здоровья.
+                    int remainder = damage - Armour;
                     Armour = 0;
                     Health -= remainder;
                 }
@@ -90,6 +148,9 @@ namespace GameLibrary
                 Health = 0;
         }
 
+        /// <summary>
+        /// Повышение показателя здоровья
+        /// </summary>
         public void IncreaseHealth()
         {
             int extraHealth = 20;
@@ -98,6 +159,9 @@ namespace GameLibrary
                 Health = 100;
         }
 
+        /// <summary>
+        /// Повышение показателя брони
+        /// </summary>
         public void IncreaseArmour()
         {
             int extraArmour = 20;
@@ -106,6 +170,9 @@ namespace GameLibrary
                 Armour = 100;
         }
 
+        /// <summary>
+        /// Повышение запасов топлива
+        /// </summary>
         public void IncreaseFuel()
         {
             int extraFuel = 350;
@@ -114,16 +181,28 @@ namespace GameLibrary
                 Fuel = 1000;
         }
 
+        /// <summary>
+        /// Изменение скорости ветра 
+        /// </summary>
+        /// <param name="windSpeed">Новая скорость ветра</param>
         public void ChangeWindSpeed(Vector2 windSpeed)
         {
             this.windSpeed = windSpeed; 
         }
 
+        /// <summary>
+        /// Изменение состояния ветра
+        /// </summary>
+        /// <param name="isWindOn">Состояние ветра (true - работает, false - не рабоатет)</param>
         public void ChangeWindCondition(bool isWindOn)
         {
             this.isWindOn = isWindOn;
         }
 
+        /// <summary>
+        /// Получение границ объекта игрока
+        /// </summary>
+        /// <returns>Коллайдер игрока</returns>
         public RectangleF GetCollider()
         {
             Vector2[] colliderPosition = GetPosition();
@@ -141,11 +220,18 @@ namespace GameLibrary
             return collider;
         }
 
+        /// <summary>
+        /// Отрисовка игрока
+        /// </summary>
+        /// <param name="isFlipped">Показатель, отвечающий за отражение по вертикали объекта (true - нужно отражать, false - не нужно)</param>
         public void Draw(bool isFlipped)
         {
             ObjectDrawer.Draw(BalloonSprite, GetPosition(), isFlipped);
         }
 
+        /// <summary>
+        /// Замена текущего снаряда
+        /// </summary>
         public void ChangeAmmo()
         {
             currentAmmo++;
@@ -153,10 +239,15 @@ namespace GameLibrary
                 currentAmmo = 0;
         }
 
+        /// <summary>
+        /// Получение текущего снаряда
+        /// </summary>
+        /// <param name="isLeft">Показатель, отвечающий за выпуск снаряда влево (true - выпускается влево, false - вправо)</param>
+        /// <returns>Текущий снаряд игрока</returns>
         public Ammo GetCurrentAmmo(bool isLeft)
         {
             Ammo newAmmo = null;
-            ammos[currentAmmo].Spawn(PositionCenter-new Vector2(0.01f, 0.07f), isLeft); // отнимаем вектор для выпуска снарядов из корзины шара, а не из центра шара
+            ammos[currentAmmo].Spawn(PositionCenter-new Vector2(0.01f, 0.07f), isLeft);
             switch(currentAmmo)
             {
                 case 0:
@@ -173,8 +264,13 @@ namespace GameLibrary
             return newAmmo;
         }
 
-        public void ChangeAmmoCharesterictics(int decoratorType)
+        /// <summary>
+        /// Изменение характеристик снарядов с помощью "декоратора"
+        /// </summary>
+        public void ChangeAmmoCharesterictics()
         {
+            Random random = new Random();
+            int decoratorType = random.Next(0, 3);
             switch(decoratorType)
             {
                 case 0:
@@ -203,6 +299,10 @@ namespace GameLibrary
             }
         }
 
+        /// <summary>
+        /// Получение текущей позиции игрока
+        /// </summary>
+        /// <returns>Массив из четырёх элементов, содержащий края позиции игрока</returns>
         public Vector2[] GetPosition()
         {
             float spriteWidth = 0.07f;
@@ -216,6 +316,10 @@ namespace GameLibrary
             };
         }
 
+        /// <summary>
+        /// Получение информации об игроке
+        /// </summary>
+        /// <returns>Информация об игроке</returns>
         public string GetInfo()
         {
             return $"Health = {Health}, Armour = {Armour}, Fuel = {Fuel}, Radius = {100*ammos[currentAmmo].Radius}, Distance = {100*ammos[currentAmmo].Distance}, Speed = {100*ammos[currentAmmo].Speed.X}";

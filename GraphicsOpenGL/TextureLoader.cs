@@ -10,12 +10,20 @@ using System.Drawing.Imaging;
 
 namespace GraphicsOpenGL
 {
+    /// <summary>
+    /// Класс, предназначенный для загрузки и генерации текстуры
+    /// </summary>
     public class TextureLoader
     {
+        /// <summary>
+        /// Загрузка и генерация текстуры
+        /// </summary>
+        /// <param name="path">Путь к файлу с текстурой</param>
+        /// <returns>Загруженная и сгенерированная текстура</returns>
         public static Texture LoadTexure(string path)
         {
-            int textureId = GL.GenTexture(); // генерация идентификатора текстуры
-            GL.BindTexture(TextureTarget.Texture2D, textureId); // бинд текстуры 
+            int textureId = GL.GenTexture();
+            GL.BindTexture(TextureTarget.Texture2D, textureId); 
 
             Bitmap bitmap = new Bitmap("Assets/" + path);
             BitmapData data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly,

@@ -6,9 +6,15 @@ using System;
 
 namespace UnitTests
 {
+    /// <summary>
+    /// Тесты для проверки добавления пунктов брони
+    /// </summary>
     [TestClass]
     public class ArmourTest
     {
+        /// <summary>
+        /// Тест для проверки корректности выполнения добавления пунктов брони
+        /// </summary>
         [TestMethod]
         public void GetArmourTestMethod()
         {
@@ -16,7 +22,7 @@ namespace UnitTests
             window.Visible = false;
             BattleGame game = new BattleGame();
             game.LoadGLControl();
-            Balloon balloon = new Balloon(Vector2.Zero, null); // отрисовка и позиция для проверки нам не требуется
+            Balloon balloon = new Balloon(Vector2.Zero, null);
             int expectedArmour = 20;
             int actualArmour;
 

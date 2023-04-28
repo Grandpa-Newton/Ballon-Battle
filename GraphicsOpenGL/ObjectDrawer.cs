@@ -10,15 +10,25 @@ using System.Drawing;
 
 namespace GraphicsOpenGL
 {
+    /// <summary>
+    /// Класс для отрисовки объектов на экран
+    /// </summary>
     public class ObjectDrawer
     {
+        /// <summary>
+        /// Отрисовка объектов на экран
+        /// </summary>
+        /// <param name="texture">Текстура отрисовываемого объекта</param>
+        /// <param name="position">Позиция дла отрисовки объекта</param>
+        /// <param name="isFlipped">Показатель, отвечающий за то, нужно ли отражать по вертикали объект
+        /// (true - объект следует отражать, false - не следует)</param>
         public static void Draw(Texture texture, Vector2[] position, bool isFlipped)
         {
             Start();
 
             Vector2[] vertices;
 
-            if (isFlipped) // отзеркалить ли текстуру
+            if (isFlipped)
             {
                 vertices = new Vector2[4] // вершины спрайта
                 {
@@ -55,6 +65,9 @@ namespace GraphicsOpenGL
             GL.End();
         }
 
+        /// <summary>
+        /// Подготовка OpenGL к отрисовке объектов
+        /// </summary>
         private static void Start()
         {
             GL.MatrixMode(MatrixMode.Projection);

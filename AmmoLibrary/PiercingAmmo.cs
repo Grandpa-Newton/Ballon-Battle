@@ -1,17 +1,16 @@
 ﻿using GraphicsOpenGL;
 using OpenTK;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AmmoLibrary
 {
-    public class PiercingAmmo : Ammo // бронебойный 
+    /// <summary>
+    /// Бронебойный снаряд, отличающийся высокой дальностью полёта, средней скоростью и радиусом действия
+    /// </summary>
+    public class PiercingAmmo : Ammo
     {
-        
+        /// <summary>
+        /// Конструктор для создания объекта
+        /// </summary>
         public PiercingAmmo() : base()
         {
             this.Sprite = TextureLoader.LoadTexure("piercingAmmo.png");
@@ -19,6 +18,11 @@ namespace AmmoLibrary
             this.Radius = 0.1f;
             this.Speed = new Vector2(0.012f, 0.0f);
         }
+
+        /// <summary>
+        /// Конструктор для копирования объекта уже существующего снаряда
+        /// </summary>
+        /// <param name="clone">Копируемый объект снаряда</param>
         public PiercingAmmo(Ammo clone) : base(clone) // для копирования объектов, а не ссылок
         {
         }

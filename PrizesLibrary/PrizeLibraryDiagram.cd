@@ -1,42 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
-  <Class Name="PrizesLibrary.AmmoPrize">
-    <Position X="0.5" Y="4" Width="3.25" />
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="PrizesLibrary.AmmoPrize" Collapsed="true">
+    <Position X="3" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>AmmoPrize.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PrizesLibrary.ArmourPrize">
-    <Position X="4.25" Y="4" Width="3.25" />
+  <Class Name="PrizesLibrary.ArmourPrize" Collapsed="true">
+    <Position X="5.25" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ArmourPrize.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PrizesLibrary.FuelPrize">
-    <Position X="12" Y="4" Width="3.25" />
+  <Class Name="PrizesLibrary.FuelPrize" Collapsed="true">
+    <Position X="9.75" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>FuelPrize.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PrizesLibrary.PrizeGenerator">
-    <Position X="6.5" Y="6" Width="2.5" />
+    <Position X="6.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
       <FileName>Generators\PrizeGenerator.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PrizesLibrary.HealthPrize">
-    <Position X="8" Y="4" Width="3.25" />
+  <Class Name="PrizesLibrary.HealthPrize" Collapsed="true">
+    <Position X="7.5" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>HealthPrize.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PrizesLibrary.Prize">
-    <Position X="6.25" Y="0.5" Width="3" />
+  <Class Name="PrizesLibrary.Prize" Collapsed="true">
+    <Position X="6.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAIAAACAAEgAAAAAAAAAQABEAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Prize.cs</FileName>

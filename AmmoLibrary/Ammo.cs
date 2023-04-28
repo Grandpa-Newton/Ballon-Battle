@@ -1,57 +1,79 @@
 ﻿using GraphicsOpenGL;
 using OpenTK;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AmmoLibrary
 {
+    /// <summary>
+    /// Абстрактный класс выпускаемого снаряда
+    /// </summary>
     public abstract class Ammo
     {
+        /// <summary>
+        /// Текстура снаряда
+        /// </summary>
         public Texture Sprite;
-        public Vector2 PositionCenter;
-        public bool isLeft;
 
+        /// <summary>
+        /// Центр позиции снаряда
+        /// </summary>
+        public Vector2 PositionCenter;
+
+        /// <summary>
+        /// Показатель, отвечающий за направление полёта пули (true - влево, false - вправо)
+        /// </summary>
+        public bool IsLeft;
+
+        /// <summary>
+        /// Скорость полёта пули
+        /// </summary>
         public Vector2 Speed { get; set; }
 
+        /// <summary>
+        /// Дистанция полёта пули
+        /// </summary>
         public float Distance { get; set; }
 
+        /// <summary>
+        /// Радиус действия взрыва снаряда
+        /// </summary>
         public float Radius { get; set; }
 
+        /// <summary>
+        /// Позиция объекта
+        /// </summary>
         public Vector2[] Position { get; set; }
 
+        /// <summary>
+        /// Создание объекта приза с помощью копирования существующего объекта
+        /// </summary>
+        /// <param name="clone">Копируемый объект</param>
         public Ammo(Ammo clone)
         {
             this.Sprite = clone.Sprite;
             PositionCenter = clone.PositionCenter;
-            this.isLeft = clone.isLeft;
+            this.IsLeft = clone.IsLeft;
             Speed = clone.Speed;
             Distance = clone.Distance;
             Radius = clone.Radius;
             Position = clone.Position;
         }
 
+        /// <summary>
+        /// Конструктор для создания объекта
+        /// </summary>
         public Ammo()
         {
 
         }
 
-     /*   public Ammo(Texture sprite)
-        {
-            this.Sprite = sprite;
-        }
-           public abstract Vector2 GetSpeed();
-           public abstract float GetDistance();
-           public abstract float GetRadius();*/
+        /// <summary>
+        /// Отображение снаряда на экран
+        /// </summary>
         public void Draw()
         {
             UpdatePosition(false);
-            if (isLeft)
+            if (IsLeft)
             {
                 ObjectDrawer.Draw(Sprite, Position, false);
             }
@@ -59,6 +81,11 @@ namespace AmmoLibrary
                 ObjectDrawer.Draw(Sprite, Position, true);
         }
 
+        /// <summary>
+        /// Получение границ объекта снаряда
+        /// </summary>
+        /// <param name="isExploding">Показатель, отвечающий за то, взрывается снаряд в данный момент или нет (true - взрывается, false - не взрывается)</param>
+        /// <returns>Коллайдер объекта снаряда</returns>
         public RectangleF GetCollider(bool isExploding = false)
         {
             UpdatePosition(isExploding);
@@ -75,15 +102,24 @@ namespace AmmoLibrary
             return collider;
         }
 
+        /// <summary>
+        /// Генерация позиции и направления полёта снаряда
+        /// </summary>
+        /// <param name="position">Позиция снаряда</param>
+        /// <param name="isLeft">Показатель, отвечающий за направление полёта пули (true - влево, false - вправо)</param>
+
         public void Spawn(Vector2 position, bool isLeft)
         {
             this.PositionCenter = position;
-            this.isLeft = isLeft;
+            this.IsLeft = isLeft;
         }
 
+        /// <summary>
+        /// Обновление состояния снаряда
+        /// </summary>
         public void Update()
         {
-            if (isLeft) // для проверки, в какую сторону летит снаряд
+            if (IsLeft) // для проверки, в какую сторону летит снаряд
                 PositionCenter -= Speed;
             else
                 PositionCenter += Speed;
@@ -91,6 +127,10 @@ namespace AmmoLibrary
             Distance -= Speed.X;
         }
 
+        /// <summary>
+        /// Обновление текущей позиции снаряда
+        /// </summary>
+        /// <param name="isExploding">Показатель, отвечающий за то, взрывается снаряд в данный момент или нет (true - взрывается, false - не взрывается)</param>
         public virtual void UpdatePosition(bool isExploding)
         {
             float spriteWidth = 0.03f;
