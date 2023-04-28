@@ -129,6 +129,11 @@ namespace GameLibrary
         /// Количество тиков выстрелов первого игрока, отвечает за выпуск снарядов не ранее 50 тиков
         /// </summary>
         int firstPlayerTicks = 50;
+        
+        /// <summary>
+        /// Объект генератора призов
+        /// </summary>
+        PrizeGenerator prizeGenerator = new PrizeGenerator();
 
         /// <summary>
         /// Загружает объекты, необходимые для процесса игры
@@ -543,8 +548,6 @@ namespace GameLibrary
         {
             if (currentPrize != null)
                 return;
-
-            PrizeGenerator prizeGenerator = new PrizeGenerator();
 
             Prize newPrize = prizeGenerator.Create(height);
 

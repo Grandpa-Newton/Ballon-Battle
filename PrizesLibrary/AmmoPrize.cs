@@ -17,7 +17,7 @@ namespace PrizesLibrary
         {
             this.CenterPosition = centerPosition;
             this.IsLeft = isLeft;
-            this.Sprite = TextureLoader.LoadTexure("ammoPrize.png");
+            this.Sprite = TextureLoader.LoadTexure("ammoPrizeNew.png");
         }
 
         /// <summary>

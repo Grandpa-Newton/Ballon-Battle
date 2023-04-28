@@ -9,13 +9,24 @@ namespace PrizesLibrary
     public class PrizeGenerator
     {
         /// <summary>
+        /// Объект для случайной генерации приза
+        /// </summary>
+        Random random;
+
+        /// <summary>
+        /// Конструктор для создания объекта генератора приза
+        /// </summary>
+        public PrizeGenerator()
+        {
+            random = new Random();
+        }
+        /// <summary>
         /// Создание объекта приза
         /// </summary>
         /// <param name="height">Высота экрана</param>
         /// <returns>Созданный генератором приз</returns>
         public Prize Create(int height)
         {
-            Random random = new Random();
             Prize newPrize=null;
             float prizePozitionX;
             bool isLeft;

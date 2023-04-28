@@ -22,7 +22,7 @@
     </AssociationLine>
     <AssociationLine Name="secondPlayer" Type="GameLibrary.Balloon" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11" Y="3.095" />
+        <Point X="11" Y="3.165" />
         <Point X="7.5" Y="3.062" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
@@ -40,7 +40,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>QAwAEAIEkCNQAhEAsAAYAgAAEAABABSCAAQBAABGCAA=</HashCode>
+      <HashCode>QAwAEAIEkCNQAhEAsAAYAgAAEAABABSCAAQBAABGCEA=</HashCode>
       <FileName>BattleGame.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
