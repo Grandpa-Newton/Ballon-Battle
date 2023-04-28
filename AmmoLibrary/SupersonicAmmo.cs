@@ -1,7 +1,6 @@
 ﻿using GraphicsOpenGL;
 using OpenTK;
 
-
 namespace AmmoLibrary
 {
     /// <summary>

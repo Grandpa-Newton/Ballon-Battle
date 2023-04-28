@@ -1,10 +1,6 @@
 ﻿using GameLibrary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Media;
 using OpenTK;
-using Ballon_Battle;
-using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics;
 
 namespace UnitTests

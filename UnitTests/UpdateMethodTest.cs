@@ -2,7 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK.Graphics;
 using OpenTK;
-using System;
 
 namespace UnitTests
 {

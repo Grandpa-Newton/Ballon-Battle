@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using GameLibrary;
-using System.Diagnostics;
-using AmmoLibrary;
-using PrizesLibrary;
-using GraphicsOpenGL;
 
 namespace Ballon_Battle
 {

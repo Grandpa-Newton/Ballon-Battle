@@ -1,6 +1,4 @@
-﻿using OpenTK.Graphics;
-using System.Drawing;
-using System.Runtime.InteropServices;
+﻿using System.Drawing;
 
 namespace Ballon_Battle
 {
