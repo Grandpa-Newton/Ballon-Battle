@@ -253,14 +253,14 @@ namespace GameLibrary
             firstPlayerCollider = firstPlayer.GetCollider();
             secondPlayerCollider = secondPlayer.GetCollider();
 
-            updateInput();
-            int codeResult = checkCollisions(); 
+            UpdateInput();
+            int codeResult = CheckCollisions(); 
             if (codeResult != 0)
             {
                 return codeResult;
             }
-            updateAmmos();
-            updatePrize();
+            UpdateAmmos();
+            UpdatePrize();
 
             return 0;
         }
@@ -268,7 +268,7 @@ namespace GameLibrary
         /// <summary>
         /// Обновление нажатия кнопок на клавиатуре игроками
         /// </summary>
-        private void updateInput()
+        private void UpdateInput()
         {
             if (keysDown[0] && (firstPlayerCollider.Y > screenCollider.Y))
                 firstPlayer.Update(new Vector2(0f, 0.01f));
@@ -312,7 +312,7 @@ namespace GameLibrary
         /// 2 - завершение игры поражением второго игрока, 
         /// 3 - завершение игры ничьей)
         /// </returns></returns>
-        private int checkCollisions()
+        private int CheckCollisions()
         {
             if ((firstPlayerCollider.X <= screenCollider.X) && isFirstPlayerWindLeft) // ?
             {
@@ -357,7 +357,7 @@ namespace GameLibrary
         /// <summary>
         /// Обновление состояния выпущенных снарядов
         /// </summary>
-        private void updateAmmos()
+        private void UpdateAmmos()
         {
             for (int i = 0; i < firstAmmos.Count; i++)
             {
@@ -424,7 +424,7 @@ namespace GameLibrary
         /// <summary>
         /// Обновление состояния текущего приза и добавление эффектов от него
         /// </summary>
-        private void updatePrize()
+        private void UpdatePrize()
         {
             if (currentPrize != null)
             {

@@ -47,7 +47,8 @@ namespace GameLibrary
         /// </summary>
         /// <param name="isFlipped">Значение, отвечающее за то, следует ли отразить текстуру объекта или нет 
         /// (true - текстура отражается, false - не отражается</param>
-        /// <returns></returns>
+        /// <returns>Показатель, отвечающий за то, закончилась ли анимация или нет
+        /// (true - не закончилась, false - закончилась)</returns>
         public bool Draw(bool isFlipped)
         {
             if(Count >= animation.Count)

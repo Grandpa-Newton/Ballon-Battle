@@ -56,7 +56,7 @@
     <Compile Include="SupersonicAmmo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AmmoLibraryDiagram.cd" />
+    <None Include="AmmoLibraryDiagram2.cd" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
   </ItemGroup>

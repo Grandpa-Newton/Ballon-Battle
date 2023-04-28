@@ -234,7 +234,7 @@ namespace Ballon_Battle
         }
 
         /// <summary>
-        /// Обработчки события нажатия кнопки клавиатуры
+        /// Обработчик события нажатия кнопки клавиатуры
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
