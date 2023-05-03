@@ -28,7 +28,7 @@ namespace GameLibrary
         public Texture BalloonSprite;
 
         /// <summary>
-        /// Список с текущими снарядамиы игрока
+        /// Список с текущими снарядами игрока
         /// </summary>
         
         private List<Ammo> ammos;

@@ -11,8 +11,8 @@ namespace GraphicsOpenGL
         /// <summary>
         /// Отрисовка объектов на экран
         /// </summary>
-        /// <param name="texture">Текстура отрисовываемого объекта</param>
-        /// <param name="position">Позиция дла отрисовки объекта</param>
+        /// <param name="texture">Текстура изображаемого объекта</param>
+        /// <param name="position">Позиция для отрисовки объекта</param>
         /// <param name="isFlipped">Показатель, отвечающий за то, нужно ли отражать по вертикали объект
         /// (true - объект следует отражать, false - не следует)</param>
         public static void Draw(Texture texture, Vector2[] position, bool isFlipped)
